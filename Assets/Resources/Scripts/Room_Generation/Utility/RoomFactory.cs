@@ -29,6 +29,16 @@ public class RoomFactory
                 return new Vertical_Corridor(position, tiles, type, tiles_x, tiles_z);
             case "Vertical_End_Corridor":
                 return new Vertical_End_Corridor(position, tiles, type, tiles_x, tiles_z);
+            case "Cross_Corridor":
+                return new Cross_Corridor(position, tiles, type, tiles_x, tiles_z);
+            case "Bottom_Right_Corner_Corridor":
+                return new Bottom_Right_Corner_Corridor(position, tiles, type, tiles_x, tiles_z);
+            case "Bottom_Left_Corner_Corridor":
+                return new Bottom_Left_Corner_Corridor(position, tiles, type, tiles_x, tiles_z);
+            case "Top_Left_Corner_Corridor":
+                return new Top_Left_Corner_Corridor(position, tiles, type, tiles_x, tiles_z);
+            case "Top_Right_Corner_Corridor":
+                return new Top_Right_Corner_Corridor(position, tiles, type, tiles_x, tiles_z);
             default:
                 return new SpawningRoom(position, tiles,type);
         }
