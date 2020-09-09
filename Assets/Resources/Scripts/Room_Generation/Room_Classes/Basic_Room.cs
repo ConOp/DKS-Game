@@ -10,7 +10,8 @@ public abstract class Basic_Room : IRoom
     public int Tiles_number_x { get; set; }
     public int Tiles_number_z { get; set; }
     public List<Tile> RoomTiles { get; set; }
-
+    public List<GameObject> Instantiated_Tiles { get; set; }
+    public List<string> Available_Sides { get; set; }
     public Basic_Room(Vector3 position, List<GameObject> tiles, string type, int tiles_x, int tiles_z)
     {
         this.RoomTiles = new List<Tile>();
@@ -22,4 +23,5 @@ public abstract class Basic_Room : IRoom
     }
 
     public abstract void CreateRoom(List<GameObject> tiles);
+    public abstract int CreateOpening();
 }

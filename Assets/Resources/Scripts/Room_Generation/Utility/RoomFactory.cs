@@ -20,25 +20,7 @@ public class RoomFactory
             case "SpawningRoom":
                 return new SpawningRoom(position,tiles,type);
             case "FightingRoom":
-                return new FightingRoom(position, tiles, type,tiles_x,tiles_z);
-            case "Horizontal_Corridor":
-                return new Horizontal_Corridor(position, tiles, type, tiles_x, tiles_z);
-            case "Horizontal_End_Corridor":
-                return new Horizontal_End_Corridor(position, tiles, type, tiles_x, tiles_z);
-            case "Vertical_Corridor":
-                return new Vertical_Corridor(position, tiles, type, tiles_x, tiles_z);
-            case "Vertical_End_Corridor":
-                return new Vertical_End_Corridor(position, tiles, type, tiles_x, tiles_z);
-            case "Cross_Corridor":
-                return new Cross_Corridor(position, tiles, type, tiles_x, tiles_z);
-            case "Bottom_Right_Corner_Corridor":
-                return new Bottom_Right_Corner_Corridor(position, tiles, type, tiles_x, tiles_z);
-            case "Bottom_Left_Corner_Corridor":
-                return new Bottom_Left_Corner_Corridor(position, tiles, type, tiles_x, tiles_z);
-            case "Top_Left_Corner_Corridor":
-                return new Top_Left_Corner_Corridor(position, tiles, type, tiles_x, tiles_z);
-            case "Top_Right_Corner_Corridor":
-                return new Top_Right_Corner_Corridor(position, tiles, type, tiles_x, tiles_z);
+               // return new FightingRoom(position, tiles, type,tiles_x,tiles_z);
             default:
                 return new SpawningRoom(position, tiles,type);
         }
