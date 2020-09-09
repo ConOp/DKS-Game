@@ -30,21 +30,8 @@ public class RoomGenerator : MonoBehaviour
     {
         alltiles = new List<GameObject>((Resources.LoadAll<GameObject>("Prefabs/Tiles"))); // Load all room prefabs from the project folder.
         allrooms = new List<IRoom>();
-        // InstantiateRoom("SpawningRoom", new Vector3(0, 0, 0), alltiles, 0, 0);
-        // IRoom Current_Room = allrooms[0];
-        InstantiateRoom("Cross_Corridor", new Vector3(0, 0, 0), alltiles, 5, 5);
-        InstantiateRoom("Bottom_Right_Corner_Corridor", new Vector3(30, 0, 0), alltiles, 3, 3);
-        InstantiateRoom("Horizontal_Corridor", new Vector3(30, 0, 0), alltiles, 3, 3);
-        InstantiateRoom("Bottom_Left_Corner_Corridor", new Vector3(30, 0, 0), alltiles, 3, 3);
-        InstantiateRoom("Bottom_Right_Corner_Corridor", new Vector3(30, 0, 0), alltiles, 3, 3);
-        InstantiateRoom("Top_Left_Corner_Corridor", new Vector3(30, 0, 0), alltiles, 3, 3);
-        InstantiateRoom("Top_Right_Corner_Corridor", new Vector3(30, 0, 0), alltiles, 3, 3);
-        int Room_Places = 0;
-        while (Room_Places < RoomNumber)
-        {
-            Room_Places++;
-        }
-
+        InstantiateRoom("SpawningRoom", new Vector3(0, 0, 0), alltiles, 0, 0);
+       
 
     }
 
