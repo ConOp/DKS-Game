@@ -320,7 +320,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2080870451}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a7cf7d365d4e03940b3da8333df54b96, type: 3}
+  m_Script: {fileID: 11500000, guid: 36ed3ffe1322e2c46b35976011459d4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   RoomNumber: 20

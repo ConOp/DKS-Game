@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class RandomnessMaestro 
 {
+
+     static List<(string, float)> room_corridor_chance = new List<(string, float)>{
+        ("Corridor",80f),
+        ("Room",20f) };
     private static void ShowError( string error)
     {
         switch (error)
@@ -24,5 +28,9 @@ public class RandomnessMaestro
             ShowError("NO_SIDES");
             return null;
         }
+    }
+    public static string Choose_Room_Or_Corridor()
+    {
+        return RandomProbability.Choose(room_corridor_chance);
     }
 }

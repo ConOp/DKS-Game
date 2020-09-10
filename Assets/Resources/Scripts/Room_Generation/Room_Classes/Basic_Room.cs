@@ -23,5 +23,37 @@ public abstract class Basic_Room : IRoom
     }
 
     public abstract void CreateRoom(List<GameObject> tiles);
-    public abstract int CreateOpening();
+    public (int, string) CreateOpening()
+    {
+        int opening;
+        int index_x, index_z;
+        string side = RandomnessMaestro.OpenRandomAvailableSide(this);
+        if (side == "Left")
+        {
+            index_z = this.Tiles_number_z / 2;
+            index_x = 0;
+
+
+        }
+        else if (side == "Top")
+        {
+            index_z = 0;
+            index_x = this.Tiles_number_x / 2;
+        }
+        else if (side == "Right")
+        {
+            index_z = this.Tiles_number_z / 2;
+            index_x = this.Tiles_number_x - 1;
+        }
+        else
+        {
+            index_z = this.Tiles_number_z - 1;
+            index_x = this.Tiles_number_x / 2;
+        }
+        Available_Sides.Remove(side);
+        opening = (index_x * Tiles_number_x + index_z);
+        return (opening, side);
+
+    }
+    public abstract void CreateAdjacentRoom(string side);
 }

@@ -71,34 +71,17 @@ public class SpawningRoom : Basic_Room
 
     }
 
-    public override int CreateOpening()
-    {
-            int opening;
-            int index_x, index_z;
-            string side = RandomnessMaestro.OpenRandomAvailableSide(this);
-            if (side == "Left")
-            {
-                index_z = this.Tiles_number_z / 2;
-                index_x = 0;
-                
-            }
-            else if(side == "Top")
-            {
-                index_z = 0;
-                index_x = this.Tiles_number_x/2;
-            }
-            else if (side == "Right")
-            {
-                index_z = this.Tiles_number_z / 2;
-                index_x = this.Tiles_number_x-1;
-            }
-            else
-            {
-                index_z = this.Tiles_number_z-1;
-                index_x = this.Tiles_number_x /2;
-            }
-            opening=(index_x * Tiles_number_x + index_z);
-            return opening;
-        
+
+
+    public override  void CreateAdjacentRoom(string side) {
+        string room_corridor = RandomnessMaestro.Choose_Room_Or_Corridor();
+        if (room_corridor == "Room")
+        {
+
+        }
+        else
+        {
+
+        }
     }
 }
