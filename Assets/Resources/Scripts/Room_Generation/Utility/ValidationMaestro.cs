@@ -1,18 +1,19 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 
-public class ValidationMaestro : MonoBehaviour
+public class ValidationMaestro
 {
-    // Start is called before the first frame update
-    void Start()
+    public static List<string> GetAppropriateRooms(string room_corridor,string connect_side)
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        if (room_corridor == "Room")
+        {
+          return DataManager.Search_Available_Sides(connect_side,"Room");
+        }
+        else
+        {
+            return DataManager.Search_Available_Sides(connect_side, "Corridor");
+        }
     }
 }

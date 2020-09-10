@@ -14,6 +14,6 @@ public interface IRoom
     string Type { get; set; }
     void CreateRoom(List<GameObject> tiles);
     (int, string) CreateOpening();
-    void CreateAdjacentRoom(string side);
+    void CreateAdjacentRoom(string side,Vector2 opening_location);
 
 }

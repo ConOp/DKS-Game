@@ -72,16 +72,4 @@ public class SpawningRoom : Basic_Room
     }
 
 
-
-    public override  void CreateAdjacentRoom(string side) {
-        string room_corridor = RandomnessMaestro.Choose_Room_Or_Corridor();
-        if (room_corridor == "Room")
-        {
-
-        }
-        else
-        {
-
-        }
-    }
 }

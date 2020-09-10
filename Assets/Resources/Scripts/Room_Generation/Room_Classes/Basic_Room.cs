@@ -21,7 +21,6 @@ public abstract class Basic_Room : IRoom
         this.Position = position;
         CreateRoom(tiles);
     }
-
     public abstract void CreateRoom(List<GameObject> tiles);
     public (int, string) CreateOpening()
     {
@@ -55,5 +54,13 @@ public abstract class Basic_Room : IRoom
         return (opening, side);
 
     }
-    public abstract void CreateAdjacentRoom(string side);
+    public void CreateAdjacentRoom(string side,Vector2 opening_location)
+    {
+        string room_corridor = RandomnessMaestro.Choose_Room_Or_Corridor();
+        List<string>available_rooms = ValidationMaestro.GetAppropriateRooms(room_corridor, side);
+        //TODO Choose random room depending on probability from available_rooms.
+        //TODO Create opening to the new eoom and place it appropriately.
+        
+
+    }
 }
