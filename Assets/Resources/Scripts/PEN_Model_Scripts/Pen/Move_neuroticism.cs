@@ -1,15 +1,14 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Move_neuroticism
 {
 
-    private float time_w = 0;
-    private float time_a = 0;
-    private float time_s = 0;
-    private float time_d = 0;
-    public float threshold = 0.5f;
+    private float time_h = 0;
+    private float time_v = 0;
+    public float threshold = 1;
     public int divider = 20;
     private float neuro = 0;
 
@@ -27,39 +26,23 @@ public class Move_neuroticism
     public void CheckMove()
     {
         //when key is hold, count time.
-        if (joystick.Horizontal>0.2f)
+        if (Math.Abs(joystick.Horizontal)>0.2f)
         {
-            time_w += Time.deltaTime;
+            time_h += Time.deltaTime;
         }
-        if (joystick.Vertical < -0.2f)
+        if (Math.Abs(joystick.Vertical) > 0.2f)
         {
-            time_a += Time.deltaTime;
-        }
-        if (joystick.Horizontal < -0.2f)
-        {
-            time_s += Time.deltaTime;
-        }
-        if (joystick.Vertical > 0.2f)
-        {
-            time_d += Time.deltaTime;
+            time_v += Time.deltaTime;
         }
 
         //when key is released, call function to calc time in regard to threshold.
-        if (joystick.Horizontal<0.2f&&joystick.Horizontal>0)
+        if (Math.Abs(joystick.Horizontal) < 0.2f && Math.Abs(joystick.Horizontal) > 0)
         {
-            MoveNeuro(ref time_w);
+            MoveNeuro(ref time_h);
         }
-        else if (joystick.Vertical > -0.2f && joystick.Vertical < 0)
+        else if (Math.Abs(joystick.Vertical) < 0.2f && Math.Abs(joystick.Vertical) > 0)
         {
-            MoveNeuro(ref time_a);
-        }
-        else if (joystick.Horizontal > -0.2f && joystick.Horizontal < 0)
-        {
-            MoveNeuro(ref time_s);
-        }
-        else if (joystick.Vertical < 0.2f && joystick.Vertical > 0)
-        {
-            MoveNeuro(ref time_d);
+            MoveNeuro(ref time_v);
         }
     }
 
@@ -80,7 +63,7 @@ public class Move_neuroticism
         }
         else
         {
-            neuro += (threshold - timer) / divider;
+            neuro += (threshold - timer) / divider*2;
         }
         timer = 0;
         Debug.Log("neuro= " + neuro.ToString());
