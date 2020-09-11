@@ -17,7 +17,7 @@ public class pen_model
     Move_neuroticism mover = new Move_neuroticism();
 
     //for Extraversion
-    //Distance_extraversion dister = new Distance_extraversion();
+    Distance_extraversion dister = new Distance_extraversion();
 
     /// <summary>
     /// Update works like the MonBehavior Update and should be called like that. Calls every check for PEN alterations.
@@ -27,9 +27,9 @@ public class pen_model
     public void Update(float dist)
     {
         neuro = mover.getNeuro();
-        //extr = dister.getExtr(dist);
+        extr = dister.getExtr(dist);
 
-        Debug.Log(extr);
+        Debug.Log("Neuro: " + neuro + "\nExtra: " + extr);
     }
 
 }

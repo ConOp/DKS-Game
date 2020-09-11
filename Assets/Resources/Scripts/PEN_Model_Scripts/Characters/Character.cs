@@ -5,33 +5,23 @@ using UnityEngine;
 /// <summary>
 /// creates a character with hp and attribute for if they are in combat.
 /// </summary>
-public class Character
+public interface Character
 {
-    protected int hp;
-    private bool combatant = false;
+
 
     /// <summary>
     /// Sets combatant value to true.
     /// </summary>
-    public void enterCombat()
-    {
-        this.combatant = true;
-    }
+    void enterCombat();
 
     /// <summary>
     /// Sets combatant value to false.
     /// </summary>
-    public void exitCombat()
-    {
-        this.combatant = false;
-    }
+    void exitCombat();
 
     /// <summary>
     /// Returns the value of combatant.
     /// </summary>
     /// <returns></returns>
-    public bool InCombat()
-    {
-        return combatant;
-    }
+    bool InCombat();
 }

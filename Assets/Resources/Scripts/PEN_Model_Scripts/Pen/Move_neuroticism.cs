@@ -13,6 +13,7 @@ public class Move_neuroticism
     public int divider = 20;
     private float neuro = 0;
 
+    public Joystick joystick = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>().joystick;
 
     //to get neuro.
     public float getNeuro()
@@ -26,39 +27,39 @@ public class Move_neuroticism
     public void CheckMove()
     {
         //when key is hold, count time.
-        if (Input.GetKey(KeyCode.W))
+        if (joystick.Horizontal>0.2f)
         {
             time_w += Time.deltaTime;
         }
-        if (Input.GetKey(KeyCode.A))
+        if (joystick.Vertical < -0.2f)
         {
             time_a += Time.deltaTime;
         }
-        if (Input.GetKey(KeyCode.S))
+        if (joystick.Horizontal < -0.2f)
         {
             time_s += Time.deltaTime;
         }
-        if (Input.GetKey(KeyCode.D))
+        if (joystick.Vertical > 0.2f)
         {
             time_d += Time.deltaTime;
         }
 
         //when key is released, call function to calc time in regard to threshold.
-        if (Input.GetKeyUp(KeyCode.W))
+        if (joystick.Horizontal<0.2f&&joystick.Horizontal>0)
         {
-            MoveNeuro(ref time_w, KeyCode.W);
+            MoveNeuro(ref time_w);
         }
-        else if (Input.GetKeyUp(KeyCode.A))
+        else if (joystick.Vertical > -0.2f && joystick.Vertical < 0)
         {
-            MoveNeuro(ref time_a, KeyCode.A);
+            MoveNeuro(ref time_a);
         }
-        else if (Input.GetKeyUp(KeyCode.S))
+        else if (joystick.Horizontal > -0.2f && joystick.Horizontal < 0)
         {
-            MoveNeuro(ref time_s, KeyCode.S);
+            MoveNeuro(ref time_s);
         }
-        else if (Input.GetKeyUp(KeyCode.D))
+        else if (joystick.Vertical < 0.2f && joystick.Vertical > 0)
         {
-            MoveNeuro(ref time_d, KeyCode.D);
+            MoveNeuro(ref time_d);
         }
     }
 
@@ -67,15 +68,19 @@ public class Move_neuroticism
     /// </summary>
     /// <param name="timer"></param>
     /// <param name="key"></param>
-    private void MoveNeuro(ref float timer, KeyCode key)
+    private void MoveNeuro(ref float timer)
     {
         if (timer >= threshold)
         {
             neuro -= (timer - threshold) / divider;
         }
+        else if (timer == 0)
+        {
+            return;
+        }
         else
         {
-            neuro += (threshold - timer) / divider/2;
+            neuro += (threshold - timer) / divider;
         }
         timer = 0;
         Debug.Log("neuro= " + neuro.ToString());
