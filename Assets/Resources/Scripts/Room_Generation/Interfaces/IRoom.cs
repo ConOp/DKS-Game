@@ -13,7 +13,7 @@ public interface IRoom
     List<string> Available_Sides { get; set; }
     string Type { get; set; }
     void CreateRoom(List<GameObject> tiles);
-    (int, string) CreateOpening();
-    void CreateAdjacentRoom(string side,Vector2 opening_location);
+    (int,Vector3,string) CreateOpening(string side);
+    (IRoom,Vector3) CreateAdjacentRoom(string side,Vector3 opening_location);
 
 }

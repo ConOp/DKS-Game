@@ -8,8 +8,8 @@ public class RandomnessMaestro
 
     //Room or Corridor chances.
     static List<(string, float)> room_corridor_chance = new List<(string, float)>{
-        ("Corridor",80f),
-        ("Room",20f) };
+        ("Corridor",0f),
+        ("Room",100f) };
 
     //Room size chances.
     static List<(string, float)> room_size = new List<(string, float)>{

@@ -50,7 +50,7 @@ public class RoomGenerator : MonoBehaviour
     /// <param name="tiles_z"></param>
     void InstantiateRoom(string type,Vector3 pos,List<GameObject> tiles,int tiles_x,int tiles_z)
     {
-        var Spawn_Room = RoomFactory.Build(type,pos, alltiles,tiles_x,tiles_z); //Using the Room Factory we construct the room.
+        var Spawn_Room = RoomFactory.Build(type, alltiles,tiles_x,tiles_z); //Using the Room Factory we construct the room.
         GameObject gr = new GameObject(Spawn_Room.Type); //Parent object to all tiles.
         foreach (Tile tile in Spawn_Room.RoomTiles)
         {

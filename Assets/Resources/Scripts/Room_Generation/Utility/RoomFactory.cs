@@ -13,16 +13,16 @@ public class RoomFactory
     /// <param name="tiles_x"></param>
     /// <param name="tiles_z"></param>
     /// <returns></returns>
-    public static IRoom Build(string type,Vector3 position,List<GameObject> tiles,int tiles_x,int tiles_z)
+    public static IRoom Build(string type,List<GameObject> tiles,int tiles_x,int tiles_z)
     {
         switch (type)
         {
             case "SpawningRoom":
-                return new SpawningRoom(position,tiles,type);
+                return new SpawningRoom(tiles,type);
             case "FightingRoom":
-               // return new FightingRoom(position, tiles, type,tiles_x,tiles_z);
+                return new FightingRoom(tiles, type,tiles_x,tiles_z);
             default:
-                return new SpawningRoom(position, tiles,type);
+                return new SpawningRoom(tiles,type);
         }
     }
 }

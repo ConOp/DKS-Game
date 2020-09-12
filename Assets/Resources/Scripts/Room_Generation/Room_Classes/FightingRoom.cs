@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
-/*public class FightingRoom : Basic_Room
+public class FightingRoom : Basic_Room
 {
    
-    public FightingRoom(Vector3 position, List<GameObject> tiles, string type,int tiles_x,int tiles_z) : base(position, tiles, type,tiles_x,tiles_z)
+    public FightingRoom(List<GameObject> tiles, string type,int tiles_x,int tiles_z) : base(tiles, type,tiles_x,tiles_z)
     {
         Available_Sides = new List<string>() { "Left", "Top", "Right", "Bottom" };
     }
@@ -66,4 +66,3 @@ using System.Linq;
 
     }
 }
-*/

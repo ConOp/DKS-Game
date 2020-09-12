@@ -44,7 +44,9 @@ public class NewRoomGen : MonoBehaviour
                 Debug.LogError("Finished dungeon generator without reaching the room goal.");
                 break;
             }
-            MakeOpening(allrooms[openroomindex]);
+            (int ind, Vector3 loc, string side) = allrooms[openroomindex].CreateOpening("Random");
+            (IRoom newroom,Vector3 newroomloc)=allrooms[openroomindex].CreateAdjacentRoom(side,loc);
+            InstantiateIRoom(newroom, newroomloc, PrefabManager.GetAllTiles());
             RoomNumber--;
         }
     }
@@ -59,7 +61,8 @@ public class NewRoomGen : MonoBehaviour
     /// <param name="tiles_z"></param>
     void InstantiateRoom(string type, Vector3 pos, List<GameObject> tiles, int tiles_x, int tiles_z)
     {
-        var Spawn_Room = RoomFactory.Build(type, pos, tiles, tiles_x, tiles_z); //Using the Room Factory we construct the room.
+        var Spawn_Room = RoomFactory.Build(type, tiles, tiles_x, tiles_z); //Using the Room Factory we construct the room.
+        Spawn_Room.Position = pos; //Give the room the desired location.
         GameObject gr = new GameObject(Spawn_Room.Type); //Parent object to all tiles.
         List<GameObject> instantiated_tiles = new List<GameObject>();
         foreach (Tile tile in Spawn_Room.RoomTiles)
@@ -71,23 +74,21 @@ public class NewRoomGen : MonoBehaviour
         Spawn_Room.RoomObject = gr;
         allrooms.Add(Spawn_Room);
     }
-
-    /// <summary>
-    /// Create doors in room on available sides.
-    /// </summary>
-    /// <param name="room"></param>
-    void MakeOpening(IRoom room)
+    void InstantiateIRoom(IRoom room, Vector3 pos, List<GameObject> tiles)
     {
-
-            (int tile,string side)=room.CreateOpening();
-            //Tile to be placed.
-            Tile t= new Tile("Center", PrefabManager.GetAllTiles().Where(obj => obj.name == "Center").First(), room.RoomTiles[tile].Position_X, room.RoomTiles[tile].Position_Z);
-            //Replace tile.
-            room.RoomTiles[tile] = t;
-            //Destroy old tile.
-            Destroy(room.Instantiated_Tiles[tile]);
-            //Instantiate new tile.
-            room.Instantiated_Tiles[tile]= Instantiate(t.Objtile, new Vector3(t.Position_X, 0, t.Position_Z), new Quaternion(),room.RoomObject.transform);
+        GameObject gr = new GameObject(room.Type); //Parent object to all tiles.
+        List<GameObject> instantiated_tiles = new List<GameObject>();
+        foreach (Tile tile in room.RoomTiles)
+        {
+            //Instantiate every tile.
+            instantiated_tiles.Add(Instantiate(tile.Objtile, new Vector3(pos.x+tile.Position_X, 0,pos.z+tile.Position_Z), new Quaternion(), gr.transform));
+        }
+        room.Instantiated_Tiles = instantiated_tiles;
+        room.RoomObject = gr;
+        allrooms.Add(room);
     }
 
+
+
 }
+ 

@@ -6,7 +6,7 @@ using System.Linq;
 public class SpawningRoom : Basic_Room
 {
     
-    public SpawningRoom( Vector3 position, List<GameObject> tiles,string type) :base(position,tiles,type,5,5)
+    public SpawningRoom( List<GameObject> tiles,string type) :base(tiles,type,5,5)
     {
         Available_Sides = new List<string>() {"Left", "Top", "Right","Bottom" };
     }
