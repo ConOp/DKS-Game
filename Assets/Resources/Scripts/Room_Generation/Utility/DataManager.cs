@@ -101,4 +101,34 @@ public static class DataManager
         }
         return correct_rooms;
     }
+
+    /// <summary>
+    /// Returns a smaller size of the room depending on times_smaller
+    /// </summary>
+    /// <param name="oldsize"></param>
+    /// <param name="times_smaller"></param>
+    /// <returns></returns>
+    //Ex oldsize="Large" if times_smaller = 1 will return "Medium" / if times_smaller = 2 will return "Small".
+    public static (string,int,int) ReturnSmallerSize(string oldsize,int times_smaller)
+    {
+        string current_size = oldsize;
+        while (times_smaller > 0)
+        {
+            switch (current_size)
+            {
+                case "Large":
+                    current_size = "Medium";
+                    break;
+                case "Medium":
+                    current_size = "Small";
+                    break;
+                default:
+                    current_size = "Small";
+                    break;
+            }
+            times_smaller--;
+        }
+        (int x, int z) = Search_Sizes_Dictionary(current_size);
+        return (current_size,x,z);
+    }
 }

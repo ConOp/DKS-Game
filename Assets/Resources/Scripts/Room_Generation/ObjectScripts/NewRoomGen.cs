@@ -44,10 +44,21 @@ public class NewRoomGen : MonoBehaviour
                 Debug.LogError("Finished dungeon generator without reaching the room goal.");
                 break;
             }
-            (int ind, Vector3 loc, string side) = allrooms[openroomindex].CreateOpening("Random");
+            string side=RandomnessMaestro.OpenRandomAvailableSide(allrooms[openroomindex]);
+            int openindex = allrooms[openroomindex].CalculateOpening(side);
+            Vector3 loc = allrooms[openroomindex].Instantiated_Tiles[openindex].transform.position; //= allrooms[openroomindex].CreateOpening(openindex,side);
             (IRoom newroom,Vector3 newroomloc)=allrooms[openroomindex].CreateAdjacentRoom(side,loc);
-            InstantiateIRoom(newroom, newroomloc, PrefabManager.GetAllTiles());
-            RoomNumber--;
+            if (newroom != null)
+            {
+                allrooms[openroomindex].CreateOpening(openindex,side);
+                InstantiateIRoom(newroom, newroomloc, PrefabManager.GetAllTiles());
+                RoomNumber--;
+            }
+            else
+            {
+                allrooms[openroomindex].Available_Sides.Remove(side);
+            }
+            
         }
     }
 
