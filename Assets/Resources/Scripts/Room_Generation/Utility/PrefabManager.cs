@@ -4,25 +4,25 @@ using UnityEngine;
 
 public static class PrefabManager
 {
-    static List<GameObject> alltiles;
-     static List<GameObject> allcorridors;
+    static List<GameObject> allroomtiles;
+     static List<GameObject> allcorridortiles;
 
     /// <summary>
     /// Returns all loaded tiles from project.
     /// </summary>
     /// <returns></returns>
-    public static List<GameObject> GetAllTiles()
+    public static List<GameObject> GetAllRoomTiles()
     {
-        return alltiles;
+        return allroomtiles;
     }
 
     /// <summary>
     /// Returns all loaded corridors from project.
     /// </summary>
     /// <returns></returns>
-    public static List<GameObject> GetAllCorridors()
+    public static List<GameObject> GetAllCorridorTiles()
     {
-        return allcorridors;
+        return allcorridortiles;
     }
     /// <summary>
     /// Loads all prefabs from project.
@@ -32,8 +32,8 @@ public static class PrefabManager
     {
         try
         {
-            alltiles = new List<GameObject>((Resources.LoadAll<GameObject>("Prefabs/Tiles"))); // Load all tile prefabs from the project folder.
-            allcorridors = new List<GameObject>((Resources.LoadAll<GameObject>("Prefabs/Corridors"))); // Load all corridor prefabs from the project folder.
+            allroomtiles = new List<GameObject>((Resources.LoadAll<GameObject>("Prefabs/Tiles/Room_Tiles"))); // Load all tile prefabs from the project folder.
+            allcorridortiles = new List<GameObject>((Resources.LoadAll<GameObject>("Prefabs/Tiles/Corridor_Tiles"))); // Load all corridor prefabs from the project folder.
             return true;
         }
         catch

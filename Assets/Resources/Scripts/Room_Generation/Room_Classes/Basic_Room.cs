@@ -62,7 +62,7 @@ public abstract class Basic_Room : IRoom
     public Vector3 CreateOpening(int indexopening,string side)
     {
         //Tile to be placed.
-        Tile t = new Tile("Center", PrefabManager.GetAllTiles().Where(obj => obj.name == "Center").First(), RoomTiles[indexopening].Position_X, RoomTiles[indexopening].Position_Z);
+        Tile t = new Tile("Center", PrefabManager.GetAllRoomTiles().Where(obj => obj.name == "Center").First(), RoomTiles[indexopening].Position_X, RoomTiles[indexopening].Position_Z);
         //Replace opening.
         RoomTiles[indexopening] = t;
         Vector3 oldtileloc = new Vector3(0, 0, 0);
@@ -93,7 +93,7 @@ public abstract class Basic_Room : IRoom
         {
             string roomsize = RandomnessMaestro.Choose_Room_Size();
             (int sizex, int sizez) = DataManager.Search_Sizes_Dictionary(roomsize);
-            IRoom new_room = RoomFactory.Build(available_rooms[1], PrefabManager.GetAllTiles(), sizex, sizez);
+            IRoom new_room = RoomFactory.Build(available_rooms[1], PrefabManager.GetAllRoomTiles(), sizex, sizez);
             //Change side to the desired side so that the adjacent room can place the opening appropriately.
             string adjside;
             if (side == "Left")
@@ -141,7 +141,7 @@ public abstract class Basic_Room : IRoom
                 //Return a smaller size.
                 (roomsize, sizex, sizez) = DataManager.ReturnSmallerSize(roomsize, 1);
                 //Re-Construct the room.
-                new_room = RoomFactory.Build(available_rooms[1], PrefabManager.GetAllTiles(), sizex, sizez);
+                new_room = RoomFactory.Build(available_rooms[1], PrefabManager.GetAllRoomTiles(), sizex, sizez);
                 //Re-Calculate opening.
                 new_opening_index = new_room.CalculateOpening(adjside);
                 //Re-Place the room appropriately.

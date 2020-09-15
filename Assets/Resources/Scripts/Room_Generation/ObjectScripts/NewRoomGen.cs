@@ -7,6 +7,7 @@ public class NewRoomGen : MonoBehaviour
 {
     List<IRoom> allrooms;  //All instantiated rooms in the game.
     public int RoomNumber = 20; //Target room number.
+    GameObject dungeon;
     private void Awake()
     {
         PrefabManager.LoadPrefabs();//Load all the prefabs from the project at the very start.
@@ -16,15 +17,15 @@ public class NewRoomGen : MonoBehaviour
     void Start()
     {
         allrooms = new List<IRoom>();
+        dungeon = new GameObject("Dungeon");
         CreateDungeon(RoomNumber);
-        
     }
 
 
     public void CreateDungeon(int room_number)
     {
         //Construct Spawn Room.
-        InstantiateRoom("SpawningRoom", new Vector3(0, 0, 0), PrefabManager.GetAllTiles(), 5, 5);
+        InstantiateIRoom(RoomFactory.Build("SpawningRoom", PrefabManager.GetAllRoomTiles(), 5, 5), new Vector3(0, 0, 0), PrefabManager.GetAllRoomTiles());
         bool found;
         while (RoomNumber > 0)
         {
@@ -51,7 +52,7 @@ public class NewRoomGen : MonoBehaviour
             if (newroom != null)
             {
                 allrooms[openroomindex].CreateOpening(openindex,side);
-                InstantiateIRoom(newroom, newroomloc, PrefabManager.GetAllTiles());
+                InstantiateIRoom(newroom, newroomloc, PrefabManager.GetAllRoomTiles());
                 RoomNumber--;
             }
             else
@@ -70,21 +71,6 @@ public class NewRoomGen : MonoBehaviour
     /// <param name="tiles"></param>
     /// <param name="tiles_x"></param>
     /// <param name="tiles_z"></param>
-    void InstantiateRoom(string type, Vector3 pos, List<GameObject> tiles, int tiles_x, int tiles_z)
-    {
-        var Spawn_Room = RoomFactory.Build(type, tiles, tiles_x, tiles_z); //Using the Room Factory we construct the room.
-        Spawn_Room.Position = pos; //Give the room the desired location.
-        GameObject gr = new GameObject(Spawn_Room.Type); //Parent object to all tiles.
-        List<GameObject> instantiated_tiles = new List<GameObject>();
-        foreach (Tile tile in Spawn_Room.RoomTiles)
-        {
-            //Instantiate every tile.
-           instantiated_tiles.Add(Instantiate(tile.Objtile, new Vector3(tile.Position_X, 0, tile.Position_Z), new Quaternion(), gr.transform));
-        }
-        Spawn_Room.Instantiated_Tiles = instantiated_tiles;
-        Spawn_Room.RoomObject = gr;
-        allrooms.Add(Spawn_Room);
-    }
     void InstantiateIRoom(IRoom room, Vector3 pos, List<GameObject> tiles)
     {
         GameObject gr = new GameObject(room.Type); //Parent object to all tiles.
@@ -96,6 +82,7 @@ public class NewRoomGen : MonoBehaviour
         }
         room.Instantiated_Tiles = instantiated_tiles;
         room.RoomObject = gr;
+        gr.transform.parent = dungeon.transform;
         allrooms.Add(room);
     }
 
