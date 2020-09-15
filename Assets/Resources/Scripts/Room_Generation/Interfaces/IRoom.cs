@@ -11,6 +11,7 @@ public interface IRoom
     List<GameObject> Instantiated_Tiles { get; set; }
     List<Tile> RoomTiles { get; set; }
     List<string> Available_Sides { get; set; }
+    string Category { get; set; }
     string Type { get; set; }
     void CreateRoom(List<GameObject> tiles);
     int CalculateOpening(string side);

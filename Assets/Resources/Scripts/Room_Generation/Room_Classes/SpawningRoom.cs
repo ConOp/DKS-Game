@@ -8,6 +8,7 @@ public class SpawningRoom : Basic_Room
     
     public SpawningRoom( List<GameObject> tiles,string type) :base(tiles,type,5,5)
     {
+        Category = "Room";
         Available_Sides = new List<string>() {"Left", "Top", "Right","Bottom" };
     }
 

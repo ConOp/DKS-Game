@@ -33,12 +33,12 @@ public static class DataManager
     //HINT! Sides go in this order = [Left,Top,Right,Bottom] -> true if available, false if not available.
     static readonly Room_Type[] corridor_types_data = new Room_Type[]
     {
-        new Room_Type(){available_sides=new bool[4]{true,false,true,false},room_type="Corridor_Horizontal" },
-        new Room_Type(){available_sides=new bool[4]{false,true,false,true},room_type="Corridor_Vertical" },
-        new Room_Type(){available_sides=new bool[4]{true,false,false,true},room_type="Corner_Bottom_Left" },
-        new Room_Type(){available_sides=new bool[4]{false,false,true,true},room_type="Corner_Bottom_Right" },
-        new Room_Type(){available_sides=new bool[4]{true,true,false,false},room_type="Corner_Top_Left" },
-        new Room_Type(){available_sides=new bool[4]{false,true,true,false},room_type="Corner_Top_Right" },
+        new Room_Type(){available_sides=new bool[4]{true,false,true,false},room_type="Horizontal_Straight_Corridor" },
+        new Room_Type(){available_sides=new bool[4]{false,true,false,true},room_type="Vertical_Straight_Corridor" },
+        new Room_Type(){available_sides=new bool[4]{true,false,false,true},room_type="Bottom_Left_Corner_Corridor" },
+        new Room_Type(){available_sides=new bool[4]{false,false,true,true},room_type="Bottom_Right_Corner_Corridor" },
+        new Room_Type(){available_sides=new bool[4]{true,true,false,false},room_type="Top_Left_Corner_Corridor" },
+        new Room_Type(){available_sides=new bool[4]{false,true,true,false},room_type="Top_Right_Corner_Corridor" },
     };
 
     /// <summary>

@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class Vertical_Corridor : Basic_Room
+public class Vertical_Straight_Corridor : Basic_Room
 {
-    public Vertical_Corridor(List<GameObject> tiles, string type, int tiles_x, int tiles_z) : base(tiles, type, tiles_x, tiles_z)
+    public Vertical_Straight_Corridor(List<GameObject> tiles, string type, int tiles_x, int tiles_z) : base(tiles, type, tiles_x, tiles_z)
     {
+        Category = "Corridor";
         Available_Sides = new List<string>() { "Top", "Bottom" };
     }
 

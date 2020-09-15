@@ -8,6 +8,7 @@ public class Top_Right_Corner_Corridor : Basic_Room
     // Start is called before the first frame update
     public Top_Right_Corner_Corridor(List<GameObject> tiles, string type, int tiles_x, int tiles_z) : base(tiles, type, tiles_x, tiles_z)
     {
+        Category = "Corridor";
         Available_Sides = new List<string>() { "Top", "Right" };
     }
 

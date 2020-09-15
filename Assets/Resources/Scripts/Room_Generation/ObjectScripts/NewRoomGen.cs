@@ -19,6 +19,7 @@ public class NewRoomGen : MonoBehaviour
         allrooms = new List<IRoom>();
         dungeon = new GameObject("Dungeon");
         CreateDungeon(RoomNumber);
+        int o = 0;
     }
 
 
@@ -26,34 +27,77 @@ public class NewRoomGen : MonoBehaviour
     {
         //Construct Spawn Room.
         InstantiateIRoom(RoomFactory.Build("SpawningRoom", PrefabManager.GetAllRoomTiles(), 5, 5), new Vector3(0, 0, 0), PrefabManager.GetAllRoomTiles());
-        bool found;
-        while (RoomNumber > 0)
+        bool foundcorridor,foundroom;
+        while (true)
         {
-            int openroomindex=0;
-            found = false;
-            foreach (IRoom room in allrooms)
+            int openroomindex=-1;
+            foundcorridor = false;
+            foundroom = false;
+            //Used to find corridor with available sides.
+            for(int i =0; i < allrooms.Count; i++)
             {
-                if (room.Available_Sides.Count > 0)
+                if (allrooms[i].Available_Sides.Count > 0)
                 {
-                    openroomindex = allrooms.IndexOf(room);
-                    found = true;
-                    break;
+                    if (allrooms[i].Category == "Corridor")
+                    {
+                        foundcorridor = true;
+                        openroomindex = i;
+                        break;
+                    }
                 }
             }
-            if (!found)
+            //Gives priority to available corridors.
+            //Used to find available room.
+            if (!foundcorridor)
+            {
+                for (int i = 0; i < allrooms.Count; i++)
+                {
+                    if (allrooms[i].Available_Sides.Count > 0)
+                    {
+                        if (allrooms[i].Category == "Room")
+                        {
+                            foundroom = true;
+                            openroomindex = i;
+                            break;
+                        }
+                    }
+                }
+            }
+            //Something went wrong and there is no available side to none of the rooms.
+            if (!foundcorridor&&!foundroom)
             {
                 Debug.LogError("Finished dungeon generator without reaching the room goal.");
                 break;
             }
             string side=RandomnessMaestro.OpenRandomAvailableSide(allrooms[openroomindex]);
             int openindex = allrooms[openroomindex].CalculateOpening(side);
-            Vector3 loc = allrooms[openroomindex].Instantiated_Tiles[openindex].transform.position; //= allrooms[openroomindex].CreateOpening(openindex,side);
+            Vector3 loc = allrooms[openroomindex].Instantiated_Tiles[openindex].transform.position;
             (IRoom newroom,Vector3 newroomloc)=allrooms[openroomindex].CreateAdjacentRoom(side,loc);
             if (newroom != null)
             {
-                allrooms[openroomindex].CreateOpening(openindex,side);
-                InstantiateIRoom(newroom, newroomloc, PrefabManager.GetAllRoomTiles());
-                RoomNumber--;
+                if (allrooms[openroomindex].Category == "Room")
+                {
+                    allrooms[openroomindex].CreateOpening(openindex, side);
+                    InstantiateIRoom(newroom, newroomloc, PrefabManager.GetAllRoomTiles());
+                    
+                    if (newroom.Category == "Room")
+                    {
+                        RoomNumber--;
+                    }
+                    
+                }
+                else if (allrooms[openroomindex].Category == "Corridor")
+                {
+                    InstantiateIRoom(newroom, newroomloc, PrefabManager.GetAllRoomTiles());
+                    if (newroom.Category == "Room")
+                    {
+                        RoomNumber--;
+                    }
+                }
+                if (RoomNumber <= 0)
+                {
+                    break;
+                }
             }
             else
             {
@@ -83,6 +127,7 @@ public class NewRoomGen : MonoBehaviour
         room.Instantiated_Tiles = instantiated_tiles;
         room.RoomObject = gr;
         gr.transform.parent = dungeon.transform;
+        room.Position = pos;
         allrooms.Add(room);
     }
 

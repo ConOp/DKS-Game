@@ -26,7 +26,7 @@ public class ValidationMaestro
     public static bool IsNotClaimed(Vector3 location,int xsize,int zsize)
     {
         Vector3 center = new Vector3((location.x +(location.x + xsize*Tile.X_length)) / 2f, 0, (location.z+(location.z - zsize*Tile.Z_length)) / 2f);
-        if (Physics.OverlapBox(center, new Vector3((xsize*Tile.X_length / 2f)-1, 0, (zsize*Tile.Z_length / 2f)-1)).Length > 0)
+        if (Physics.OverlapBox(center, new Vector3((xsize*Tile.X_length / 2f)-0.01f, 0, (zsize*Tile.Z_length / 2f)-0.01f)).Length > 0)
         {
             return false;
         }

@@ -8,9 +8,12 @@ public class RandomnessMaestro
 
     //Room or Corridor chances.
     static List<(string, float)> room_corridor_chance = new List<(string, float)>{
-        ("Corridor",0f),
-        ("Room",100f) };
-
+        ("Corridor",60f),
+        ("Room",40f) };
+    //
+    static List<(string, float)> corridor_type = new List<(string, float)>{
+        ("Corner",30f),
+        ("Straight",70f) };
     //Room size chances.
     static List<(string, float)> room_size = new List<(string, float)>{
         ("Small",20f),
@@ -64,5 +67,13 @@ public class RandomnessMaestro
     public static string Choose_Room_Size()
     {
         return RandomProbability.Choose(room_size);
+    }
+    /// <summary>
+    /// Decides the corridor type.
+    /// </summary>
+    /// <returns></returns>
+    public static string Choose_Corridor_Type()
+    {
+        return RandomProbability.Choose(corridor_type);
     }
 }
