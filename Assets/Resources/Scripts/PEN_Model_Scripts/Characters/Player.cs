@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : Character//MonoBehaviour, Character
+public class Player : MonoBehaviour,Character//MonoBehaviour, Character
 {
-    protected int hp;
+    public int hp = 10;
     private bool combatant = false;
     /// <summary>
     /// creates a controlled player with given hp.

@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class pen_model
 {
@@ -28,8 +30,13 @@ public class pen_model
     {
         neuro = mover.getNeuro();
         extr = dister.getExtr(dist);
-
-        Debug.Log("Neuro: " + neuro + "\nExtra: " + extr);
+        GameObject.Find("Neuro_Number").GetComponent<Text>().text = neuro.ToString();
+        GameObject.Find("Extra_Number").GetComponent<Text>().text = extr.ToString();
+        //Debug.Log("Neuro: " + neuro + "\nExtra: " + extr);
     }
 
+    public void LateUpdate()
+    {
+
+    }
 }

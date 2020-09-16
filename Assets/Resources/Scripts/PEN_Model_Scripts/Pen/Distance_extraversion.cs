@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Distance_extraversion
 {
-    private static float threshold = 5;
+    private static float threshold = 6;
     private float extr = 0;
     private float oldpos = threshold;
 
@@ -18,13 +18,23 @@ public class Distance_extraversion
         {
             if (dist < oldpos)
             {
-                extr += 0.001f;
+                extr += 0.01f;
             }
             else
             {
                 extr -= 0.01f;
             }
             oldpos = dist;
+        }else if (dist <= threshold * 2)
+        {
+            if (dist < oldpos)
+            {
+                extr += 0.001f;
+            }
+            else
+            {
+                extr -= 0.001f;
+            }
         }        
     }
 

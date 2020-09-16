@@ -66,6 +66,5 @@ public class Move_neuroticism
             neuro += (threshold - timer) / divider*2;
         }
         timer = 0;
-        Debug.Log("neuro= " + neuro.ToString());
     }
 }

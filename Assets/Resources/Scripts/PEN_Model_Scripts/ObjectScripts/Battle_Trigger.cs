@@ -20,7 +20,7 @@ public class Battle_Trigger : MonoBehaviour
     {
         if (other.tag == "Player")
         {
-            GameObject.Find("Manager").GetComponent<Manager>().startCombat();
+            GameObject.Find("Manager").GetComponent<Manager>().startCombat(other);
             gameObject.SetActive(false);
         }
     }

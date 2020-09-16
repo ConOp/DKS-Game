@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : Character//MonoBehaviour,Character
+public class Enemy : MonoBehaviour,Character
 {
-    protected int hp;
+    
+    public int hp = 5;
     private bool combatant = false;
     public Enemy(int hp)
     {
