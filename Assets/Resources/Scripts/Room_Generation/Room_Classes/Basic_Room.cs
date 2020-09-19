@@ -14,6 +14,11 @@ public abstract class Basic_Room : IRoom
     public List<Tile> RoomTiles { get; set; }
     public List<GameObject> Instantiated_Tiles { get; set; }
     public List<string> Available_Sides { get; set; }
+    public IRoom AdjRoomTop { get; set; }
+    public IRoom AdjRoomLeft { get; set; }
+    public IRoom AdjRoomRight { get; set; }
+    public IRoom AdjRoomBottom { get; set; }
+
     public Basic_Room(List<GameObject> tiles, string type, int tiles_x, int tiles_z)
     {
         this.RoomTiles = new List<Tile>();
@@ -178,7 +183,44 @@ public abstract class Basic_Room : IRoom
             //If everything is okay, place the room normally.
             this.Available_Sides.Remove(side);
             new_room.Available_Sides.Remove(adjside);
-            Vector3 newopenloc = new_room.CreateOpening(new_opening_index, adjside); //Create opening to the adjacent room.
+            Vector3 newopenloc =new_room.CreateOpening(new_opening_index, adjside); //Create opening to the adjacent room.
+            if (this.Category == "Room")
+            {
+                switch (side)
+                {
+                    case "Left":
+                        this.AdjRoomLeft = new_room;
+                        break;
+                    case "Top":
+                        this.AdjRoomTop = new_room;
+                        break;
+                    case "Right":
+                        this.AdjRoomRight = new_room;
+                        break;
+                    case "Bottom":
+                        this.AdjRoomBottom = new_room;
+                        break;
+                }
+            }
+            else
+            {
+                ((Basic_Corridor)this).Child = new_room;
+            }
+            switch (adjside)
+            {
+                case "Left":
+                    ((Basic_Room)new_room).AdjRoomLeft = this;
+                    break;
+                case "Top":
+                    ((Basic_Room)new_room).AdjRoomTop = this;
+                    break;
+                case "Right":
+                    ((Basic_Room)new_room).AdjRoomRight = this;
+                    break;
+                case "Bottom":
+                    ((Basic_Room)new_room).AdjRoomBottom = this;
+                    break;
+            }
             return (new_room, new_placed_location);
         }
         else
@@ -223,9 +265,68 @@ public abstract class Basic_Room : IRoom
             {
                 this.Available_Sides.Remove(side);
                 new_room.Available_Sides.Remove(adjside);
+                if (this.Category == "Room")
+                {
+                    switch (side)
+                    {
+                        case "Left":
+                            this.AdjRoomLeft = new_room;
+                            break;
+                        case "Top":
+                            this.AdjRoomTop = new_room;
+                            break;
+                        case "Right":
+                            this.AdjRoomRight = new_room;
+                            break;
+                        case "Bottom":
+                            this.AdjRoomBottom = new_room;
+                            break;
+                    }
+                }
+                else
+                {
+                    ((Basic_Corridor)this).Child = new_room;
+                }
+                
+                ((Basic_Corridor)new_room).Parent = this; 
                 return (new_room, new_placed_location);
             }
         }
 
+    }
+
+    public void CloseOpening(string side)
+    {
+        Tile newtile;
+        int openingindex = CalculateOpening(side);
+        if (side == "Left")
+        { 
+            
+            newtile = new Tile("Left_Wall", PrefabManager.GetAllRoomTiles().Where(obj => obj.name == "Left_Wall").First(), RoomTiles[openingindex].Position_X, RoomTiles[openingindex].Position_Z);
+            
+        }
+        else if (side == "Top")
+        {
+            newtile = new Tile("Top_Wall", PrefabManager.GetAllRoomTiles().Where(obj => obj.name == "Top_Wall").First(), RoomTiles[openingindex].Position_X, RoomTiles[openingindex].Position_Z);
+        }
+        else if (side == "Right")
+        {
+            newtile = new Tile("Right_Wall", PrefabManager.GetAllRoomTiles().Where(obj => obj.name == "Right_Wall").First(), RoomTiles[openingindex].Position_X, RoomTiles[openingindex].Position_Z);
+        }
+        else
+        {
+            newtile = new Tile("Bottom_Wall", PrefabManager.GetAllRoomTiles().Where(obj => obj.name == "Bottom_Wall").First(), RoomTiles[openingindex].Position_X, RoomTiles[openingindex].Position_Z);
+        }
+        RoomTiles[openingindex] = newtile;
+        Vector3 oldtileloc = new Vector3(0, 0, 0);
+
+        if (Instantiated_Tiles != null)//If room is already instatiated.
+        {
+            oldtileloc = Instantiated_Tiles[openingindex].transform.position;
+            //Destroy old opening.
+            Object.Destroy(Instantiated_Tiles[openingindex]);
+            //Instantiate new opening.
+            Instantiated_Tiles[openingindex] = Object.Instantiate(newtile.Objtile, oldtileloc, new Quaternion(), RoomObject.transform);
+        }
     }
 }

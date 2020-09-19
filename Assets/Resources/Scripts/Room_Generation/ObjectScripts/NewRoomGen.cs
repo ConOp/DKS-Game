@@ -19,6 +19,7 @@ public class NewRoomGen : MonoBehaviour
         allrooms = new List<IRoom>();
         dungeon = new GameObject("Dungeon");
         CreateDungeon(RoomNumber);
+        RefineDungeon();
         int o = 0;
     }
 
@@ -27,14 +28,14 @@ public class NewRoomGen : MonoBehaviour
     {
         //Construct Spawn Room.
         InstantiateIRoom(RoomFactory.Build("SpawningRoom", PrefabManager.GetAllRoomTiles(), 5, 5), new Vector3(0, 0, 0), PrefabManager.GetAllRoomTiles());
-        bool foundcorridor,foundroom;
+        bool foundcorridor, foundroom;
         while (true)
         {
-            int openroomindex=-1;
+            int openroomindex = -1;
             foundcorridor = false;
             foundroom = false;
             //Used to find corridor with available sides.
-            for(int i =0; i < allrooms.Count; i++)
+            for (int i = 0; i < allrooms.Count; i++)
             {
                 if (allrooms[i].Available_Sides.Count > 0)
                 {
@@ -64,27 +65,27 @@ public class NewRoomGen : MonoBehaviour
                 }
             }
             //Something went wrong and there is no available side to none of the rooms.
-            if (!foundcorridor&&!foundroom)
+            if (!foundcorridor && !foundroom)
             {
                 Debug.LogError("Finished dungeon generator without reaching the room goal.");
                 break;
             }
-            string side=RandomnessMaestro.OpenRandomAvailableSide(allrooms[openroomindex]);
+            string side = RandomnessMaestro.OpenRandomAvailableSide(allrooms[openroomindex]);
             int openindex = allrooms[openroomindex].CalculateOpening(side);
             Vector3 loc = allrooms[openroomindex].Instantiated_Tiles[openindex].transform.position;
-            (IRoom newroom,Vector3 newroomloc)=allrooms[openroomindex].CreateAdjacentRoom(side,loc);
+            (IRoom newroom, Vector3 newroomloc) = allrooms[openroomindex].CreateAdjacentRoom(side, loc);
             if (newroom != null)
             {
                 if (allrooms[openroomindex].Category == "Room")
                 {
                     allrooms[openroomindex].CreateOpening(openindex, side);
                     InstantiateIRoom(newroom, newroomloc, PrefabManager.GetAllRoomTiles());
-                    
+
                     if (newroom.Category == "Room")
                     {
                         RoomNumber--;
                     }
-                    
+
                 }
                 else if (allrooms[openroomindex].Category == "Corridor")
                 {
@@ -103,7 +104,7 @@ public class NewRoomGen : MonoBehaviour
             {
                 allrooms[openroomindex].Available_Sides.Remove(side);
             }
-            
+
         }
     }
 
@@ -122,7 +123,7 @@ public class NewRoomGen : MonoBehaviour
         foreach (Tile tile in room.RoomTiles)
         {
             //Instantiate every tile.
-            instantiated_tiles.Add(Instantiate(tile.Objtile, new Vector3(pos.x+tile.Position_X, 0,pos.z+tile.Position_Z), new Quaternion(), gr.transform));
+            instantiated_tiles.Add(Instantiate(tile.Objtile, new Vector3(pos.x + tile.Position_X, 0, pos.z + tile.Position_Z), new Quaternion(), gr.transform));
         }
         room.Instantiated_Tiles = instantiated_tiles;
         room.RoomObject = gr;
@@ -131,7 +132,63 @@ public class NewRoomGen : MonoBehaviour
         allrooms.Add(room);
     }
 
+    public void RefineDungeon()
+    {
+        List<IRoom> cleanrooms = new List<IRoom>();
+        foreach (IRoom room in allrooms)
+        {
+            IRoom currrent_room = room;
+            if (currrent_room.Category == "Corridor")
+            {
+                while (((Basic_Corridor)currrent_room).Child == null)
+                {
+                    
+                    if (((Basic_Corridor)currrent_room).Parent.Category == "Room")
+                    {
+                        if (((Basic_Room)((Basic_Corridor)currrent_room).Parent).AdjRoomTop == currrent_room)
+                        {
+                            ((Basic_Room)((Basic_Corridor)currrent_room).Parent).AdjRoomTop = null;
+                            ((Basic_Room)((Basic_Corridor)currrent_room).Parent).CloseOpening("Top");
+                        }
+                        else if (((Basic_Room)((Basic_Corridor)currrent_room).Parent).AdjRoomRight == currrent_room)
+                        {
+                            ((Basic_Room)((Basic_Corridor)currrent_room).Parent).AdjRoomRight = null;
+                            ((Basic_Room)((Basic_Corridor)currrent_room).Parent).CloseOpening("Right");
+                        }
+                        else if (((Basic_Room)((Basic_Corridor)currrent_room).Parent).AdjRoomBottom == currrent_room)
+                        {
+                            ((Basic_Room)((Basic_Corridor)currrent_room).Parent).AdjRoomBottom = null;
+                            ((Basic_Room)((Basic_Corridor)currrent_room).Parent).CloseOpening("Bottom");
+                        }
+                        else if (((Basic_Room)((Basic_Corridor)currrent_room).Parent).AdjRoomLeft == currrent_room)
+                            ((Basic_Room)((Basic_Corridor)currrent_room).Parent).CloseOpening("Left");
+                        {
+                            ((Basic_Room)((Basic_Corridor)currrent_room).Parent).AdjRoomLeft = null;
+                        }
+                        
 
-
+                    }
+                    else
+                    {
+                        ((Basic_Corridor)((Basic_Corridor)currrent_room).Parent).Child = null;
+                    }
+                    Destroy(currrent_room.RoomObject);
+                    currrent_room = ((Basic_Corridor)currrent_room).Parent;
+                    if (currrent_room.Category == "Room")
+                    {
+                        break;
+                    }
+                }
+            }
+        }
+        foreach (IRoom room in allrooms)
+        {
+            if (room.RoomObject != null)
+            {
+                cleanrooms.Add(room);
+            }
+        }
+        allrooms = cleanrooms;
+    }
 }
  

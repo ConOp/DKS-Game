@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class Horizontal_Straight_Corridor:Basic_Room
+public class Horizontal_Straight_Corridor: Basic_Corridor
 {
     public Horizontal_Straight_Corridor(List<GameObject> tiles, string type, int tiles_x, int tiles_z) : base(tiles, type, tiles_x, tiles_z)
     {

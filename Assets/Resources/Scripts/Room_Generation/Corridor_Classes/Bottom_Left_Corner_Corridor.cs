@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class Bottom_Left_Corner_Corridor : Basic_Room
+public class Bottom_Left_Corner_Corridor : Basic_Corridor
 {
     public Bottom_Left_Corner_Corridor(List<GameObject> tiles, string type, int tiles_x, int tiles_z) : base(tiles, type, tiles_x, tiles_z)
     {
