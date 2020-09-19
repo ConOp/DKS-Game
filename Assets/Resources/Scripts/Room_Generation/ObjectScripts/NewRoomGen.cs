@@ -132,17 +132,23 @@ public class NewRoomGen : MonoBehaviour
         allrooms.Add(room);
     }
 
+    /// <summary>
+    /// Deletes excess corridors and closes open rooms with walls.
+    /// </summary>
     public void RefineDungeon()
     {
         List<IRoom> cleanrooms = new List<IRoom>();
         foreach (IRoom room in allrooms)
         {
             IRoom currrent_room = room;
+            
             if (currrent_room.Category == "Corridor")
             {
+                //While the corridor is not connecting to both sides.
                 while (((Basic_Corridor)currrent_room).Child == null)
                 {
                     
+                    //If it's parent is a room then it sets the appropriate opening to null and seals it with a wall.
                     if (((Basic_Corridor)currrent_room).Parent.Category == "Room")
                     {
                         if (((Basic_Room)((Basic_Corridor)currrent_room).Parent).AdjRoomTop == currrent_room)
@@ -170,10 +176,13 @@ public class NewRoomGen : MonoBehaviour
                     }
                     else
                     {
+                        //If it's parent is a corridor then unlink it from the connected side.
                         ((Basic_Corridor)((Basic_Corridor)currrent_room).Parent).Child = null;
                     }
+                    //Destroy the corridor.
                     Destroy(currrent_room.RoomObject);
                     currrent_room = ((Basic_Corridor)currrent_room).Parent;
+                   
                     if (currrent_room.Category == "Room")
                     {
                         break;
@@ -181,6 +190,7 @@ public class NewRoomGen : MonoBehaviour
                 }
             }
         }
+        //Clean the list of rooms from the deleted ones.
         foreach (IRoom room in allrooms)
         {
             if (room.RoomObject != null)

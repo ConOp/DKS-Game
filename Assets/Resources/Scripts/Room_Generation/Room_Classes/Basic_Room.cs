@@ -295,6 +295,10 @@ public abstract class Basic_Room : IRoom
 
     }
 
+    /// <summary>
+    /// Detects and seals the opening with a wall depending on the side.
+    /// </summary>
+    /// <param name="side"></param>
     public void CloseOpening(string side)
     {
         Tile newtile;
