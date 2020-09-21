@@ -24,4 +24,16 @@ public interface Character
     /// </summary>
     /// <returns></returns>
     bool InCombat();
+
+    /// <summary>
+    /// Decreases the character's hp by value
+    /// </summary>
+    /// <param name="damage"></param>
+    /// <returns></returns>
+    void TakeDamage(float damage);
+
+    /// <summary>
+    /// Destroys the character, using Destroy(gameObject,delay)
+    /// </summary>
+    void Kill(float delay);
 }

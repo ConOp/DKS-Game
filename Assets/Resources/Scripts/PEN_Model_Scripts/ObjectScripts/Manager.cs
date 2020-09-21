@@ -2,17 +2,22 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Manager : MonoBehaviour
 {
     bool inCombat = false;
     pen_model pen;
 
-    public GameObject player;
+    GameObject player;
 
     [HideInInspector]
     public List<GameObject> players;
+    [HideInInspector]
     public List<GameObject> enemies;
+    GameObject distance_num;
+    [HideInInspector]
+    public float dist;
     // Start is called before the first frame update
     void Start()
     {
@@ -20,7 +25,8 @@ public class Manager : MonoBehaviour
 
         player = GameObject.FindGameObjectWithTag("Player");
 
-        
+        distance_num = GameObject.Find("Distance_Number");
+
         enemies = new List<GameObject>();
         foreach (GameObject e in GameObject.FindGameObjectsWithTag("Enemy"))
         {
@@ -39,14 +45,32 @@ public class Manager : MonoBehaviour
     {
         if (inCombat)
         {
-            foreach (GameObject enemy in enemies)
+            if (enemies.Any())
             {
-                float dist = Vector3.Distance(player.transform.position, enemy.transform.position);
-                pen.Update(dist);
-                enemy.GetComponent<EnemyMovement>().Move();
+                enemies?.ForEach(enemy =>
+                {
+                    if (enemy.GetComponent<Enemy>().InCombat())
+                    {
+                        enemy.GetComponent<EnemyMovement>().Move();
+                    }
+                    else
+                    {
+                        enemies.Remove(enemy);
+                    }
+                });
             }
-            
+            else
+            {
+                player.GetComponent<Player>().exitCombat();
+                inCombat = false;
+                return;
+            }           
 
+            //distance of closest target to player.
+            GameObject closest = Closest(player, enemies);
+            dist = Vector3.Distance(player.transform.position, closest.transform.position);
+            distance_num.GetComponent<Text>().text = dist.ToString();
+            pen.Update(player,closest);
         }
     }
 

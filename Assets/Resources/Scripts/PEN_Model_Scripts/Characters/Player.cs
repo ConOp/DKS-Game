@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class Player : MonoBehaviour,Character//MonoBehaviour, Character
 {
-    public int hp = 10;
+    [SerializeField]
+    protected float hp = 10;
     private bool combatant = false;
     /// <summary>
     /// creates a controlled player with given hp.
@@ -25,5 +26,15 @@ public class Player : MonoBehaviour,Character//MonoBehaviour, Character
     public bool InCombat()
     {
         return combatant;
+    }
+
+    public void TakeDamage(float damage)
+    {
+        hp -= damage;
+    }
+
+    public void Kill(float delay)
+    {
+        Destroy(gameObject, delay);
     }
 }

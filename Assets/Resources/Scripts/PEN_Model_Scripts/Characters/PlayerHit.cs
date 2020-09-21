@@ -33,23 +33,30 @@ public class PlayerHit : MonoBehaviour
     [HideInInspector]
     public List<Transform> hittedTargets = new List<Transform>();
 
+    /// <summary>
+    /// searches for target if joystick is dragged more than the sensitivity value.
+    /// </summary>
+    /// <param name="delay"></param>
+    /// <returns></returns>
     IEnumerator FindTargetsWithDelay(float delay)
     {
         while (true)
         {
             while (Math.Abs(joystick.Horizontal) > 0.2f || Math.Abs(joystick.Vertical) > 0.2f)
-            {
-                Debug.Log("Ready!");
-                yield return new WaitForSeconds(delay);
+            {                
                 FindHitableTargets();
+                yield return new WaitForSeconds(delay);
             }
             yield return null;
         }        
     }
 
+    /// <summary>
+    /// Each second, repositions hit direction according to hit joystick position.
+    /// </summary>
     private void Update()
     {
-        if (Math.Abs(joystick.Horizontal) > -0.2f || Math.Abs(joystick.Vertical) > 0.2f)
+        if (Math.Abs(joystick.Horizontal) > 0.2f || Math.Abs(joystick.Vertical) > 0.2f)
         {
             Vector3 rightMovement = right * Time.deltaTime * joystick.Horizontal;
             Vector3 upMovement = forward * Time.deltaTime * joystick.Vertical;
@@ -60,10 +67,13 @@ public class PlayerHit : MonoBehaviour
         }
         else
         {
-            transform.forward = new Vector3(1,0,1);
+            transform.forward = transform.parent.forward;
         }
     }
 
+    /// <summary>
+    /// searches for hittable targets within the hit radius and hit angle, adds them to list.
+    /// </summary>
     void FindHitableTargets()
     {
         hittedTargets.Clear();//clears list everytime it checks to avoid duplicates.
@@ -86,14 +96,21 @@ public class PlayerHit : MonoBehaviour
                 }
             }
         }
-        KnockBack(hittedTargets);
+        KnockBack(hittedTargets,1);
     }
     
-    void KnockBack(List<Transform> hitted)
+    /// <summary>
+    /// Called by FindHittableTargets, knocks each target in hitable list away from source by value and deal 1-5 damage to their hp
+    /// </summary>
+    /// <param name="hitted"></param>
+    void KnockBack(List<Transform> hitted,float value)
     {
         foreach (Transform target in hitted)
-        {            
-            target.transform.position = Vector3.MoveTowards(target.position,transform.position,-1);//TODO
+        {
+            float oldy = target.transform.position.y;
+            target.transform.position = Vector3.MoveTowards(target.position,transform.position,-value);//TODO
+            target.transform.position = new Vector3(target.position.x,oldy,target.position.z);
+            target.GetComponent<Enemy>().TakeDamage(UnityEngine.Random.Range(1,5));            
         }
     }
 

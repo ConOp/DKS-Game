@@ -1,41 +1,41 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Distance_extraversion
 {
-    private static float threshold = 6;
+    private static float THRESHOLD = 15;
     private float extr = 0;
-    private float oldpos = threshold;
+    private float oldpos = THRESHOLD;
 
+    //player affected by this instance
+    GameObject player;
+    GameObject enemy;
+
+    public Joystick move_joystick = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>().joystick;
+ 
     /// <summary>
     /// CheckDistance adds/ substracts from extraversion with distance in relation to the threshold.
     /// </summary>
     /// <param name="dist"></param>
-    void CheckDistance(float dist)
+    void CheckDistance()
     {
-        if (dist <= threshold)
+        float dist = GameObject.Find("Manager").GetComponent<Manager>().dist;
+        float angle = 60;
+        if ((Math.Abs(move_joystick.Horizontal)>0.2f || Math.Abs(move_joystick.Vertical) > 0.2f) && dist <= THRESHOLD)
         {
-            if (dist < oldpos)
+            //if player is moving towards enemy
+            if (Vector3.Angle(player.transform.forward, enemy.transform.position - player.transform.position) < angle)
             {
-                extr += 0.01f;
-            }
-            else
+                extr += Math.Abs(oldpos - dist)/2;
+            }else if(Vector3.Angle(-player.transform.forward, enemy.transform.position - player.transform.position) < angle)
             {
-                extr -= 0.01f;
+                //If player is moving away from enemy
+                extr -= Math.Abs(oldpos - dist)/2;
             }
-            oldpos = dist;
-        }else if (dist <= threshold * 2)
-        {
-            if (dist < oldpos)
-            {
-                extr += 0.001f;
-            }
-            else
-            {
-                extr -= 0.001f;
-            }
-        }        
+        }
+        oldpos = dist;
     }
 
     /// <summary>
@@ -43,9 +43,11 @@ public class Distance_extraversion
     /// </summary>
     /// <param name="dist"></param>
     /// <returns></returns>
-    public float getExtr(float dist)
+    public float getExtr(GameObject player, GameObject enemy)
     {
-        CheckDistance(dist);
+        this.player = player;
+        this.enemy = enemy;
+        CheckDistance();
         return extr;
     }
 }

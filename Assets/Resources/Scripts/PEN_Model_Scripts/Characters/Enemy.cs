@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour,Character
 {
-    
-    public int hp = 5;
+    [SerializeField]
+    protected float hp = 5;
     private bool combatant = false;
     public Enemy(int hp)
     {
@@ -22,5 +22,20 @@ public class Enemy : MonoBehaviour,Character
     public bool InCombat()
     {
         return combatant;
+    }
+
+    public void TakeDamage(float damage)
+    {
+        hp -= damage;
+        if (hp <= 0)
+        {
+            Kill(0.5f);
+        }
+    }
+
+    public void Kill(float delay)
+    {
+        this.exitCombat();
+        Destroy(gameObject, delay);
     }
 }
