@@ -10,7 +10,7 @@ public class Rate_psychoticism
     
     float oldExtraversion = 0;
     float oldNeuroticism = 0;
-    static float THRESHOLD = 3;
+    static float THRESHOLD = 2;
     //x0-x1 where x changes each interval
 
     public float getPsycho(float newNeuroticism, float newExtraversion)
@@ -32,11 +32,11 @@ public class Rate_psychoticism
     {
         if(value> THRESHOLD)
         {
-            rate += value/10;
+            rate += value;
         }
         else
         {
-            rate -= value/10;
+            rate -= value;
         }
     }
 

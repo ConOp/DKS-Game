@@ -36,6 +36,9 @@ public class Enemy : MonoBehaviour,Character
     public void Kill(float delay)
     {
         this.exitCombat();
+        Manager manager = GameObject.Find("Manager").GetComponent<Manager>();
+        int index = manager.enemies.FindIndex(en => en == this.gameObject);
+        manager.enemies.RemoveAt(index);
         Destroy(gameObject, delay);
     }
 }

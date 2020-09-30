@@ -11,12 +11,14 @@ public class pen_model
     protected float neuro = 0;
     protected float extr = 0;
     protected float psycho = 0;
+    protected (string,string,int) characteristic;
     static float INTERVAL = 1;
     float timePassed = 0;
 
-    GameObject neuro_num = GameObject.Find("Neuro_Number");
-    GameObject extra_num = GameObject.Find("Extra_Number");
-    GameObject psycho_num = GameObject.Find("Psycho_Number");
+    Text neuro_num = GameObject.Find("Neuro_Number").GetComponent<Text>();
+    Text extra_num = GameObject.Find("Extra_Number").GetComponent<Text>();
+    Text psycho_num = GameObject.Find("Psycho_Number").GetComponent<Text>();
+    Text character_text = GameObject.Find("CharacteristicText").GetComponent<Text>();
 
     //for Neuroticism
     Move_neuroticism mover = new Move_neuroticism();
@@ -27,12 +29,15 @@ public class pen_model
     //for Psychoticism
     Rate_psychoticism rate = new Rate_psychoticism();
 
+    //for Characteristics
+    Characteristics characts = new Characteristics();
+    
     /// <summary>
-    /// Update works like the MonBehavior Update and should be called like that. Calls every check for PEN alterations.
+    /// Update works like the MonoBehavior Update and should be called like that. Calls every check for PEN alterations.
     /// </summary>
     /// <param name="dist"></param>
     /// <param name="enemyPos"></param>
-    public void Update(GameObject player, GameObject enemy)
+    public void UpdateValues(GameObject player, GameObject enemy)
     {
         neuro = mover.getNeuro();
         extr = dister.getExtr(player, enemy);
@@ -41,9 +46,16 @@ public class pen_model
         {
             timePassed = 0;
             psycho = rate.getPsycho(neuro, extr);
+            characteristic = characts.ExtractCharact(psycho, extr, neuro);
         }
-        neuro_num.GetComponent<Text>().text = neuro.ToString();
-        extra_num.GetComponent<Text>().text = extr.ToString();
-        psycho_num.GetComponent<Text>().text = psycho.ToString();
+        UpdateUI();
+    }
+
+    void UpdateUI()
+    {
+        neuro_num.text = neuro.ToString();
+        extra_num.text = extr.ToString();
+        psycho_num.text = psycho.ToString();
+        character_text.text = characteristic.Item1+" ("+characteristic.Item2+"), "+characteristic.Item3.ToString();
     }
 }

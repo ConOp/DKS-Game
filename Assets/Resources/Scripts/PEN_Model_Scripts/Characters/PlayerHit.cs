@@ -88,11 +88,9 @@ public class PlayerHit : MonoBehaviour
             if (Vector3.Angle(transform.forward, dirToTarget) < hitAngle / 2)//target is within the hit angle.
             {
                 float distToTarget = Vector3.Distance(transform.position, target.position);
-                Debug.Log("AAAAAAAAAAAA");
                 if (!Physics.Raycast(transform.position, dirToTarget, distToTarget, obstacleMask))//casts a ray from self position, directed towards target and check if passing through obstacles.
                 {
                     hittedTargets.Add(target);//if not, then add target to hittedTargets.
-                    Debug.Log("HITHIT");
                 }
             }
         }

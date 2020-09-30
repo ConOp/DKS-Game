@@ -47,7 +47,7 @@ public class Manager : MonoBehaviour
         {
             if (enemies.Any())
             {
-                enemies?.ForEach(enemy =>
+                foreach(GameObject enemy in enemies)
                 {
                     if (enemy.GetComponent<Enemy>().InCombat())
                     {
@@ -57,7 +57,7 @@ public class Manager : MonoBehaviour
                     {
                         enemies.Remove(enemy);
                     }
-                });
+                }
             }
             else
             {
@@ -67,10 +67,10 @@ public class Manager : MonoBehaviour
             }           
 
             //distance of closest target to player.
-            GameObject closest = Closest(player, enemies);
-            dist = Vector3.Distance(player.transform.position, closest.transform.position);
+            GameObject closestEnemy = Closest(player, enemies);
+            dist = Vector3.Distance(player.transform.position, closestEnemy.transform.position);
             distance_num.GetComponent<Text>().text = dist.ToString();
-            pen.Update(player,closest);
+            pen.UpdateValues(player, closestEnemy);
         }
     }
 
