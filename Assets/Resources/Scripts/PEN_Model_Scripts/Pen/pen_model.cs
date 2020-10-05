@@ -56,6 +56,11 @@ public class pen_model
         neuro_num.text = neuro.ToString();
         extra_num.text = extr.ToString();
         psycho_num.text = psycho.ToString();
-        character_text.text = characteristic.Item1+" ("+characteristic.Item2+"), "+characteristic.Item3.ToString();
+        character_text.text = characteristic.Item1;
+        if (characteristic.Item2 != null)
+        {
+            character_text.text += " (" + characteristic.Item2 + ")";
+        }        
+        character_text.text += ", " + characteristic.Item3.ToString();
     }
 }
