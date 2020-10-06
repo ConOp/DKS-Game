@@ -16,18 +16,22 @@ public class Characteristics
         characterDictionary.Add(new Vector2(-70, 30), ("Melancholic", "Quiet"));
         characterDictionary.Add(new Vector2(-50, 50), ("Melancholic", "Rigid"));
         characterDictionary.Add(new Vector2(-30, 70), ("Melancholic", "Anxious"));
+        characterDictionary.Add(new Vector2(-70, 70), ("True Melancholic", null));
 
         characterDictionary.Add(new Vector2(30, 70), ("Choleric", "Restless"));
         characterDictionary.Add(new Vector2(50, 50), ("Choleric", "Aggressive"));
         characterDictionary.Add(new Vector2(70, 30), ("Choleric", "Impulsive"));
+        characterDictionary.Add(new Vector2(70, 70), ("True Choleric", null));
 
         characterDictionary.Add(new Vector2(70, -30), ("Sanguine", "Sociable"));
         characterDictionary.Add(new Vector2(50, -50), ("Sanguine", "Relaxed"));
         characterDictionary.Add(new Vector2(30, -70), ("Sanguine", "Carefree"));
+        characterDictionary.Add(new Vector2(70, -70), ("True Sanguine", null));
 
         characterDictionary.Add(new Vector2(-30, -70), ("Phlegmatic", "Calm"));
         characterDictionary.Add(new Vector2(-50, -50), ("Phlegmatic", "Controlled"));
         characterDictionary.Add(new Vector2(-70, -30), ("Phlegmatic", "Thoughtful"));
+        characterDictionary.Add(new Vector2(-70, -70), ("True Phlegmatic", null));
 
         characterDictionary.Add(new Vector2(0, 0), ("Neutral", null));
 

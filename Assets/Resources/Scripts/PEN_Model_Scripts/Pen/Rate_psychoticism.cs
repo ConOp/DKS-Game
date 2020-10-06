@@ -14,7 +14,7 @@ public class Rate_psychoticism
 
     int Ndirection = 0;//changes between two values (-1 and 1) depending on the direction of the change.
     int Edirection = 0;//changes between two values (-1 and 1) depending on the direction of the change.
-    static float THRESHOLD = 2.5f;
+    //static float THRESHOLD = 2.5f;
 
     int timepassed = 0;//time after last change to the value.
 
@@ -33,8 +33,8 @@ public class Rate_psychoticism
         oldNeuroticism = newN;
         oldExtraversion = newE;
         
-        ThresholdChecker(newNdirect, Ndirection, Math.Abs(neuroRate));
-        ThresholdChecker(newEdirect, Edirection, Math.Abs(extraRate));
+        ThresholdChecker(newNdirect, Ndirection, Math.Abs(neuroRate), 2.5f);
+        ThresholdChecker(newEdirect, Edirection, Math.Abs(extraRate), 1);
 
         if (newNdirect != 0)
         {
@@ -44,7 +44,7 @@ public class Rate_psychoticism
         {
             Edirection = newEdirect;
         }
-        if (timepassed > 10)
+        if (timepassed/2 > 10)
         {
             //normalizes rate closer to zero if no changes have been made for 2 seconds.
             if (rate != 0)
@@ -62,11 +62,11 @@ public class Rate_psychoticism
         }
     }
 
-    void ThresholdChecker(int newDirection, int oldDirection, float value)
+    void ThresholdChecker(int newDirection, int oldDirection, float value, float threshold)
     {
         if (newDirection != oldDirection)
         {
-            if (value > THRESHOLD)
+            if (value > threshold)
             {
                 rate += value;
                 timepassed = 0;
@@ -74,7 +74,7 @@ public class Rate_psychoticism
             }
         }else if(newDirection!=0 && newDirection == oldDirection)
         {
-            if (value > THRESHOLD)
+            if (value > threshold)
             {
                 rate -= value;
                 timepassed = 0;

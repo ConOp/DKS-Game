@@ -19,7 +19,7 @@ public class EnemyMovement : MonoBehaviour
     {
         //gets closestPlayer to enemy from list of players
         GameObject closestPlayer = manager.GetComponent<Manager>().Closest(gameObject, manager.GetComponent<Manager>().players);
-        transform.position = Vector3.MoveTowards(transform.position, closestPlayer.transform.position, 0.06f);
+        transform.position = Vector3.MoveTowards(transform.position, closestPlayer.transform.position, 0.04f);
     }
 
 }
