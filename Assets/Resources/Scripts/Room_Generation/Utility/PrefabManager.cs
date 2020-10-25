@@ -32,8 +32,8 @@ public static class PrefabManager
     {
         try
         {
-            allroomtiles = new List<GameObject>((Resources.LoadAll<GameObject>("Prefabs/Tiles/Room_Tiles"))); // Load all tile prefabs from the project folder.
-            allcorridortiles = new List<GameObject>((Resources.LoadAll<GameObject>("Prefabs/Tiles/Corridor_Tiles"))); // Load all corridor prefabs from the project folder.
+            allroomtiles = new List<GameObject>((Resources.LoadAll<GameObject>("Prefabs/Room_Generation/Tiles/Room_Tiles"))); // Load all tile prefabs from the project folder.
+            allcorridortiles = new List<GameObject>((Resources.LoadAll<GameObject>("Prefabs/Room_Generation/Tiles/Corridor_Tiles"))); // Load all corridor prefabs from the project folder.
             return true;
         }
         catch
