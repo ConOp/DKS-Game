@@ -20,7 +20,6 @@ public class NewRoomGen : MonoBehaviour
         dungeon = new GameObject("Dungeon");
         CreateDungeon(RoomNumber);
         RefineDungeon();
-        int o = 0;
     }
 
 
@@ -123,7 +122,7 @@ public class NewRoomGen : MonoBehaviour
         foreach (Tile tile in room.RoomTiles)
         {
             //Instantiate every tile.
-            instantiated_tiles.Add(Instantiate(tile.Objtile, new Vector3(pos.x + tile.Position_X, 0, pos.z + tile.Position_Z), new Quaternion(), gr.transform));
+            instantiated_tiles.Add(Instantiate(tile.Objtile, new Vector3(pos.x + tile.Position.x, 0, pos.z + tile.Position.z), new Quaternion(), gr.transform));
         }
         room.Instantiated_Tiles = instantiated_tiles;
         room.RoomObject = gr;

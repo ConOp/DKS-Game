@@ -17,7 +17,7 @@ public class Vertical_Straight_Corridor : Basic_Corridor
         float xpos = Position.x, ypos = Position.y, zpos = Position.z;
         for (int i = 0; i < Tiles_number_z; i++)
         {
-            newtile = new Tile("Vertical_Wall", tiles.Where(obj => obj.name == "Corridor_Vertical").First(), xpos, zpos);
+            newtile = new Tile("Vertical_Wall", tiles.Where(obj => obj.name == "Corridor_Vertical").First(), new Vector3(xpos, ypos, zpos));
             RoomTiles.Add(newtile);
             zpos -= Tile.Z_length;
         }

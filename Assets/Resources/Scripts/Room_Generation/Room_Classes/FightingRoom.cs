@@ -21,39 +21,39 @@ public class FightingRoom : Basic_Room
             {
                 if (i == 0 && j == 0)
                 {
-                    newtile = new Tile("Left_Top_Corner", tiles.Where(obj => obj.name == "Left_Top_Corner").First(), xpos, zpos);
+                    newtile = new Tile("Left_Top_Corner", tiles.Where(obj => obj.name == "Left_Top_Corner").First(), new Vector3(xpos, ypos, zpos));
                 }
                 else if (i == 0 && j == Tiles_number_z - 1)
                 {
-                    newtile = new Tile("Right_Top_Corner", tiles.Where(obj => obj.name == "Right_Top_Corner").First(), xpos, zpos);
+                    newtile = new Tile("Right_Top_Corner", tiles.Where(obj => obj.name == "Right_Top_Corner").First(), new Vector3(xpos, ypos, zpos));
                 }
                 else if (i == Tiles_number_x - 1 && j == 0)
                 {
-                    newtile = new Tile("Left_Bottom_Corner", tiles.Where(obj => obj.name == "Left_Bottom_Corner").First(), xpos, zpos);
+                    newtile = new Tile("Left_Bottom_Corner", tiles.Where(obj => obj.name == "Left_Bottom_Corner").First(), new Vector3(xpos, ypos, zpos));
                 }
                 else if (i == Tiles_number_x - 1 && j == Tiles_number_z - 1)
                 {
-                    newtile = new Tile("Right_Bottom_Corner", tiles.Where(obj => obj.name == "Right_Bottom_Corner").First(), xpos, zpos);
+                    newtile = new Tile("Right_Bottom_Corner", tiles.Where(obj => obj.name == "Right_Bottom_Corner").First(), new Vector3(xpos, ypos, zpos));
                 }
                 else if (i == 0)
                 {
-                    newtile = new Tile("Top_Wall", tiles.Where(obj => obj.name == "Top_Wall").First(), xpos, zpos);
+                    newtile = new Tile("Top_Wall", tiles.Where(obj => obj.name == "Top_Wall").First(), new Vector3(xpos, ypos, zpos));
                 }
                 else if (i == Tiles_number_x - 1)
                 {
-                    newtile = new Tile("Bottom_Wall", tiles.Where(obj => obj.name == "Bottom_Wall").First(), xpos, zpos);
+                    newtile = new Tile("Bottom_Wall", tiles.Where(obj => obj.name == "Bottom_Wall").First(), new Vector3(xpos, ypos, zpos));
                 }
                 else if (j == 0)
                 {
-                    newtile = new Tile("Left_Wall", tiles.Where(obj => obj.name == "Left_Wall").First(), xpos, zpos);
+                    newtile = new Tile("Left_Wall", tiles.Where(obj => obj.name == "Left_Wall").First(), new Vector3(xpos, ypos, zpos));
                 }
                 else if (j == Tiles_number_z - 1)
                 {
-                    newtile = new Tile("Right_Wall", tiles.Where(obj => obj.name == "Right_Wall").First(), xpos, zpos);
+                    newtile = new Tile("Right_Wall", tiles.Where(obj => obj.name == "Right_Wall").First(), new Vector3(xpos, ypos, zpos));
                 }
                 else
                 {
-                    newtile = new Tile("Center", tiles.Where(obj => obj.name == "Center").First(), xpos, zpos);
+                    newtile = new Tile("Center", tiles.Where(obj => obj.name == "Center").First(), new Vector3(xpos, ypos, zpos));
                 }
 
                 RoomTiles.Add(newtile);

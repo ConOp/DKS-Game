@@ -8,16 +8,13 @@ public class Tile
     public static int X_length = 10;
     public static int Z_length = 10;
    public string Type { get; set; }
-   public float Position_X { get; set; }
-   public float Position_Z { get; set; }
+   public Vector3 Position { get; set; }
         
 
-   public Tile(string type,GameObject objtile,float positionx,float positionz)
+   public Tile(string type,GameObject objtile,Vector3 position)
     {
         this.Objtile = objtile;
         this.Type = type;
-        this.Position_X = positionx;
-        this.Position_Z = positionz;
-
+        this.Position = position;
     }
 }

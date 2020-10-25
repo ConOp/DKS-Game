@@ -68,7 +68,7 @@ public abstract class Basic_Room : IRoom
     public Vector3 CreateOpening(int indexopening,string side)
     {
         //Tile to be placed.
-        Tile t = new Tile("Center", PrefabManager.GetAllRoomTiles().Where(obj => obj.name == "Center").First(), RoomTiles[indexopening].Position_X, RoomTiles[indexopening].Position_Z);
+        Tile t = new Tile("Center", PrefabManager.GetAllRoomTiles().Where(obj => obj.name == "Center").First(), RoomTiles[indexopening].Position);
         //Replace opening.
         RoomTiles[indexopening] = t;
         Vector3 oldtileloc = new Vector3(0, 0, 0);
@@ -306,20 +306,20 @@ public abstract class Basic_Room : IRoom
         if (side == "Left")
         { 
             
-            newtile = new Tile("Left_Wall", PrefabManager.GetAllRoomTiles().Where(obj => obj.name == "Left_Wall").First(), RoomTiles[openingindex].Position_X, RoomTiles[openingindex].Position_Z);
+            newtile = new Tile("Left_Wall", PrefabManager.GetAllRoomTiles().Where(obj => obj.name == "Left_Wall").First(), RoomTiles[openingindex].Position);
             
         }
         else if (side == "Top")
         {
-            newtile = new Tile("Top_Wall", PrefabManager.GetAllRoomTiles().Where(obj => obj.name == "Top_Wall").First(), RoomTiles[openingindex].Position_X, RoomTiles[openingindex].Position_Z);
+            newtile = new Tile("Top_Wall", PrefabManager.GetAllRoomTiles().Where(obj => obj.name == "Top_Wall").First(), RoomTiles[openingindex].Position);
         }
         else if (side == "Right")
         {
-            newtile = new Tile("Right_Wall", PrefabManager.GetAllRoomTiles().Where(obj => obj.name == "Right_Wall").First(), RoomTiles[openingindex].Position_X, RoomTiles[openingindex].Position_Z);
+            newtile = new Tile("Right_Wall", PrefabManager.GetAllRoomTiles().Where(obj => obj.name == "Right_Wall").First(), RoomTiles[openingindex].Position);
         }
         else
         {
-            newtile = new Tile("Bottom_Wall", PrefabManager.GetAllRoomTiles().Where(obj => obj.name == "Bottom_Wall").First(), RoomTiles[openingindex].Position_X, RoomTiles[openingindex].Position_Z);
+            newtile = new Tile("Bottom_Wall", PrefabManager.GetAllRoomTiles().Where(obj => obj.name == "Bottom_Wall").First(), RoomTiles[openingindex].Position);
         }
         RoomTiles[openingindex] = newtile;
         Vector3 oldtileloc = new Vector3(0, 0, 0);

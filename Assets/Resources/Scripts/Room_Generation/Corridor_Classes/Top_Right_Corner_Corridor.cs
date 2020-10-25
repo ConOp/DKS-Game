@@ -16,7 +16,7 @@ public class Top_Right_Corner_Corridor : Basic_Corridor
     {
         Tile newtile;
         float xpos = Position.x, ypos = Position.y, zpos = Position.z;
-        newtile = new Tile("Corner_Top_Right", tiles.Where(obj => obj.name == "Corner_Top_Right").First(), xpos, zpos);
+        newtile = new Tile("Corner_Top_Right", tiles.Where(obj => obj.name == "Corner_Top_Right").First(), new Vector3(xpos, ypos, zpos));
         RoomTiles.Add(newtile);
     }
 }
