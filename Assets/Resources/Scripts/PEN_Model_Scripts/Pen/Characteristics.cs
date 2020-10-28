@@ -7,7 +7,7 @@ public class Characteristics
 {
     //Extraversion and Neuroticism values in the characteristics represent the location of the points.
     /// <summary>
-    /// Characteristics are represented as key:(Extraversion, Neuroticism) and value: (Category, Name).
+    /// Characteristics are represented as key:(Extrav[ersion, Neuroticism) and value: (Category, Name).
     /// </summary>
     private Dictionary<Vector2, (string, string)> characterDictionary = new Dictionary<Vector2, (string, string)>();
 
@@ -42,7 +42,7 @@ public class Characteristics
         characterDictionary.Add(new Vector2(60, 0), ("True Extravert", null));
 
         characterDictionary.Add(new Vector2(0, -30), ("Stable", null));
-        characterDictionary.Add(new Vector2(0, -60), ("True Stability", null));
+        characterDictionary.Add(new Vector2(0, -60), ("True Stable", null));
 
         characterDictionary.Add(new Vector2(0, 30), ("Neurotic", null));
         characterDictionary.Add(new Vector2(0, 60), ("True Neurotic", null));
