@@ -13,9 +13,9 @@ GameObject:
   - component: {fileID: 1207684215618516065}
   - component: {fileID: 5707791433070022424}
   - component: {fileID: 1184510206914898311}
-  - component: {fileID: -7565539888945868946}
+  - component: {fileID: 5054401926270010172}
   m_Layer: 0
-  m_Name: Speed_Modification_1
+  m_Name: Speed_Modification_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -60,7 +60,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: dfdc2de34c642e84e8cff3c1f118b5d2, type: 2}
+  - {fileID: 2100000, guid: 152d56124a7991f49bf2ac7bf4290785, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -106,11 +106,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5bb7576cd6e821645baa5b7d490dcd80, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mod_health: 100
-  type: Speed_Modification_1
+  mod_health: 200
+  type: Speed_Modification_2
   size: Medium
-  movement_speed: 1.1
---- !u!54 &-7565539888945868946
+  movement_speed: 1.5
+--- !u!54 &5054401926270010172
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

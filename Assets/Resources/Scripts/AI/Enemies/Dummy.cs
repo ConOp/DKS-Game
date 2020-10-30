@@ -11,32 +11,32 @@ public class Dummy:MonoBehaviour
     float current_health = HEALTH;
     float current_movement_speed = MOVEMENT_SPEED;
     float current_damage = DAMAGE;
-    public List<(Vector3 base_position, string base_size)> Attachment_Bases;
-    public List<(GameObject gobject, IModification stats)> Attachments;
+    public List<(Transform base_position, string base_size,bool used)> Attachment_Bases;
+    public GameObject[] Attachments;
     GameObject target;
     public  void InitializeAttachmentBases()
     {
-        Attachment_Bases = new List<(Vector3, string)>();
+        Attachment_Bases = new List<(Transform, string,bool)>();
         foreach (Transform child in transform)
         {
             if (child.name == "Attachment1")
             {
-                Attachment_Bases.Add((child.transform.position, "Medium"));
+                Attachment_Bases.Add((child, "Medium",false));
             }
             else if (child.name == "Attachment2")
             {
-                Attachment_Bases.Add((child.transform.position, "Medium"));
+                Attachment_Bases.Add((child, "Medium",false));
             }
             else if (child.name == "Attachment3")
             {
-                Attachment_Bases.Add((child.transform.position, "Large"));
+                Attachment_Bases.Add((child, "Large",false));
             }
         }
     }
     private void Awake()
     {
         InitializeAttachmentBases();
-        Attachments = new List<(GameObject, IModification)>();
+        Attachments = new GameObject[Attachment_Bases.Count];
     }
     private void Start()
     {
@@ -48,24 +48,26 @@ public class Dummy:MonoBehaviour
         {
             MoveToTarget(target);
         }
-        Debug.Log(current_movement_speed);
+        //Debug.Log(current_movement_speed);
 
     }
+    
     public void MoveToTarget(GameObject target)
     {
         float step = current_movement_speed * Time.deltaTime;
         transform.position = Vector3.MoveTowards(transform.position, target.transform.position, step);
     }
-    public void Add_Attachment(IModification mod)
+    public void Add_Attachment(string mod_type)
     {
+        Modification mod = Modification_Prefab_Manager.SearchModification(mod_type).GetComponent<Modification>();
         for(int i = 0; i < Attachment_Bases.Count; i++)
         {
-            if (Attachment_Bases[i].base_size == mod.size)
+            if (Attachment_Bases[i].base_size == mod.size && !Attachment_Bases[i].used)
             {
-                GameObject modification = Instantiate(Modification_Prefab_Manager.SearchModification(mod.type),Attachment_Bases[i].base_position,new Quaternion(),this.transform);
-                modification.GetComponent<FixedJoint>().connectedBody = this.GetComponent<Rigidbody>();
-                Attachments.Add((modification, mod));
-                Attachment_Bases.RemoveAt(i);
+                GameObject modification = Instantiate(Modification_Prefab_Manager.SearchModification(mod.type),Attachment_Bases[i].base_position.transform.position,new Quaternion(),gameObject.transform);
+                //modification.GetComponent<FixedJoint>().connectedBody = this.GetComponent<Rigidbody>();
+                Attachments[i]=modification;
+                Attachment_Bases[i] = (Attachment_Bases[i].base_position, Attachment_Bases[i].base_size, true);
                 Appy_Modification_Boosts();
                 return;
             }
@@ -75,9 +77,12 @@ public class Dummy:MonoBehaviour
     public void Appy_Modification_Boosts()
     {
         float totalspeedboost = 0;
-        for(int i = 0; i < Attachments.Count; i++)
+        for(int i = 0; i < Attachments.Length; i++)
         {
-            totalspeedboost += Attachments[i].stats.movement_speed_boost;
+            if (Attachments[i] != null)
+            {
+                totalspeedboost += Attachments[i].GetComponent<Modification>().movement_speed;
+            }
         }
         if (totalspeedboost > 0)
         {
@@ -86,6 +91,32 @@ public class Dummy:MonoBehaviour
         else
         {
             current_movement_speed = MOVEMENT_SPEED;
+        }
+    }
+    public void Remove_Attachment(GameObject mod_to_remove)
+    {
+        int index = -1;
+        for(int i=0; i < Attachments.Length; i++)
+        {
+            if (Attachments[i] == mod_to_remove)
+            {
+                index = i;
+            }
+        }
+        if (index == -1)
+        {
+            return;
+        }
+        else
+        {
+            //Destroy(Attachments[index].GetComponent<FixedJoint>());
+            Attachments[index].transform.parent = null;
+            Attachments[index].GetComponent<Rigidbody>().isKinematic = false;
+            Attachments[index].GetComponent<Collider>().isTrigger = false;
+            Attachments[index].gameObject.GetComponent<Rigidbody>().AddExplosionForce(5f, Attachments[index].transform.position, 3f, 0f, ForceMode.Impulse);
+            Attachments[index] = null;
+            Attachment_Bases[index] = (Attachment_Bases[index].base_position, Attachment_Bases[index].base_size, false);
+            Appy_Modification_Boosts();
         }
     }
 }
