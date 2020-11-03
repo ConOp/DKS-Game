@@ -25,6 +25,7 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        this.transform.rotation = Quaternion.Euler(0, this.transform.rotation.y, 0);
         if(Math.Abs(joystick.Horizontal)>0.2f || Math.Abs(joystick.Vertical) > 0.2f)//sets sensitivity for movement.
         {
             Move();
