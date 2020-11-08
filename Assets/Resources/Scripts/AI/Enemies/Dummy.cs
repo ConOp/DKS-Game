@@ -2,19 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Dummy:MonoBehaviour
+public class Dummy:Basic_Enemy
 {
-    const float MOVEMENT_SPEED= 1;
-    const float HEALTH= 50;
-    const float DAMAGE = 50;
-
-    float current_health = HEALTH;
-    float current_movement_speed = MOVEMENT_SPEED;
-    float current_damage = DAMAGE;
-    public List<(Transform base_position, string base_size,bool used)> Attachment_Bases;
-    public GameObject[] Attachments;
     GameObject target;
-    public  void InitializeAttachmentBases()
+    float current_speed = 1;
+    bool dashing = false;
+    bool stunned = false;
+    public  override void InitializeModificationBases()
     {
         Attachment_Bases = new List<(Transform, string,bool)>();
         foreach (Transform child in transform)
@@ -35,88 +29,67 @@ public class Dummy:MonoBehaviour
     }
     private void Awake()
     {
-        InitializeAttachmentBases();
+        InitializeModificationBases();
         Attachments = new GameObject[Attachment_Bases.Count];
     }
     private void Start()
     {
         target=GameObject.FindGameObjectWithTag("Player");
+        InvokeRepeating("DashAttack", 1f, 6f);
     }
     private void Update()
     {
-        if (Vector3.Distance(this.transform.position, target.transform.position)>1)
+        if (dashing && !stunned)
         {
-            MoveToTarget(target);
+            DashAttack();
         }
-        //Debug.Log(current_movement_speed);
-
+        if (dashing)
+        {
+            Debug.Log("Speed: " + current_speed);
+            if (current_speed <= max_movement_speed)
+            {
+                current_speed += max_movement_speed * 0.83f / 100;
+            }
+            else
+            {
+                current_speed = max_movement_speed;
+            }
+            Vector3 TargetDirection = target.transform.position - transform.position;
+            Vector3 newDirection = Vector3.RotateTowards(transform.forward, new Vector3(TargetDirection.x, 0, TargetDirection.z), 0.2f / current_speed, 0f);
+            transform.rotation = Quaternion.LookRotation(newDirection);
+            transform.position += transform.forward * current_speed * Time.deltaTime;
+        }
     }
-    
     public void MoveToTarget(GameObject target)
     {
-        float step = current_movement_speed * Time.deltaTime;
+        float step = max_movement_speed * Time.deltaTime;
         transform.position = Vector3.MoveTowards(transform.position, target.transform.position, step);
     }
-    public void Add_Attachment(string mod_type)
+    private void OnCollisionEnter(Collision collision)
     {
-        Modification mod = Modification_Prefab_Manager.SearchModification(mod_type).GetComponent<Modification>();
-        for(int i = 0; i < Attachment_Bases.Count; i++)
+        if (collision.gameObject.tag.Equals("Wall"))
         {
-            if (Attachment_Bases[i].base_size == mod.size && !Attachment_Bases[i].used)
+            Debug.Log("Stunned");
+            if (dashing)
             {
-                GameObject modification = Instantiate(Modification_Prefab_Manager.SearchModification(mod.type),Attachment_Bases[i].base_position.transform.position,new Quaternion(),gameObject.transform);
-                //modification.GetComponent<FixedJoint>().connectedBody = this.GetComponent<Rigidbody>();
-                Attachments[i]=modification;
-                Attachment_Bases[i] = (Attachment_Bases[i].base_position, Attachment_Bases[i].base_size, true);
-                Appy_Modification_Boosts();
-                return;
+                current_speed = 0;
+                dashing = false;
+                stunned = true;
+                Invoke("Unstun", 3f);
             }
         }
-        return;
     }
-    public void Appy_Modification_Boosts()
+    public void DashAttack()
     {
-        float totalspeedboost = 0;
-        for(int i = 0; i < Attachments.Length; i++)
+        if (!stunned)
         {
-            if (Attachments[i] != null)
-            {
-                totalspeedboost += Attachments[i].GetComponent<Modification>().movement_speed;
-            }
-        }
-        if (totalspeedboost > 0)
-        {
-            current_movement_speed = MOVEMENT_SPEED * totalspeedboost;
-        }
-        else
-        {
-            current_movement_speed = MOVEMENT_SPEED;
+            dashing = true;
         }
     }
-    public void Remove_Attachment(GameObject mod_to_remove)
+    void Unstun()
     {
-        int index = -1;
-        for(int i=0; i < Attachments.Length; i++)
-        {
-            if (Attachments[i] == mod_to_remove)
-            {
-                index = i;
-            }
-        }
-        if (index == -1)
-        {
-            return;
-        }
-        else
-        {
-            //Destroy(Attachments[index].GetComponent<FixedJoint>());
-            Attachments[index].transform.parent = null;
-            Attachments[index].GetComponent<Rigidbody>().isKinematic = false;
-            Attachments[index].GetComponent<Collider>().isTrigger = false;
-            Attachments[index].gameObject.GetComponent<Rigidbody>().AddExplosionForce(5f, Attachments[index].transform.position, 3f, 0f, ForceMode.Impulse);
-            Attachments[index] = null;
-            Attachment_Bases[index] = (Attachment_Bases[index].base_position, Attachment_Bases[index].base_size, false);
-            Appy_Modification_Boosts();
-        }
+        Debug.Log("UNstunned");
+        stunned = false;
     }
+
 }
