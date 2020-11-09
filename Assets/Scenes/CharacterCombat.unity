@@ -1228,7 +1228,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 0, y: 0, z: 6.4285e-40, w: 1.8e-43}
+  m_BoundingSphereOverride: {x: 0, y: 0, z: 2.75508e-40, w: -3.11e-43}
   m_UseBoundingSphereOverride: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
@@ -1829,6 +1829,7 @@ GameObject:
   - component: {fileID: 922784641}
   - component: {fileID: 922784640}
   - component: {fileID: 922784639}
+  - component: {fileID: 922784643}
   m_Layer: 0
   m_Name: Plane
   m_TagString: Untagged
@@ -1910,6 +1911,17 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!154 &922784643
+TerrainCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 922784638}
+  m_Material: {fileID: 0}
+  m_Enabled: 1
+  m_TerrainData: {fileID: 15600000, guid: 731504b584a317943bbf5de0b00f060f, type: 2}
+  m_EnableTreeColliders: 1
 --- !u!1 &993926016
 GameObject:
   m_ObjectHideFlags: 0
@@ -2841,6 +2853,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea3c272ec5dc8924983e20babb0c2925, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  terrain: {fileID: 922784638}
   arrows: {fileID: 8510754885775602422, guid: 273b7fed966b792459b6d06cc7838e5b, type: 3}
 --- !u!1 &1807452165
 GameObject:

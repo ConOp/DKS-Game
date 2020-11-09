@@ -12,6 +12,7 @@ public class LockOnTarget : MonoBehaviour
     GameObject arrow;
     GameObject targeted;
 
+    public GameObject terrain;
     public GameObject arrows;
 
     private void Start()
@@ -24,7 +25,7 @@ public class LockOnTarget : MonoBehaviour
     {
         if (Input.touchCount > 0 && Input.GetTouch(Input.touchCount-1).phase == TouchPhase.Began)
         {
-            targeted = SelectEnemy(Input.GetTouch(Input.touchCount - 1));
+            SelectEnemy(Input.GetTouch(Input.touchCount - 1));
         }
         if (!lockOn)
         {
@@ -37,32 +38,20 @@ public class LockOnTarget : MonoBehaviour
         }
     }
 
-    GameObject SelectEnemy(Touch finger)
+    void SelectEnemy(Touch finger)
     {
-        Vector3 touchPos = Camera.main.ScreenToWorldPoint(finger.position);
-        Vector2 touchPos2d = new Vector2(touchPos.x, touchPos.y);
-        
-        RaycastHit2D hitInfo = Physics2D.Raycast(touchPos2d, Camera.main.transform.forward);
-
-        if (hitInfo != null)
+        RaycastHit hit;
+        Ray ray = Camera.main.ScreenPointToRay(finger.position);
+        if(terrain.GetComponent<Collider>().Raycast(ray,out hit, Mathf.Infinity))
         {
-            GameObject closest = mng.Closest(touchPos, mng.enemies);
-            float dist = Vector2.Distance(touchPos2d, new Vector2(closest.transform.position.x, closest.transform.position.z));
+            GameObject closest = mng.Closest(hit.point, mng.enemies);
+            float dist = Vector2.Distance(hit.point, closest.transform.position);
             if (dist < 3)
             {
                 lockOn = true;
-                return closest;
+                targeted = closest;
             }
         }
-        /*
-        GameObject closest = mng.Closest(finger.position, mng.enemies);
-        if (Vector2.Distance(new Vector2(finger.position.x,finger.position.y), new Vector2(closest.transform.position.x,closest.transform.position.z)) < 1)
-        {
-            lockOn = true;
-            return closest;
-        }
-        */
-        return null;
     }
 
     void TargetLock(GameObject closest)
