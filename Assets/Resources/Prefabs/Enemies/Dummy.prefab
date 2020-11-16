@@ -642,7 +642,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2357734936308939226}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 1.498, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 3986761375161612543}
@@ -688,9 +688,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MOVEMENT_SPEED: 6
+  ATTACK_SPEED: 1
   HEALTH: 1000
   DAMAGE: 50
+  RANGE: 0
+  current_speed: 0
+  current_attack_speed: 1
   current_health: 1000
+  current_range: 0
   max_movement_speed: 6
   current_damage: 50
   Attachments: []
