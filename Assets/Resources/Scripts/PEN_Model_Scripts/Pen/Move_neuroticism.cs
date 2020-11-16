@@ -21,7 +21,7 @@ public class Move_neuroticism
     public float getNeuro()
     {
         CheckMove();
-        CheckHit();
+        //CheckHit();//old hit controller
         return neuro;
     }
     /// <summary>
