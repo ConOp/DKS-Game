@@ -67,8 +67,25 @@ public abstract class Basic_Room : IRoom
     /// <returns></returns>
     public Vector3 CreateOpening(int indexopening,string side)
     {
+        Tile t;
         //Tile to be placed.
-        Tile t = new Tile("Center", PrefabManager.GetAllRoomTiles().Where(obj => obj.name == "Center").First(), RoomTiles[indexopening].Position);
+        if (side == "Top")
+        {
+             t = new Tile("Top_Door", PrefabManager.GetAllRoomTiles().Where(obj => obj.name == "Top_Door").First(), RoomTiles[indexopening].Position);
+        }
+        else if (side == "Right")
+        {
+            t = new Tile("Right_Door", PrefabManager.GetAllRoomTiles().Where(obj => obj.name == "Right_Door").First(), RoomTiles[indexopening].Position);
+        }
+        else if (side == "Bottom")
+        {
+            t = new Tile("Bottom_Door", PrefabManager.GetAllRoomTiles().Where(obj => obj.name == "Bottom_Door").First(), RoomTiles[indexopening].Position);
+        }
+        else
+        {
+            t = new Tile("Left_Door", PrefabManager.GetAllRoomTiles().Where(obj => obj.name == "Left_Door").First(), RoomTiles[indexopening].Position);
+        }
+
         //Replace opening.
         RoomTiles[indexopening] = t;
         Vector3 oldtileloc = new Vector3(0, 0, 0);
@@ -332,5 +349,59 @@ public abstract class Basic_Room : IRoom
             //Instantiate new opening.
             Instantiated_Tiles[openingindex] = Object.Instantiate(newtile.Objtile, oldtileloc, new Quaternion(), RoomObject.transform);
         }
+    }
+
+    /// <summary>
+    /// Closes all the doors of the room.
+    /// </summary>
+    public void CloseDoors()
+    {
+        if (AdjRoomTop != null)
+        {
+            int doorindex = CalculateOpening("Top");
+            Instantiated_Tiles[doorindex].GetComponent<Animator>().SetBool("isOpen", false);
+        }
+        if (AdjRoomLeft != null)
+        {
+            int doorindex = CalculateOpening("Left");
+            Instantiated_Tiles[doorindex].GetComponent<Animator>().SetBool("isOpen", false);
+        }
+        if (AdjRoomRight != null)
+        {
+            int doorindex = CalculateOpening("Right");
+            Instantiated_Tiles[doorindex].GetComponent<Animator>().SetBool("isOpen", false);
+        }
+        if (AdjRoomBottom != null)
+        {
+            int doorindex = CalculateOpening("Bottom");
+            Instantiated_Tiles[doorindex].GetComponent<Animator>().SetBool("isOpen", false);
+        }
+    }
+    /// <summary>
+    /// Opens all the doors of the room.
+    /// </summary>
+    public void OpenDoors()
+    {
+        if (AdjRoomTop != null)
+        {
+            int doorindex = CalculateOpening("Top");
+            Instantiated_Tiles[doorindex].GetComponent<Animator>().SetBool("isOpen", true);
+        }
+        if (AdjRoomLeft != null)
+        {
+            int doorindex = CalculateOpening("Left");
+            Instantiated_Tiles[doorindex].GetComponent<Animator>().SetBool("isOpen", true);
+        }
+        if (AdjRoomRight != null)
+        {
+            int doorindex = CalculateOpening("Right");
+            Instantiated_Tiles[doorindex].GetComponent<Animator>().SetBool("isOpen", true);
+        }
+        if (AdjRoomBottom != null)
+        {
+            int doorindex = CalculateOpening("Bottom");
+            Instantiated_Tiles[doorindex].GetComponent<Animator>().SetBool("isOpen", true);
+        }
+
     }
 }

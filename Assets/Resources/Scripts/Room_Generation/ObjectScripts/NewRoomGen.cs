@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class NewRoomGen : MonoBehaviour
 {
-    List<IRoom> allrooms;  //All instantiated rooms in the game.
+    public List<IRoom> allrooms;  //All instantiated rooms in the game.
     public int RoomNumber = 20; //Target room number.
     GameObject dungeon;
     private void Awake()
@@ -118,6 +118,8 @@ public class NewRoomGen : MonoBehaviour
     void InstantiateIRoom(IRoom room, Vector3 pos, List<GameObject> tiles)
     {
         GameObject gr = new GameObject(room.Type); //Parent object to all tiles.
+        //Set the center position of the room.
+        gr.transform.position = new Vector3(pos.x+(Mathf.Abs((pos.x+room.Tiles_number_x*Tile.X_length)-pos.x)/2), pos.y+2.5f, pos.z - (Mathf.Abs((pos.z + room.Tiles_number_z * Tile.Z_length) - pos.z) / 2));
         List<GameObject> instantiated_tiles = new List<GameObject>();
         foreach (Tile tile in room.RoomTiles)
         {
@@ -126,6 +128,13 @@ public class NewRoomGen : MonoBehaviour
         }
         room.Instantiated_Tiles = instantiated_tiles;
         room.RoomObject = gr;
+        if (room.Category.Equals("Room"))
+        {
+            gr.AddComponent<BoxCollider>();//Create new collider for the room.
+            gr.GetComponent<BoxCollider>().size = new Vector3(room.Tiles_number_x * Tile.X_length - 2, 5, room.Tiles_number_z * Tile.Z_length - 2);//Set the size of the collider to cover all the room.
+            gr.GetComponent<BoxCollider>().isTrigger = true;//Set collider to trigger.
+            gr.AddComponent<RoomEventsHandler>();
+        }
         gr.transform.parent = dungeon.transform;
         room.Position = pos;
         allrooms.Add(room);
