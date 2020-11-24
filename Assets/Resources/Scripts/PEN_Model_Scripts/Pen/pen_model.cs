@@ -15,10 +15,10 @@ public class pen_model
     static float INTERVAL = 1;
     float timePassed = 0;
 
-    Text neuro_num = GameObject.Find("Neuro_Number").GetComponent<Text>();
-    Text extra_num = GameObject.Find("Extra_Number").GetComponent<Text>();
-    Text psycho_num = GameObject.Find("Psycho_Number").GetComponent<Text>();
-    Text character_text = GameObject.Find("CharacteristicText").GetComponent<Text>();
+    Text neuro_num;// = GameObject.Find("Neuro_Number").GetComponent<Text>();
+    Text extra_num;// = GameObject.Find("Extra_Number").GetComponent<Text>();
+    Text psycho_num;// = GameObject.Find("Psycho_Number").GetComponent<Text>();
+    Text character_text;// = GameObject.Find("CharacteristicText").GetComponent<Text>();
 
     //for Neuroticism
     Move_neuroticism mover = new Move_neuroticism();
@@ -48,7 +48,10 @@ public class pen_model
             psycho = rate.getPsycho(neuro, extr);
             characteristic = characts.ExtractCharact(psycho, extr, neuro);
         }
-        UpdateUI();
+        if (neuro_num != null && extra_num != null & psycho_num != null && character_text != null)
+        {
+            UpdateUI();
+        }
     }
 
     void UpdateUI()

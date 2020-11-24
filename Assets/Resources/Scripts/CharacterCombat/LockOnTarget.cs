@@ -23,19 +23,23 @@ public class LockOnTarget : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.touchCount > 0 && Input.GetTouch(Input.touchCount-1).phase == TouchPhase.Began)
+        if (mng.enemies.Count > 0)
         {
-            SelectEnemy(Input.GetTouch(Input.touchCount - 1));
+            if (Input.touchCount > 0 && Input.GetTouch(Input.touchCount - 1).phase == TouchPhase.Began)
+            {
+                SelectEnemy(Input.GetTouch(Input.touchCount - 1));
+            }
+            if (!lockOn)
+            {
+                targeted = mng.Closest(this.gameObject.transform.position, mng.enemies);
+                TargetLock(targeted);
+            }
+            else
+            {
+                TargetLock(targeted);
+            }
         }
-        if (!lockOn)
-        {
-            targeted = mng.Closest(this.gameObject.transform.position, mng.enemies);
-            TargetLock(targeted);
-        }
-        else
-        {
-            TargetLock(targeted);
-        }
+        
     }
 
     void SelectEnemy(Touch finger)
@@ -46,7 +50,7 @@ public class LockOnTarget : MonoBehaviour
         {
             GameObject closest = mng.Closest(hit.point, mng.enemies);
             float dist = Vector2.Distance(hit.point, closest.transform.position);
-            if (dist < 3)
+            if (dist < 0.9f)
             {
                 lockOn = true;
                 targeted = closest;
