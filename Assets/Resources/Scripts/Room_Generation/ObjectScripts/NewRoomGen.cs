@@ -175,8 +175,8 @@ public class NewRoomGen : MonoBehaviour
                             ((Basic_Room)((Basic_Corridor)currrent_room).Parent).CloseOpening("Bottom");
                         }
                         else if (((Basic_Room)((Basic_Corridor)currrent_room).Parent).AdjRoomLeft == currrent_room)
+                        { 
                             ((Basic_Room)((Basic_Corridor)currrent_room).Parent).CloseOpening("Left");
-                        {
                             ((Basic_Room)((Basic_Corridor)currrent_room).Parent).AdjRoomLeft = null;
                         }
                         
