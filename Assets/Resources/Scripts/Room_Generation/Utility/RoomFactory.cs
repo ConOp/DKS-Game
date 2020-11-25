@@ -19,6 +19,8 @@ public class RoomFactory
         {
             case "SpawningRoom":
                 return new SpawningRoom(tiles,type);
+            case "EndRoom":
+                return new EndRoom(tiles, type, tiles_x, tiles_z);
             case "FightingRoom":
                 return new FightingRoom(tiles, type,tiles_x, tiles_z);
             case "Horizontal_Straight_Corridor":

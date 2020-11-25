@@ -20,26 +20,83 @@ public static class DataManager
         {"Medium",(5,5) },
         {"Large",(7,7) }
     };
-    
+
     //Room Available sides data.
     //HINT! Sides go in this order = [Left,Top,Right,Bottom] -> true if available, false if not available.
-    static readonly Room_Type[] room_types_data = new Room_Type[]
-    {
-        new Room_Type(){available_sides=new bool[4]{true,true,true,true},room_type="SpawningRoom" },
-        new Room_Type(){available_sides=new bool[4]{true,true,true,true},room_type="FightingRoom" }
-    };
+    static Room_Type[] room_types_data;
 
     //Corridor Available sides data.
     //HINT! Sides go in this order = [Left,Top,Right,Bottom] -> true if available, false if not available.
-    static readonly Room_Type[] corridor_types_data = new Room_Type[]
+    static  Room_Type[] corridor_types_data;
+
+
+    /// <summary>
+    /// Initialized the data regarding the open sides of the rooms.
+    /// </summary>
+    public static void Initialize_Type_Data()
     {
-        new Room_Type(){available_sides=new bool[4]{true,false,true,false},room_type="Horizontal_Straight_Corridor" },
-        new Room_Type(){available_sides=new bool[4]{false,true,false,true},room_type="Vertical_Straight_Corridor" },
-        new Room_Type(){available_sides=new bool[4]{true,false,false,true},room_type="Bottom_Left_Corner_Corridor" },
-        new Room_Type(){available_sides=new bool[4]{false,false,true,true},room_type="Bottom_Right_Corner_Corridor" },
-        new Room_Type(){available_sides=new bool[4]{true,true,false,false},room_type="Top_Left_Corner_Corridor" },
-        new Room_Type(){available_sides=new bool[4]{false,true,true,false},room_type="Top_Right_Corner_Corridor" },
-    };
+        //Room type data initialization.
+        room_types_data = new Room_Type[3];
+        room_types_data[0] = new Room_Type() { available_sides = new bool[4] { true, true, true, true }, room_type = "SpawningRoom" };
+        room_types_data[1] = new Room_Type() { available_sides = new bool[4] { true, true, true, true }, room_type = "FightingRoom" };
+        room_types_data[2] = new Room_Type() { available_sides = new bool[4] { true, true, true, true }, room_type = "EndRoom" };
+
+
+        //Corridor type data initialization.
+        corridor_types_data = new Room_Type[6];
+        corridor_types_data[0] = new Room_Type() { available_sides = new bool[4] { true, false, true, false }, room_type = "Horizontal_Straight_Corridor" };
+        corridor_types_data[1] = new Room_Type() { available_sides = new bool[4] { false, true, false, true }, room_type = "Vertical_Straight_Corridor" };
+        corridor_types_data[2] = new Room_Type() { available_sides = new bool[4] { true, false, false, true }, room_type = "Bottom_Left_Corner_Corridor" };
+        corridor_types_data[3] = new Room_Type() { available_sides = new bool[4] { false, false, true, true }, room_type = "Bottom_Right_Corner_Corridor" };
+        corridor_types_data[4] = new Room_Type() { available_sides = new bool[4] { true, true, false, false }, room_type = "Top_Left_Corner_Corridor" };
+        corridor_types_data[5] = new Room_Type() { available_sides = new bool[4] { false, true, true, false }, room_type = "Top_Right_Corner_Corridor" };
+
+    }
+
+    /// <summary>
+    /// Gets all the available sides given the room type.
+    /// </summary>
+    /// <param name="roomType"></param>
+    /// <returns></returns>
+    public static List<string> GetRoomAvailableSides(string roomType)
+    {
+        List<string> aSides = new List<string>();
+        foreach(Room_Type type in room_types_data)
+        {
+            if (type.room_type.Equals(roomType))
+            {
+                if (type.available_sides[0]) aSides.Add("Left");
+                if (type.available_sides[1]) aSides.Add("Top");
+                if (type.available_sides[2]) aSides.Add("Right");
+                if (type.available_sides[3]) aSides.Add("Bottom");
+                break;
+            }
+        }
+        return aSides;
+
+    }
+    /// <summary>
+    /// Gets all the available sides given the corridor type.
+    /// </summary>
+    /// <param name="roomType"></param>
+    /// <returns></returns>
+    public static List<string> GetCoridorAvailableSides(string corridorType)
+    {
+        List<string> aSides = new List<string>();
+        foreach (Room_Type type in corridor_types_data)
+        {
+            if (type.room_type.Equals(corridorType))
+            {
+                if (type.available_sides[0]) aSides.Add("Left");
+                if (type.available_sides[1]) aSides.Add("Top");
+                if (type.available_sides[2]) aSides.Add("Right");
+                if (type.available_sides[3]) aSides.Add("Bottom");
+                break;
+            }
+        }
+        return aSides;
+
+    }
 
     /// <summary>
     /// Get room proportions depending on room size.

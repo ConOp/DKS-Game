@@ -6,11 +6,13 @@ using UnityEngine;
 public class NewRoomGen : MonoBehaviour
 {
     public List<IRoom> allrooms;  //All instantiated rooms in the game.
-    public int RoomNumber = 20; //Target room number.
+    public static int RoomNumber = 1; //Target room number.
+    public static int roomsPlaced = 0;
     GameObject dungeon;
     private void Awake()
     {
         PrefabManager.LoadPrefabs();//Load all the prefabs from the project at the very start.
+        DataManager.Initialize_Type_Data();//Load all types data for room and corridors.
     }
 
 
@@ -69,20 +71,17 @@ public class NewRoomGen : MonoBehaviour
                 Debug.LogError("Finished dungeon generator without reaching the room goal.");
                 break;
             }
-            string side = RandomnessMaestro.OpenRandomAvailableSide(allrooms[openroomindex]);
-            int openindex = allrooms[openroomindex].CalculateOpening(side);
-            Vector3 loc = allrooms[openroomindex].Instantiated_Tiles[openindex].transform.position;
-            (IRoom newroom, Vector3 newroomloc) = allrooms[openroomindex].CreateAdjacentRoom(side, loc);
+            (IRoom newroom, Vector3 newroomloc) = allrooms[openroomindex].CreateAdjacentRoom();
             if (newroom != null)
             {
+                
                 if (allrooms[openroomindex].Category == "Room")
                 {
-                    allrooms[openroomindex].CreateOpening(openindex, side);
                     InstantiateIRoom(newroom, newroomloc, PrefabManager.GetAllRoomTiles());
 
                     if (newroom.Category == "Room")
                     {
-                        RoomNumber--;
+                        roomsPlaced++;
                     }
 
                 }
@@ -91,17 +90,13 @@ public class NewRoomGen : MonoBehaviour
                     InstantiateIRoom(newroom, newroomloc, PrefabManager.GetAllRoomTiles());
                     if (newroom.Category == "Room")
                     {
-                        RoomNumber--;
+                        roomsPlaced++;
                     }
                 }
-                if (RoomNumber <= 0)
+                if (roomsPlaced >= RoomNumber)
                 {
                     break;
                 }
-            }
-            else
-            {
-                allrooms[openroomindex].Available_Sides.Remove(side);
             }
 
         }

@@ -8,8 +8,7 @@ public class SpawningRoom : Basic_Room
     
     public SpawningRoom( List<GameObject> tiles,string type) :base(tiles,type,5,5)
     {
-        Category = "Room";
-        Available_Sides = new List<string>() {"Left", "Top", "Right","Bottom" };
+        Available_Sides = DataManager.GetRoomAvailableSides(type);
     }
 
    public override void   CreateRoom(List<GameObject> tiles)

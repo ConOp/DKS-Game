@@ -9,6 +9,7 @@ public abstract class Basic_Corridor : Basic_Room
 
     public Basic_Corridor(List<GameObject> tiles, string type, int tiles_x, int tiles_z):base(tiles,type,tiles_x,tiles_z)
     {
+        Category = "Corridor";
         this.RoomTiles = new List<Tile>();
         this.Type = type;
         this.Tiles_number_x = tiles_x;
