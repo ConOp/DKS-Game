@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UI_Manager : MonoBehaviour
 {
@@ -11,6 +12,8 @@ public class UI_Manager : MonoBehaviour
     public GameObject mark;
 
     GameObject controls;
+    GameObject lobbyScreen;
+    GameObject lobbyButton;
 
     // Start is called before the first frame update
     void Start()
@@ -18,8 +21,11 @@ public class UI_Manager : MonoBehaviour
         comp_canvas = GameObject.Find("ComputerCanvas");
         mark = GameObject.Find("Exclamation");
         controls = GameObject.Find("JoystickCanvas");
+        lobbyScreen = GameObject.Find("YesLobby");
+        lobbyButton = GameObject.Find("CreateLobbyButton");
         mark.SetActive(false);
         comp_canvas.SetActive(false);
+        lobbyScreen.SetActive(false);
     }
 
     public void RemoveControl()
@@ -38,6 +44,20 @@ public class UI_Manager : MonoBehaviour
         if (selector == "Computer")
         {
             comp_canvas.SetActive(true);
+        }
+    }
+    bool inlobby = false;
+    public void LobbyState()
+    {
+        inlobby = !inlobby;
+        lobbyScreen.SetActive(inlobby);
+        if (inlobby)
+        {
+            lobbyButton.GetComponentInChildren<Text>().text = "Exit Lobby";
+        }
+        else
+        {
+            lobbyButton.GetComponentInChildren<Text>().text = "Create Lobby";
         }
     }
 
