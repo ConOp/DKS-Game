@@ -6,7 +6,7 @@ using UnityEngine;
 public class NewRoomGen : MonoBehaviour
 {
     public List<IRoom> allrooms;  //All instantiated rooms in the game.
-    public static int RoomNumber = 1; //Target room number.
+    public static int RoomNumber = 50; //Target room number.
     public static int roomsPlaced = 0;
     GameObject dungeon;
     private void Awake()

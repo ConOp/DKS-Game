@@ -36,10 +36,11 @@ public static class DataManager
     public static void Initialize_Type_Data()
     {
         //Room type data initialization.
-        room_types_data = new Room_Type[3];
+        room_types_data = new Room_Type[4];
         room_types_data[0] = new Room_Type() { available_sides = new bool[4] { true, true, true, true }, room_type = "SpawningRoom" };
         room_types_data[1] = new Room_Type() { available_sides = new bool[4] { true, true, true, true }, room_type = "FightingRoom" };
         room_types_data[2] = new Room_Type() { available_sides = new bool[4] { true, true, true, true }, room_type = "EndRoom" };
+        room_types_data[3] = new Room_Type() { available_sides = new bool[4] { true, true, true, true }, room_type = "ChestRoom" };
 
 
         //Corridor type data initialization.
@@ -139,8 +140,10 @@ public static class DataManager
             {
                 if (rm.available_sides[index] == true)
                 {
-
-                    correct_rooms.Add(rm.room_type);
+                    if (!rm.room_type.Equals("SpawningRoom"))
+                    {
+                        correct_rooms.Add(rm.room_type);
+                    }
                 }
             }
         }

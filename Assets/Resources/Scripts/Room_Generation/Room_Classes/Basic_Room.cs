@@ -166,6 +166,7 @@ public abstract class Basic_Room : IRoom
             {
                 new_room.Available_Sides.Clear();
                 RandomnessMaestro.endRoomPlaced = true;
+                Debug.LogError("Placed end room at: " + NewRoomGen.roomsPlaced);
             }
             //If everything is okay, place the room normally.
             this.Available_Sides.Remove(connectionSide);

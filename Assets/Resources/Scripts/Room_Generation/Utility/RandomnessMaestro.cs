@@ -1,11 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
-public class RandomnessMaestro 
+public class RandomnessMaestro
 {
 
-    public static bool endRoomPlaced=false;
+    public static bool endRoomPlaced = false;
 
     //Room or Corridor chances.
     static List<(string, float)> room_corridor_chance = new List<(string, float)>{
@@ -25,7 +26,7 @@ public class RandomnessMaestro
     //Room type chances.
     static List<(string, float)> room_type = new List<(string, float)>{
         ("FightingRoom",98.9f),
-        ("TreasureRoom",1f),
+        ("ChestRoom",1f),
         ("EndRoom",0.1f)
     };
 
@@ -34,7 +35,7 @@ public class RandomnessMaestro
     /// Shows appropriate error (debug perposes)
     /// </summary>
     /// <param name="error"></param>
-    private static void ShowError( string error)
+    private static void ShowError(string error)
     {
         switch (error)
         {
@@ -84,40 +85,7 @@ public class RandomnessMaestro
     /// <returns></returns>
     public static string Choose_Room_Type(List<string> available_rooms)
     {
-        List<(string, float)> appropriateProbabilities = new List<(string, float)>();
-        float endRoomAddedProbability = 0;
-        bool endRoomFound = false;
-        foreach (string room in available_rooms)
-        {
-            for (int i = 0; i < room_type.Count; i++)
-            {
-                if (room.Equals(room_type[i].Item1))
-                {
-                    if (room.Equals("EndRoom")&&!endRoomPlaced) {
-                        endRoomAddedProbability = ((100 - room_type[i].Item2) / NewRoomGen.RoomNumber) * (NewRoomGen.roomsPlaced+1);
-                        endRoomFound = true;
-                    }
-                    appropriateProbabilities.Add(room_type[i]);//Get only the available rooms probabilities.
-                    break;
-                }
-            }
-        }
-        if (!endRoomPlaced&&endRoomFound)
-        {
-            for (int i = 0; i < appropriateProbabilities.Count; i++)
-            {
-                if (appropriateProbabilities[i].Item1.Equals("EndRoom"))
-                {
-                    appropriateProbabilities[i]= (appropriateProbabilities[i].Item1,appropriateProbabilities[i].Item2+endRoomAddedProbability);
-                    Debug.Log(appropriateProbabilities[i].Item1 + " " + appropriateProbabilities[i].Item2);
-                }
-                else
-                {
-                    appropriateProbabilities[i] = (appropriateProbabilities[i].Item1, appropriateProbabilities[i].Item2 - (endRoomAddedProbability/(appropriateProbabilities.Count-1)));
-                }
-
-            }
-        }
+        List<(string, float)> appropriateProbabilities = CalculateProbabilites(available_rooms);
         return RandomProbability.Choose(appropriateProbabilities);
     }
     /// <summary>
@@ -127,5 +95,48 @@ public class RandomnessMaestro
     public static string Choose_Corridor_Type()
     {
         return RandomProbability.Choose(corridor_type);
+    }
+    /// <summary>
+    /// Calculates the probabibilites of all the available rooms depending on some formulas.
+    /// </summary>
+    /// <param name="available_rooms"></param>
+    /// <returns></returns>
+    static List<(string, float)> CalculateProbabilites(List<string>available_rooms)
+    {
+        List<(string, float)> appropriateProbabilities = new List<(string, float)>();
+        foreach (string room in available_rooms)
+        {
+            appropriateProbabilities.Add(room_type.Find(x => x.Item1 == room));//Get only the available rooms probabilities.
+        }
+        float endRoomProbability;
+        float endRoomStartingProb = room_type.Find(x => x.Item1 == "EndRoom").Item2;
+        float t;
+        float probabilityNotEndroom;
+        if (!endRoomPlaced)
+        {
+            /*Variable to decide if the room has more probabilities to spawn the start, middle or the end of the dungeon.
+             * Low --------> High Power = Start --------> End.
+            */
+            t = (float)System.Math.Pow((float)(NewRoomGen.roomsPlaced + 1) / NewRoomGen.RoomNumber, 10);
+            endRoomProbability = endRoomStartingProb * (1 - t) + 100 * t;
+            probabilityNotEndroom = 100 - endRoomProbability;
+        }
+        else
+        {
+            endRoomProbability = 0;
+            probabilityNotEndroom = 100;
+        }
+        for (int i = 0; i < appropriateProbabilities.Count; i++)
+        {
+            if (appropriateProbabilities[i].Item1.Equals("EndRoom"))
+            {
+                appropriateProbabilities[i] = (appropriateProbabilities[i].Item1, endRoomProbability);
+            }
+            else
+            {
+                appropriateProbabilities[i] = (appropriateProbabilities[i].Item1, appropriateProbabilities[i].Item2 * probabilityNotEndroom / (100 - endRoomStartingProb));
+            }
+        }
+        return appropriateProbabilities;
     }
 }
