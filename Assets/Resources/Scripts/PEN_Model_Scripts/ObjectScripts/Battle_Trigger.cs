@@ -4,22 +4,14 @@ using UnityEngine;
 
 public class Battle_Trigger : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     private void OnTriggerEnter(Collider other)
     {
         if (other.tag == "Player")
         {
+            foreach (GameObject e in GameObject.FindGameObjectsWithTag("Enemy"))
+            {
+                GameObject.Find("Manager").GetComponent<Manager>().enemies.Add(e);
+            }
             GameObject.Find("Manager").GetComponent<Manager>().startCombat(other);
             gameObject.SetActive(false);
         }

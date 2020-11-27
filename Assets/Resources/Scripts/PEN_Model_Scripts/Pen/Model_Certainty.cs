@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Rate_psychoticism
+public class Model_Certainty
 {
     float rate = 0;
 
@@ -18,7 +18,7 @@ public class Rate_psychoticism
 
     int timepassed = 0;//time after last change to the value.
 
-    public float getPsycho(float newNeuroticism, float newExtraversion)
+    public float getRate(float newNeuroticism, float newExtraversion)
     {
         CalcRate(newNeuroticism,newExtraversion);
         return rate;
@@ -44,6 +44,7 @@ public class Rate_psychoticism
         {
             Edirection = newEdirect;
         }
+        /*
         if (timepassed/2 > 10)
         {
             //normalizes rate closer to zero if no changes have been made for 2 seconds.
@@ -60,6 +61,7 @@ public class Rate_psychoticism
             }
             timepassed = 0;
         }
+        */
     }
 
     void ThresholdChecker(int newDirection, int oldDirection, float value, float threshold)

@@ -28,10 +28,7 @@ public class Manager : MonoBehaviour
         distance_num = GameObject.Find("Distance_Number");
 
         enemies = new List<GameObject>();
-        foreach (GameObject e in GameObject.FindGameObjectsWithTag("Enemy"))
-        {
-            enemies.Add(e);
-        }
+        
 
         //unused for now...
         players = new List<GameObject>();
@@ -63,6 +60,7 @@ public class Manager : MonoBehaviour
             {
                 player.GetComponent<Player>().exitCombat();
                 inCombat = false;
+                pen.UpdateRate();
                 return;
             }           
 
