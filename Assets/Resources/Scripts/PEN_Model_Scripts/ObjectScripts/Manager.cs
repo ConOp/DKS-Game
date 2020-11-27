@@ -60,7 +60,7 @@ public class Manager : MonoBehaviour
             {
                 player.GetComponent<Player>().exitCombat();
                 inCombat = false;
-                pen.UpdatePsycho();
+                pen.UpdateRate();
                 return;
             }           
 

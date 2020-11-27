@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class Computer_Trigger : MonoBehaviour
 {
-    UI_Manager uimng;
+    HUB_UI_Manager uimng;
     public GameObject canvas;
 
     private void Start()
     {
-        uimng = GameObject.FindGameObjectWithTag("Manager").GetComponent<UI_Manager>();
+        uimng = GameObject.FindGameObjectWithTag("Manager").GetComponent<HUB_UI_Manager>();
         canvas.SetActive(false);
     }
     private void OnTriggerEnter(Collider other)

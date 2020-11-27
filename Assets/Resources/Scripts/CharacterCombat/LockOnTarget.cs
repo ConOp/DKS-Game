@@ -23,7 +23,7 @@ public class LockOnTarget : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (mng.enemies.Count > 0)
+        if (mng.enemies.Any())
         {
             if (Input.touchCount > 0 && Input.GetTouch(Input.touchCount - 1).phase == TouchPhase.Began)
             {

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UI_Manager : MonoBehaviour
+public class HUB_UI_Manager : MonoBehaviour
 {
     [HideInInspector]
     public GameObject comp_canvas;
