@@ -5,16 +5,26 @@ using UnityEngine;
 
 public class ValidationMaestro
 {
+    /// <summary>
+    /// Gets all the rooms/corridors that have available the connection side.
+    /// </summary>
+    /// <param name="room_corridor"></param>
+    /// <param name="connect_side"></param>
+    /// <returns></returns>
     public static List<string> GetAppropriateRooms(string room_corridor,string connect_side)
     {
+        List<(string, string)> rooms = new List<(string, string)>();
         if (room_corridor == "Room")
         {
-          return DataManager.Search_Available_Sides(connect_side,"Room");
+            return DataManager.Search_Available_Sides(connect_side, "Room");
+
         }
         else
         {
             return DataManager.Search_Available_Sides(connect_side, "Corridor");
+            
         }
+       
     }
     /// <summary>
     /// Checks if the space is not taken by other object.

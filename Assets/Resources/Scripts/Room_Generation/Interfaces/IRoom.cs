@@ -16,5 +16,5 @@ public interface IRoom
     void CreateRoom(List<GameObject> tiles);
     int CalculateOpening(string side);
     Vector3 CreateOpening(int indexopening, string side);
-    (IRoom, Vector3) CreateAdjacentRoom(string side, Vector3 opening_location);
+    (IRoom, Vector3) CreateAdjacentRoom();
 }

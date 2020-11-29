@@ -8,8 +8,7 @@ public class Top_Right_Corner_Corridor : Basic_Corridor
     // Start is called before the first frame update
     public Top_Right_Corner_Corridor(List<GameObject> tiles, string type, int tiles_x, int tiles_z) : base(tiles, type, tiles_x, tiles_z)
     {
-        Category = "Corridor";
-        Available_Sides = new List<string>() { "Top", "Right" };
+        Available_Sides = DataManager.GetCoridorAvailableSides(this.GetType().Name);
     }
 
     public override void CreateRoom(List<GameObject> tiles)
