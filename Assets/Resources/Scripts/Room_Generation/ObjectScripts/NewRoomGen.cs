@@ -6,7 +6,7 @@ using UnityEngine;
 public class NewRoomGen : MonoBehaviour
 {
     public List<IRoom> allrooms;  //All instantiated rooms in the game.
-    public static int RoomNumber = 50; //Target room number.
+    public static int RoomNumber = 20; //Target room number.
     public static int roomsPlaced = 0;
     GameObject dungeon;
     private void Awake()
@@ -123,7 +123,7 @@ public class NewRoomGen : MonoBehaviour
         }
         room.Instantiated_Tiles = instantiated_tiles;
         room.RoomObject = gr;
-        if (room.Category.Equals("Room"))
+        if (room.Category.Equals("Room")&&(room.Type!="SpawningRoom"&&room.Type!="ChestRoom"&&room.Type!="EndRoom"))
         {
             gr.AddComponent<BoxCollider>();//Create new collider for the room.
             gr.GetComponent<BoxCollider>().size = new Vector3(room.Tiles_number_x * Tile.X_length - 2, 5, room.Tiles_number_z * Tile.Z_length - 2);//Set the size of the collider to cover all the room.
