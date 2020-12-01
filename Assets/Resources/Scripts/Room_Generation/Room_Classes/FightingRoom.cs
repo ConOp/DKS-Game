@@ -7,8 +7,7 @@ public class FightingRoom : Basic_Room
    
     public FightingRoom(List<GameObject> tiles, string type, int tiles_x, int tiles_z) : base(tiles, type, tiles_x, tiles_z)
     {
-        Category = "Room";
-        Available_Sides = new List<string>() { "Left", "Top", "Right", "Bottom" };
+        Available_Sides = DataManager.GetRoomAvailableSides(type);
     }
 
     public override void CreateRoom(List<GameObject> tiles)

@@ -21,6 +21,7 @@ public abstract class Basic_Room : IRoom
 
     public Basic_Room(List<GameObject> tiles, string type, int tiles_x, int tiles_z)
     {
+        this.Category = "Room";
         this.RoomTiles = new List<Tile>();
         this.Type = type;
         this.Tiles_number_x = tiles_x;
@@ -67,8 +68,25 @@ public abstract class Basic_Room : IRoom
     /// <returns></returns>
     public Vector3 CreateOpening(int indexopening,string side)
     {
+        Tile t;
         //Tile to be placed.
-        Tile t = new Tile("Center", PrefabManager.GetAllRoomTiles().Where(obj => obj.name == "Center").First(), RoomTiles[indexopening].Position);
+        if (side == "Top")
+        {
+             t = new Tile("Top_Door", PrefabManager.GetAllRoomTiles().Where(obj => obj.name == "Top_Door").First(), RoomTiles[indexopening].Position);
+        }
+        else if (side == "Right")
+        {
+            t = new Tile("Right_Door", PrefabManager.GetAllRoomTiles().Where(obj => obj.name == "Right_Door").First(), RoomTiles[indexopening].Position);
+        }
+        else if (side == "Bottom")
+        {
+            t = new Tile("Bottom_Door", PrefabManager.GetAllRoomTiles().Where(obj => obj.name == "Bottom_Door").First(), RoomTiles[indexopening].Position);
+        }
+        else
+        {
+            t = new Tile("Left_Door", PrefabManager.GetAllRoomTiles().Where(obj => obj.name == "Left_Door").First(), RoomTiles[indexopening].Position);
+        }
+
         //Replace opening.
         RoomTiles[indexopening] = t;
         Vector3 oldtileloc = new Vector3(0, 0, 0);
@@ -90,57 +108,42 @@ public abstract class Basic_Room : IRoom
     /// <param name="side"></param>
     /// <param name="opening_location"></param>
     /// <returns></returns>
-    public (IRoom,Vector3) CreateAdjacentRoom(string side,Vector3 opening_location)
+    public (IRoom,Vector3) CreateAdjacentRoom()
     {
+        //Chose if next room is gonna be corridor or room.
         string room_corridor = RandomnessMaestro.Choose_Room_Or_Corridor();
-        //Change side to the desired side so that the adjacent room can place the opening appropriately.
-        string adjside;
-        if (side == "Left")
-            adjside = "Right";
-        else if (side == "Right")
-            adjside = "Left";
-        else if (side == "Top")
-            adjside = "Bottom";
-        else
-            adjside = "Top";
-        List<string>available_rooms = ValidationMaestro.GetAppropriateRooms(room_corridor, adjside);
+        List<string> available_rooms = new List<string>();
+        //Get all the available rooms based on the available sides of the current room.
+        foreach (string availableSide in Available_Sides)
+        {
+            available_rooms.AddRange(ValidationMaestro.GetAppropriateRooms(room_corridor, GetAdjacentSide(availableSide)));
+        }
+        available_rooms = available_rooms.Distinct().ToList();//Remove duplicates.
         if (room_corridor == "Room")
         {
-            string roomsize = RandomnessMaestro.Choose_Room_Size();
-            (int sizex, int sizez) = DataManager.Search_Sizes_Dictionary(roomsize);
-            //TODO Choose random room depending on probability from available_rooms.
-            IRoom new_room = RoomFactory.Build(available_rooms[1], PrefabManager.GetAllRoomTiles(), sizex, sizez);
-
-            //Calculate the opening of the new room.
-            int new_opening_index = new_room.CalculateOpening(adjside);
-            Vector3 new_placed_location=new Vector3(0,0,0);
+            string roomsize = RandomnessMaestro.Choose_Room_Size();//Select the room size.
+            (int sizex, int sizez) = DataManager.Search_Sizes_Dictionary(roomsize);//Get the room size data.
+            IRoom new_room = RoomFactory.Build(RandomnessMaestro.Choose_Room_Type(available_rooms), PrefabManager.GetAllRoomTiles(), sizex, sizez);//Construct the new room.
+            string connectionSide="";
+            foreach(string avside in Available_Sides)
+            {
+                if (new_room.Available_Sides.Contains(GetAdjacentSide(avside)))
+                {
+                    connectionSide = avside;
+                    break;
+                }
+            }//Find the connection side between the current room and the new one.
+            string adjside = GetAdjacentSide(connectionSide);//Get the side that the new room needs to have available.
+            int openindex = CalculateOpening(connectionSide);
+            Vector3 opening_location = Instantiated_Tiles[openindex].transform.position;//Location of the tile that the opening is gonna be.
+            int new_opening_index = new_room.CalculateOpening(adjside);//Calculate the opening of the new room.
             //Place new adjacent room appropriately.
-            if (side == "Left")
-            {
-                new_placed_location.x = opening_location.x - (Tile.X_length * new_room.Tiles_number_x);
-                new_placed_location.z = opening_location.z + (Tile.Z_length * (new_opening_index / new_room.Tiles_number_x));
-            }
-            else if (side == "Right")
-            {
-                new_placed_location.x = opening_location.x + Tile.X_length;
-                new_placed_location.z = opening_location.z + (Tile.Z_length * (new_opening_index / new_room.Tiles_number_x));
-            }
-            else if (side == "Top")
-            {
-                new_placed_location.x = opening_location.x - (Tile.X_length * (new_opening_index % new_room.Tiles_number_x));
-                new_placed_location.z = opening_location.z + (Tile.Z_length * new_room.Tiles_number_z);
-            }
-            else
-            {
-                new_placed_location.x = opening_location.x - (Tile.X_length * (new_opening_index % new_room.Tiles_number_x));
-                new_placed_location.z = opening_location.z - Tile.Z_length;
-            }
-
+            Vector3 new_placed_location = LocationManager.GetApropriateLocationForRoom(connectionSide, opening_location, new_opening_index, new_room.Tiles_number_x, new_room.Tiles_number_z);
             bool end = false;
-            //If location is taken by another object.
-            while (!ValidationMaestro.IsNotClaimed(new_placed_location, sizex, sizez)&&!end)
+            //While location is taken by another object.
+            while (!ValidationMaestro.IsNotClaimed(new_placed_location, new_room.Tiles_number_x, new_room.Tiles_number_z)&&!end)
             {
-                //If smaller room doesn't fit, stop.
+                //If the smallest room doesn't fit, stop.
                 if (roomsize == "Small")
                 {
                     end = true;
@@ -148,45 +151,32 @@ public abstract class Basic_Room : IRoom
                 //Return a smaller size.
                 (roomsize, sizex, sizez) = DataManager.ReturnSmallerSize(roomsize, 1);
                 //Re-Construct the room.
-                new_room = RoomFactory.Build(available_rooms[1], PrefabManager.GetAllRoomTiles(), sizex, sizez);
+                new_room = RoomFactory.Build(RandomnessMaestro.Choose_Room_Type(available_rooms), PrefabManager.GetAllRoomTiles(), sizex, sizez);
                 //Re-Calculate opening.
                 new_opening_index = new_room.CalculateOpening(adjside);
                 //Re-Place the room appropriately.
-                if (side == "Left")
-                {
-                    new_placed_location.x = opening_location.x - (Tile.X_length * new_room.Tiles_number_x);
-                    new_placed_location.z = opening_location.z + (Tile.Z_length * (new_opening_index / new_room.Tiles_number_x));
-                }
-                else if (side == "Right")
-                {
-                    new_placed_location.x = opening_location.x + Tile.X_length;
-                    new_placed_location.z = opening_location.z + (Tile.Z_length * (new_opening_index / new_room.Tiles_number_x));
-                }
-                else if (side == "Top")
-                {
-                    new_placed_location.x = opening_location.x - (Tile.X_length * (new_opening_index % new_room.Tiles_number_x));
-                    new_placed_location.z = opening_location.z + (Tile.Z_length * new_room.Tiles_number_z);
-                }
-                else
-                {
-                    new_placed_location.x = opening_location.x - (Tile.X_length * (new_opening_index % new_room.Tiles_number_x));
-                    new_placed_location.z = opening_location.z - Tile.Z_length;
-                }
-                
+                new_placed_location = LocationManager.GetApropriateLocationForRoom(connectionSide, opening_location, new_opening_index, new_room.Tiles_number_x, new_room.Tiles_number_z);
             }
-            if (end)
+            if (end)//if smaller doesn't fit.
             {
-                //if smaller doesn't fit.
-                this.Available_Sides.Remove(side);
+                this.Available_Sides.Remove(connectionSide);
                 return (null, new Vector3(0, 0, 0));
             }
+            if (new_room.Type.Equals("EndRoom"))//Check if the floor end room is placed.
+            {
+                new_room.Available_Sides.Clear();
+                RandomnessMaestro.endRoomPlaced = true;
+                Debug.LogError("Placed end room at: " + NewRoomGen.roomsPlaced);
+            }
             //If everything is okay, place the room normally.
-            this.Available_Sides.Remove(side);
+            this.Available_Sides.Remove(connectionSide);
             new_room.Available_Sides.Remove(adjside);
+            if(this.Category.Equals("Room"))CreateOpening(openindex, connectionSide);//Create opening if this is a room.
             Vector3 newopenloc =new_room.CreateOpening(new_opening_index, adjside); //Create opening to the adjacent room.
+            //Make this room parent of the new one.
             if (this.Category == "Room")
             {
-                switch (side)
+                switch (connectionSide)
                 {
                     case "Left":
                         this.AdjRoomLeft = new_room;
@@ -230,44 +220,36 @@ public abstract class Basic_Room : IRoom
             //Choose only corridors that match the type
             List<string> proper_rooms = available_rooms.Where(x => x.Contains(corridor_chosen_type)).ToList();
             IRoom new_room = RoomFactory.Build(proper_rooms[Random.Range(0,proper_rooms.Count-1)], PrefabManager.GetAllCorridorTiles(), 1, 1);
+            string connectionSide = "";
+            foreach(string avside in Available_Sides)
+            {
+                if (new_room.Available_Sides.Contains(GetAdjacentSide(avside)))
+                {
+                    connectionSide = avside;
+                    break;
+                }
+            }
+            string adjside = GetAdjacentSide(connectionSide);
+            int openindex = CalculateOpening(connectionSide);
+            Vector3 opening_location = Instantiated_Tiles[openindex].transform.position;
             //Calculate the opening of the new room.
             int new_opening_index = new_room.CalculateOpening(adjside);
-            Vector3 new_placed_location = new Vector3(0, 0, 0);
             //Place new adjacent room appropriately.
-            if (side == "Left")
-            {
-                new_placed_location.x = opening_location.x - (Tile.X_length * new_room.Tiles_number_x);
-                new_placed_location.z = opening_location.z + (Tile.Z_length * (new_opening_index / new_room.Tiles_number_x));
-            }
-            else if (side == "Right")
-            {
-                new_placed_location.x = opening_location.x + Tile.X_length;
-                new_placed_location.z = opening_location.z + (Tile.Z_length * (new_opening_index / new_room.Tiles_number_x));
-            }
-            else if (side == "Top")
-            {
-                new_placed_location.x = opening_location.x - (Tile.X_length * (new_opening_index % new_room.Tiles_number_x));
-                new_placed_location.z = opening_location.z + (Tile.Z_length * new_room.Tiles_number_z);
-            }
-            else
-            {
-                new_placed_location.x = opening_location.x - (Tile.X_length * (new_opening_index % new_room.Tiles_number_x));
-                new_placed_location.z = opening_location.z - Tile.Z_length;
-            }
-
+            Vector3 new_placed_location = LocationManager.GetApropriateLocationForRoom(connectionSide, opening_location, new_opening_index, new_room.Tiles_number_x, new_room.Tiles_number_z);
             //If location is taken by another object.
             if (!ValidationMaestro.IsNotClaimed(new_placed_location, new_room.Tiles_number_x, new_room.Tiles_number_z))
             {
-                this.Available_Sides.Remove(side);
+                this.Available_Sides.Remove(connectionSide);
                 return (null, new Vector3(0, 0, 0));
             }
             else
             {
-                this.Available_Sides.Remove(side);
+                if (this.Category.Equals("Room")) CreateOpening(openindex, connectionSide);
+                this.Available_Sides.Remove(connectionSide);
                 new_room.Available_Sides.Remove(adjside);
                 if (this.Category == "Room")
                 {
-                    switch (side)
+                    switch (connectionSide)
                     {
                         case "Left":
                             this.AdjRoomLeft = new_room;
@@ -332,5 +314,75 @@ public abstract class Basic_Room : IRoom
             //Instantiate new opening.
             Instantiated_Tiles[openingindex] = Object.Instantiate(newtile.Objtile, oldtileloc, new Quaternion(), RoomObject.transform);
         }
+    }
+
+    /// <summary>
+    /// Returns the adjacent side of choosen side.
+    /// </summary>
+    /// <param name="side"></param>
+    /// <returns></returns>
+    string GetAdjacentSide(string side)
+    {
+        if (side == "Left")
+            return "Right";
+        else if (side == "Right")
+            return "Left";
+        else if (side == "Top")
+            return "Bottom";
+        else
+            return "Top";
+    }
+    /// <summary>
+    /// Closes all the doors of the room.
+    /// </summary>
+    public void CloseDoors()
+    {
+        if (AdjRoomTop != null)
+        {
+            int doorindex = CalculateOpening("Top");
+            Instantiated_Tiles[doorindex].GetComponent<Animator>().SetBool("isOpen", false);
+        }
+        if (AdjRoomLeft != null)
+        {
+            int doorindex = CalculateOpening("Left");
+            Instantiated_Tiles[doorindex].GetComponent<Animator>().SetBool("isOpen", false);
+        }
+        if (AdjRoomRight != null)
+        {
+            int doorindex = CalculateOpening("Right");
+            Instantiated_Tiles[doorindex].GetComponent<Animator>().SetBool("isOpen", false);
+        }
+        if (AdjRoomBottom != null)
+        {
+            int doorindex = CalculateOpening("Bottom");
+            Instantiated_Tiles[doorindex].GetComponent<Animator>().SetBool("isOpen", false);
+        }
+    }
+    /// <summary>
+    /// Opens all the doors of the room.
+    /// </summary>
+    public void OpenDoors()
+    {
+        if (AdjRoomTop != null)
+        {
+            int doorindex = CalculateOpening("Top");
+            Instantiated_Tiles[doorindex].GetComponent<Animator>().SetBool("isOpen", true);
+        }
+        if (AdjRoomLeft != null)
+        {
+            int doorindex = CalculateOpening("Left");
+            Instantiated_Tiles[doorindex].GetComponent<Animator>().SetBool("isOpen", true);
+        }
+        if (AdjRoomRight != null)
+        {
+            int doorindex = CalculateOpening("Right");
+            Instantiated_Tiles[doorindex].GetComponent<Animator>().SetBool("isOpen", true);
+        }
+        if (AdjRoomBottom != null)
+        {
+            int doorindex = CalculateOpening("Bottom");
+            Instantiated_Tiles[doorindex].GetComponent<Animator>().SetBool("isOpen", true);
+        }
+
     }
 }
