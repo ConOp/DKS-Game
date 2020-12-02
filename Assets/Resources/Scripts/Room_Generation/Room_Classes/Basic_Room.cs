@@ -18,6 +18,7 @@ public abstract class Basic_Room : IRoom
     public IRoom AdjRoomLeft { get; set; }
     public IRoom AdjRoomRight { get; set; }
     public IRoom AdjRoomBottom { get; set; }
+    protected bool explored;
 
     public Basic_Room(List<GameObject> tiles, string type, int tiles_x, int tiles_z)
     {
@@ -26,7 +27,24 @@ public abstract class Basic_Room : IRoom
         this.Type = type;
         this.Tiles_number_x = tiles_x;
         this.Tiles_number_z = tiles_z;
+        explored = false;
         CreateRoom(tiles);
+    }
+    /// <summary>
+    /// Checks if the room is explored.
+    /// </summary>
+    /// <returns></returns>
+    public bool IsExplored()
+    {
+        return explored;
+    }
+    /// <summary>
+    /// Sets the room explored variable.
+    /// </summary>
+    /// <param name="exp"></param>
+    public void SetExplored(bool exp)
+    {
+        explored = exp;
     }
     public abstract void CreateRoom(List<GameObject> tiles);
     /// <summary>
@@ -276,7 +294,6 @@ public abstract class Basic_Room : IRoom
         }
 
     }
-
     /// <summary>
     /// Detects and seals the opening with a wall depending on the side.
     /// </summary>
@@ -315,7 +332,6 @@ public abstract class Basic_Room : IRoom
             Instantiated_Tiles[openingindex] = Object.Instantiate(newtile.Objtile, oldtileloc, new Quaternion(), RoomObject.transform);
         }
     }
-
     /// <summary>
     /// Returns the adjacent side of choosen side.
     /// </summary>

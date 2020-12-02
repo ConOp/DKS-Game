@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -161,6 +161,7 @@ public abstract class Basic_Enemy:MonoBehaviour
         current_health -= damage;
         if (current_health <= 0)
         {
+            Battle_Manager.GetInstance().RemoveEnemy(this.gameObject);//Remove enemy from battle.
             return true;
         }
         else
