@@ -201,7 +201,6 @@ GameObject:
   - component: {fileID: 2710063662068064544}
   - component: {fileID: 2414516386426228922}
   - component: {fileID: 5254670380598710890}
-  - component: {fileID: 52655624352754733}
   m_Layer: 0
   m_Name: Handgun
   m_TagString: Equipment
@@ -236,7 +235,7 @@ SphereCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 1.2
-  m_Center: {x: -0.046676457, y: -0.17284065, z: -0.0024442077}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &2710063662068064544
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -250,8 +249,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 10
+  speed: 20
   cooldown: 0.6
-  range: 50
+  range: 10
+  bullet: {fileID: 8148249915138771495, guid: 70d52b0fb1393cb459070cb52ec24a91, type: 3}
 --- !u!114 &2414516386426228922
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -278,15 +279,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   standingOver: 0
---- !u!114 &52655624352754733
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2414516386426228918}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 57807a0a2e7f8a146b2c36edaae6414b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

@@ -4,6 +4,9 @@ using UnityEngine;
 
 public interface Weapon
 {
-    string GetName();
-    bool ReadyToFire();
+    float getAttackSpeed();
+    string GetTypeOfWeapon();
+    bool ReadyToAttack();
+    void Attack();
+    float GetRange();
 }

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface RangedWeapon : Weapon
+public interface MeleeWeapon : Weapon
 {
-    float GetSpeed();
+    float getArc();
 }

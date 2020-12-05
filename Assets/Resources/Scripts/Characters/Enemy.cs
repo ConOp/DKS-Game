@@ -5,7 +5,8 @@ using UnityEngine;
 public class Enemy : MonoBehaviour,Character
 {
     [SerializeField]
-    protected float hp = 5;
+    [Range(5f,100f)]
+    protected float hp = 20f;
     private bool combatant = false;
     public Enemy(int hp)
     {

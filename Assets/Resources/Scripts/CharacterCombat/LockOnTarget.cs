@@ -12,8 +12,8 @@ public class LockOnTarget : MonoBehaviour
     GameObject arrow;
     GameObject targeted;
 
-    public GameObject terrain;
     public GameObject arrows;
+    public GameObject hand;
 
     private void Start()
     {
@@ -38,15 +38,21 @@ public class LockOnTarget : MonoBehaviour
             {
                 TargetLock(targeted);
             }
+            PointToEnemy();
         }
         
+    }
+
+    void PointToEnemy()
+    {
+        transform.LookAt(targeted.transform);
     }
 
     void SelectEnemy(Touch finger)
     {
         RaycastHit hit;
         Ray ray = Camera.main.ScreenPointToRay(finger.position);
-        if(terrain.GetComponent<Collider>().Raycast(ray,out hit, Mathf.Infinity))
+        if(Physics.Raycast(ray,out hit, Mathf.Infinity,LayerMask.GetMask("Ground")))
         {
             GameObject closest = mng.Closest(hit.point, mng.enemies);
             float dist = Vector2.Distance(hit.point, closest.transform.position);

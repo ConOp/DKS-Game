@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Player : MonoBehaviour,Character
@@ -21,9 +22,10 @@ public class Player : MonoBehaviour,Character
     public GameObject interactObject;
 
     public GameObject hand;
+
     private void Start()
     {
-        weapons = new List<GameObject>();
+        weapons = new List<GameObject> { null, null };
     }
 
     /// <summary>
@@ -61,26 +63,69 @@ public class Player : MonoBehaviour,Character
     {
         if (overEquipment)
         {
-            interactObject.gameObject.GetComponent<PickUp>().PickedUp();
-            if (weapons.Count > 1)
+            overEquipment = false;
+            interactObject.gameObject.GetComponent<EquipmentOnGround>().PickedUp();
+            if (weapons[currentWeaponIndex] != null)
             {
-                weapons.RemoveAt(currentWeaponIndex);
+                ChangeWeapon();
             }
-            weapons.Insert(currentWeaponIndex, interactObject.gameObject);
-            ShowWeapon();
+            TakeWeapon();
         }
         else
         {
-            currentWeaponIndex = currentWeaponIndex + 1 > weapons.Count - 1 ? 0 : currentWeaponIndex++;
+            if (weapons[NextItem()]!=null)
+            {
+                ChangeWeapon();
+            }
         }
     }
 
-    void ShowWeapon()
+    int NextItem()
+    {
+        int pos;
+        if (currentWeaponIndex < weapons.Count - 1)
+        {
+            pos = currentWeaponIndex+1;
+        }
+        else
+        {
+            pos = 0;
+        }
+        return pos;
+    }
+    
+    void ShowWeapon(GameObject shown)
+    {
+        shown.SetActive(true);
+        shown.transform.worldToLocalMatrix.MultiplyVector(hand.transform.forward);
+        shown.transform.parent = hand.transform;
+        shown.transform.rotation = new Quaternion(0, 0, 0, 0);
+    }
+
+    void TakeWeapon()
     {
         //create the weapon on player's hand
-        GameObject shown = Instantiate(weapons[currentWeaponIndex], hand.transform.position, Quaternion.identity);
-        shown.transform.worldToLocalMatrix.MultiplyVector(hand.transform.forward);
-        //shown.transform.LookAt(hand.transform.forward);
-        shown.transform.parent = hand.transform;
+        weapons[currentWeaponIndex] =  interactObject;
+        interactObject.transform.position = hand.transform.position;
+        ShowWeapon(weapons[currentWeaponIndex]);
+    }
+
+    void ChangeWeapon()
+    {
+        weapons[currentWeaponIndex].SetActive(false);
+        currentWeaponIndex = NextItem();
+        if (weapons[currentWeaponIndex]!=null)
+        {
+            weapons[currentWeaponIndex].SetActive(true);
+        }
+    }
+
+    public void Attack()
+    {
+        if (weapons.Any())
+        {
+            weapons[currentWeaponIndex].GetComponent<Weapon>().Attack();
+        }
+        //depending on the result, alter neuroticism. TODO
     }
 }
