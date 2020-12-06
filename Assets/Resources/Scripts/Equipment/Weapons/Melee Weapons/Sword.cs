@@ -51,7 +51,7 @@ public class Sword : MonoBehaviour, MeleeWeapon
         return false;        
     }
 
-    public void Attack()
+    public bool Attack()
     {
         if (ReadyToAttack())
         {
@@ -64,13 +64,13 @@ public class Sword : MonoBehaviour, MeleeWeapon
                 }
                 //if enemy is withing the weapon arc
                 if (Vector3.Angle(transform.parent.parent.forward, enemy.transform.position - transform.parent.parent.position) <= arc)
-                {
-                    
+                {                    
                     enemy.GetComponent<Enemy>().TakeDamage(damage);
                 }
             }
-            
+            return true;
         }
+        return false;
     }
 
 }

@@ -58,7 +58,7 @@ public class Handgun : MonoBehaviour, RangedWeapon
         return false;
     }
 
-    public void Attack()
+    public bool Attack()
     {
         if (ReadyToAttack())
         {
@@ -68,6 +68,8 @@ public class Handgun : MonoBehaviour, RangedWeapon
             bullet.GetComponent<Bullet_v2>().range = range;
             bullet.GetComponent<Bullet_v2>().speed = speed;
             bullet.GetComponent<Bullet_v2>().damage = damage;
+            return true;
         }
+        return false;
     }
 }

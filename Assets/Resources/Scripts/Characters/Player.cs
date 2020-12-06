@@ -136,10 +136,15 @@ public class Player : MonoBehaviour,Character
 
     public void Attack()
     {
+        bool attacked = false;
         if (weapons.Any())
         {
-            weapons[currentWeaponIndex].GetComponent<Weapon>().Attack();
+            attacked = weapons[currentWeaponIndex].GetComponent<Weapon>().Attack();
         }
-        //depending on the result, alter neuroticism. TODO
+        //depending on the result, alter neuroticism.
+        if (attacked)
+        {
+
+        }
     }
 }

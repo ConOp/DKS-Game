@@ -7,6 +7,6 @@ public interface Weapon
     float getAttackSpeed();
     string GetTypeOfWeapon();
     bool ReadyToAttack();
-    void Attack();
+    bool Attack();
     float GetRange();
 }
