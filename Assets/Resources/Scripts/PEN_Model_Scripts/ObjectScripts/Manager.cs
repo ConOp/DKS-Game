@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -7,7 +8,7 @@ using UnityEngine.UI;
 public class Manager : MonoBehaviour
 {
     bool inCombat = false;
-    pen_model pen;
+    
 
     GameObject player;
 
@@ -21,21 +22,22 @@ public class Manager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        pen = new pen_model();
 
         player = GameObject.FindGameObjectWithTag("Player");
-
-        distance_num = GameObject.Find("Distance_Number");
-
-        enemies = new List<GameObject>();
+        try
+        {
+            distance_num = GameObject.Find("Distance_Number");
+        }
+        catch (Exception e) { };
         
-
         //unused for now...
         players = new List<GameObject>();
         foreach (GameObject p in GameObject.FindGameObjectsWithTag("Player"))
         {
             players.Add(p);
         }
+        enemies = new List<GameObject>();
+        
     }
     // Update is called once per frame
     void Update()
@@ -60,15 +62,14 @@ public class Manager : MonoBehaviour
             {
                 player.GetComponent<Player>().exitCombat();
                 inCombat = false;
-                pen.UpdateRate();
                 return;
             }           
-
+            /*
             //distance of closest target to player.
             GameObject closestEnemy = Closest(player.transform.position, enemies);
             dist = Vector3.Distance(player.transform.position, closestEnemy.transform.position);
             distance_num.GetComponent<Text>().text = dist.ToString();
-            pen.UpdateValues(player, closestEnemy);
+            */
         }
     }
 
@@ -82,27 +83,5 @@ public class Manager : MonoBehaviour
         }
         inCombat = true;
         Debug.Log("Combat has started");
-    }
-
-    /// <summary>
-    /// Returns the closest object of a list of GameObjects to a GameObject source.
-    /// </summary>
-    /// <param name="source"></param>
-    /// <param name="targets"></param>
-    /// <returns></returns>
-    public GameObject Closest(Vector3 source, List<GameObject> targets)
-    {
-        float distance = Vector3.Distance(source, targets[0].transform.position);
-        GameObject closest = targets[0];
-        foreach (GameObject t in targets)
-        {
-            float d = Vector3.Distance(source, t.transform.position);
-            if (d < distance)
-            {
-                distance = d;
-                closest = t;
-            }
-        }
-        return closest;
-    }
+    }        
 }

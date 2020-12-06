@@ -15,11 +15,19 @@ public class pen_model
     static float INTERVAL = 1;
     float timePassed = 0;
 
+    //Debug, visualized valued. Will be removed from the product.
+    Text neuro_num = GameObject.Find("Neuro_Number").GetComponent<Text>();
+    Text extra_num = GameObject.Find("Extra_Number").GetComponent<Text>();
+    Text psycho_num = GameObject.Find("Psycho_Number").GetComponent<Text>();//psycho changed to certainty.
+    Text character_text = GameObject.Find("CharacteristicText").GetComponent<Text>();
 
-    //for Neuroticism
+    //for Neuroticism from movements.
     Move_neuroticism mover = new Move_neuroticism();
 
-    //for Extraversion
+    //for Neuroticism from hastily attacks.
+    Attack_neuroticism atk = new Attack_neuroticism();
+
+    //for Extraversion from approach to enemies.
     Distance_extraversion dister = new Distance_extraversion();
 
     //for Rate of System Certainty
@@ -35,7 +43,7 @@ public class pen_model
     /// <param name="enemyPos"></param>
     public void UpdateValues(GameObject player, GameObject enemy)
     {
-        neuro = mover.getNeuro();
+        neuro = mover.getNeuro()+atk.GetNeuro();
         extr = dister.getExtr(player, enemy);
         timePassed += Time.deltaTime;
         if (timePassed >= INTERVAL)
@@ -54,11 +62,11 @@ public class pen_model
         certainty = rate.getRate(neuro, extr);
     }
 
-    //Debug, visualized valued. Will be removed from the product.
-    Text neuro_num = GameObject.Find("Neuro_Number").GetComponent<Text>();
-    Text extra_num = GameObject.Find("Extra_Number").GetComponent<Text>();
-    Text psycho_num = GameObject.Find("Psycho_Number").GetComponent<Text>();//psycho changed to certainty.
-    Text character_text = GameObject.Find("CharacteristicText").GetComponent<Text>();
+    public void AttackNeuro(bool success)
+    {
+        atk.Attacked(success);
+    }
+    
     void UpdateUI()
     {
         neuro_num.text = neuro.ToString();
