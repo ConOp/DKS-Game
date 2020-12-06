@@ -9,11 +9,6 @@ public class NewRoomGen : MonoBehaviour
     public static int RoomNumber = 20; //Target room number.
     public static int roomsPlaced = 0;
     GameObject dungeon;
-    private void Awake()
-    {
-        PrefabManager.LoadPrefabs();//Load all the prefabs from the project at the very start.
-        DataManager.Initialize_Type_Data();//Load all types data for room and corridors.
-    }
 
 
     void Start()
@@ -28,7 +23,7 @@ public class NewRoomGen : MonoBehaviour
     public void CreateDungeon(int room_number)
     {
         //Construct Spawn Room.
-        InstantiateIRoom(RoomFactory.Build("SpawningRoom", PrefabManager.GetAllRoomTiles(), 5, 5), new Vector3(0, 0, 0), PrefabManager.GetAllRoomTiles());
+        InstantiateIRoom(RoomFactory.Build("SpawningRoom", PrefabManager.GetInstance().GetAllRoomTiles(), 5, 5), new Vector3(0, 0, 0), PrefabManager.GetInstance().GetAllRoomTiles());
         bool foundcorridor, foundroom;
         while (true)
         {
@@ -77,7 +72,7 @@ public class NewRoomGen : MonoBehaviour
                 
                 if (allrooms[openroomindex].Category == "Room")
                 {
-                    InstantiateIRoom(newroom, newroomloc, PrefabManager.GetAllRoomTiles());
+                    InstantiateIRoom(newroom, newroomloc, PrefabManager.GetInstance().GetAllRoomTiles());
 
                     if (newroom.Category == "Room")
                     {
@@ -87,7 +82,7 @@ public class NewRoomGen : MonoBehaviour
                 }
                 else if (allrooms[openroomindex].Category == "Corridor")
                 {
-                    InstantiateIRoom(newroom, newroomloc, PrefabManager.GetAllRoomTiles());
+                    InstantiateIRoom(newroom, newroomloc, PrefabManager.GetInstance().GetAllRoomTiles());
                     if (newroom.Category == "Room")
                     {
                         roomsPlaced++;

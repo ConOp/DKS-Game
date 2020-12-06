@@ -2,19 +2,40 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public static class DataManager
+public class DataManager
 {
+    #region Singleton
+    private static DataManager instance = null;
+
+    public static DataManager GetInstance()
+    {
+        if (instance != null)
+        {
+            return instance;
+        }
+        else
+        {
+            return new DataManager();
+        }
+
+    }
+    private DataManager()
+    {
+        instance = this;
+        Initialize_Type_Data();
+    }
+    #endregion
     /// <summary>
     /// Room helping struct.
     /// </summary>
-    struct Room_Type
+    private struct Room_Type
     {
         public bool[] available_sides;
         public string room_type;
     }
 
     //Room Sizes Dictionary.
-    static readonly Dictionary<string, (int, int)> room_sizes_data = new Dictionary<string, (int, int)>()
+    private readonly Dictionary<string, (int, int)> room_sizes_data = new Dictionary<string, (int, int)>()
     {
         {"Small",(3,3) },
         {"Medium",(5,5) },
@@ -23,17 +44,17 @@ public static class DataManager
 
     //Room Available sides data.
     //HINT! Sides go in this order = [Left,Top,Right,Bottom] -> true if available, false if not available.
-    static Room_Type[] room_types_data;
+    private Room_Type[] room_types_data;
 
     //Corridor Available sides data.
     //HINT! Sides go in this order = [Left,Top,Right,Bottom] -> true if available, false if not available.
-    static  Room_Type[] corridor_types_data;
+      Room_Type[] corridor_types_data;
 
 
     /// <summary>
     /// Initialized the data regarding the open sides of the rooms.
     /// </summary>
-    public static void Initialize_Type_Data()
+    public  void Initialize_Type_Data()
     {
         //Room type data initialization.
         room_types_data = new Room_Type[4];
@@ -59,7 +80,7 @@ public static class DataManager
     /// </summary>
     /// <param name="roomType"></param>
     /// <returns></returns>
-    public static List<string> GetRoomAvailableSides(string roomType)
+    public  List<string> GetRoomAvailableSides(string roomType)
     {
         List<string> aSides = new List<string>();
         foreach(Room_Type type in room_types_data)
@@ -81,7 +102,7 @@ public static class DataManager
     /// </summary>
     /// <param name="roomType"></param>
     /// <returns></returns>
-    public static List<string> GetCoridorAvailableSides(string corridorType)
+    public  List<string> GetCoridorAvailableSides(string corridorType)
     {
         List<string> aSides = new List<string>();
         foreach (Room_Type type in corridor_types_data)
@@ -104,7 +125,7 @@ public static class DataManager
     /// </summary>
     /// <param name="size"></param>
     /// <returns></returns>
-    public static (int,int) Search_Sizes_Dictionary(string size)
+    public  (int,int) Search_Sizes_Dictionary(string size)
     {
         return room_sizes_data[size];
     }
@@ -114,7 +135,7 @@ public static class DataManager
     /// </summary>
     /// <param name="side"></param>
     /// <returns></returns>
-    public static List<string> Search_Available_Sides(string side,string type)
+    public  List<string> Search_Available_Sides(string side,string type)
     {
         int index;
         if (side == "Left")
@@ -169,7 +190,7 @@ public static class DataManager
     /// <param name="times_smaller"></param>
     /// <returns></returns>
     //Ex oldsize="Large" if times_smaller = 1 will return "Medium" / if times_smaller = 2 will return "Small".
-    public static (string,int,int) ReturnSmallerSize(string oldsize,int times_smaller)
+    public  (string,int,int) ReturnSmallerSize(string oldsize,int times_smaller)
     {
         string current_size = oldsize;
         while (times_smaller > 0)

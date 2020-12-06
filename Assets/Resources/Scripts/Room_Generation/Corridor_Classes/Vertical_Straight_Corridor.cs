@@ -7,7 +7,7 @@ public class Vertical_Straight_Corridor : Basic_Corridor
 {
     public Vertical_Straight_Corridor(List<GameObject> tiles, string type, int tiles_x, int tiles_z) : base(tiles, type, tiles_x, tiles_z)
     {
-        Available_Sides = DataManager.GetCoridorAvailableSides(this.GetType().Name);
+        Available_Sides = DataManager.GetInstance().GetCoridorAvailableSides(this.GetType().Name);
     }
 
     public override void CreateRoom(List<GameObject> tiles)

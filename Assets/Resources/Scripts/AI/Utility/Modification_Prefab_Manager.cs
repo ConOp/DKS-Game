@@ -2,13 +2,33 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public static class Modification_Prefab_Manager
+public class Modification_Prefab_Manager
 {
-    static List<GameObject> Movement_Speed_Modifications;
-    static List<GameObject> Attack_Damage_Modifications;
-    static List<GameObject> Attack_Range_Modifications;
-    static List<GameObject> Attack_Speed_Modifications;
-    public static bool LoadModificationPrefabs()
+    #region Singleton
+    private static Modification_Prefab_Manager instance = null;
+    public static Modification_Prefab_Manager GetInstance()
+    {
+        if (instance == null)
+        {
+            return new Modification_Prefab_Manager();
+        }
+        return instance;
+    }
+    private Modification_Prefab_Manager()
+    {
+        instance = this;
+        LoadModificationPrefabs();
+    }
+    #endregion
+    private List<GameObject> Movement_Speed_Modifications;
+    private List<GameObject> Attack_Damage_Modifications;
+    private List<GameObject> Attack_Range_Modifications;
+    private List<GameObject> Attack_Speed_Modifications;
+    /// <summary>
+    /// Loads all the modification prefabs.
+    /// </summary>
+    /// <returns></returns>
+    public  bool LoadModificationPrefabs()
     {
         try
         {
@@ -23,11 +43,20 @@ public static class Modification_Prefab_Manager
             return false;
         }
     }
-    public static List<GameObject> GetAllSpeedModifications()
+    /// <summary>
+    /// Returns the speed modification prefabs list.
+    /// </summary>
+    /// <returns></returns>
+    public  List<GameObject> GetAllSpeedModifications()
     {
         return Movement_Speed_Modifications;
     }
-    public static GameObject SearchModification(string mod_name)
+    /// <summary>
+    /// Search for a modification in the prefabs.
+    /// </summary>
+    /// <param name="mod_name"></param>
+    /// <returns></returns>
+    public  GameObject SearchModification(string mod_name)
     {
         if (mod_name.Contains("Movement_Speed"))
         {

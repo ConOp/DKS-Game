@@ -80,7 +80,7 @@ public abstract class Basic_Enemy:MonoBehaviour
     /// <param name="mod_type"></param>
     public void Add_Modification(string mod_type)
     {
-        Modification mod = Modification_Prefab_Manager.SearchModification(mod_type).GetComponent<Modification>();
+        Modification mod = Modification_Prefab_Manager.GetInstance().SearchModification(mod_type).GetComponent<Modification>();
         for (int i = 0; i < Attachment_Bases.Count; i++)
         {
             if (Attachment_Bases[i].base_size == mod.size && !Attachment_Bases[i].used)
@@ -133,7 +133,7 @@ public abstract class Basic_Enemy:MonoBehaviour
     public GameObject Rotate_Modification(Modification mod,(Transform base_pos,string base_size,string base_side,bool taken) mod_base)
     {
         
-        GameObject modificationobj = Instantiate(Modification_Prefab_Manager.SearchModification(mod.type), mod_base.base_pos.transform.position, new Quaternion(), gameObject.transform);
+        GameObject modificationobj = Instantiate(Modification_Prefab_Manager.GetInstance().SearchModification(mod.type), mod_base.base_pos.transform.position, new Quaternion(), gameObject.transform);
 
         if (mod_base.base_side == "E")
         {
