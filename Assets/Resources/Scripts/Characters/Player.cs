@@ -64,10 +64,17 @@ public class Player : MonoBehaviour,Character
         if (overEquipment)
         {
             overEquipment = false;
-            interactObject.gameObject.GetComponent<EquipmentOnGround>().PickedUp();
+            interactObject.gameObject.GetComponent<EquipmentOnGround>().PickedUp(true);
             if (weapons[currentWeaponIndex] != null)
             {
-                ChangeWeapon();
+                if (weapons[NextItem()] != null)
+                {
+                    DropWeapon();
+                }
+                else
+                {
+                    ChangeWeapon();
+                }
             }
             TakeWeapon();
         }
@@ -118,6 +125,13 @@ public class Player : MonoBehaviour,Character
         {
             weapons[currentWeaponIndex].SetActive(true);
         }
+    }
+
+    void DropWeapon()
+    {
+        weapons[currentWeaponIndex].transform.parent = null;
+        weapons[currentWeaponIndex].GetComponent<EquipmentOnGround>().PickedUp(false);
+        weapons[currentWeaponIndex] = null;
     }
 
     public void Attack()

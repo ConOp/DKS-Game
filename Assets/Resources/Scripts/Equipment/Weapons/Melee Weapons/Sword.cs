@@ -48,17 +48,7 @@ public class Sword : MonoBehaviour, MeleeWeapon
         {
             return true;
         }
-        return false;
-        /*
-        float time = Time.time;
-        if (time >= oldFire + cooldown)
-        {
-            oldFire = time;
-            return true;
-        }
-
-        return false;
-        */
+        return false;        
     }
 
     public void Attack()

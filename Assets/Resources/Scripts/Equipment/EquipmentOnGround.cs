@@ -37,15 +37,15 @@ public class EquipmentOnGround : MonoBehaviour
     /// state true when picked up, false when dropped down.
     /// </summary>
     /// <param name="state"></param>
-    public void PickedUp()
+    public void PickedUp(bool state)
     {
         if (anim)
         {
-            anim.enabled = true;
+            anim.enabled = state;
         }
         ResetColors();
-        gameObject.GetComponent<Collider>().enabled = false;
-        gameObject.GetComponent<EquipmentOnGround>().enabled = false;
+        gameObject.GetComponent<Collider>().enabled = !state;
+        gameObject.GetComponent<EquipmentOnGround>().enabled = !state;
     }
 
     private void OnTriggerEnter(Collider other)
