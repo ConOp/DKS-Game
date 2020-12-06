@@ -28,10 +28,7 @@ public class Manager : MonoBehaviour
         distance_num = GameObject.Find("Distance_Number");
 
         enemies = new List<GameObject>();
-        foreach (GameObject e in GameObject.FindGameObjectsWithTag("Enemy"))
-        {
-            enemies.Add(e);
-        }
+        
 
         //unused for now...
         players = new List<GameObject>();
@@ -63,11 +60,12 @@ public class Manager : MonoBehaviour
             {
                 player.GetComponent<Player>().exitCombat();
                 inCombat = false;
+                pen.UpdateRate();
                 return;
             }           
 
             //distance of closest target to player.
-            GameObject closestEnemy = Closest(player, enemies);
+            GameObject closestEnemy = Closest(player.transform.position, enemies);
             dist = Vector3.Distance(player.transform.position, closestEnemy.transform.position);
             distance_num.GetComponent<Text>().text = dist.ToString();
             pen.UpdateValues(player, closestEnemy);
@@ -92,13 +90,13 @@ public class Manager : MonoBehaviour
     /// <param name="source"></param>
     /// <param name="targets"></param>
     /// <returns></returns>
-    public GameObject Closest(GameObject source, List<GameObject> targets)
+    public GameObject Closest(Vector3 source, List<GameObject> targets)
     {
-        float distance = Vector3.Distance(source.transform.position, targets[0].transform.position);
+        float distance = Vector3.Distance(source, targets[0].transform.position);
         GameObject closest = targets[0];
         foreach (GameObject t in targets)
         {
-            float d = Vector3.Distance(source.transform.position, t.transform.position);
+            float d = Vector3.Distance(source, t.transform.position);
             if (d < distance)
             {
                 distance = d;

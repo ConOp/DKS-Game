@@ -5,7 +5,9 @@ TagManager:
   serializedVersion: 2
   tags:
   - Enemy
-  - HitController
+  - DungeonMaster
+  - Equipment
+  - Ground
   layers:
   - Default
   - TransparentFX
@@ -17,7 +19,7 @@ TagManager:
   - 
   - Obstacles
   - Enemies
-  - 
+  - Ground
   - 
   - 
   - 

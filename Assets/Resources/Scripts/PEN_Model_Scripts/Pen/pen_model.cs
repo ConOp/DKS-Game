@@ -10,15 +10,11 @@ public class pen_model
 
     protected float neuro = 0;
     protected float extr = 0;
-    protected float psycho = 0;
+    protected float certainty = 0;
     protected (string,string,int) characteristic;
     static float INTERVAL = 1;
     float timePassed = 0;
 
-    Text neuro_num = GameObject.Find("Neuro_Number").GetComponent<Text>();
-    Text extra_num = GameObject.Find("Extra_Number").GetComponent<Text>();
-    Text psycho_num = GameObject.Find("Psycho_Number").GetComponent<Text>();
-    Text character_text = GameObject.Find("CharacteristicText").GetComponent<Text>();
 
     //for Neuroticism
     Move_neuroticism mover = new Move_neuroticism();
@@ -26,8 +22,8 @@ public class pen_model
     //for Extraversion
     Distance_extraversion dister = new Distance_extraversion();
 
-    //for Psychoticism
-    Rate_psychoticism rate = new Rate_psychoticism();
+    //for Rate of System Certainty
+    Model_Certainty rate = new Model_Certainty();
 
     //for Characteristics
     Characteristics characts = new Characteristics();
@@ -44,18 +40,30 @@ public class pen_model
         timePassed += Time.deltaTime;
         if (timePassed >= INTERVAL)
         {
-            timePassed = 0;
-            psycho = rate.getPsycho(neuro, extr);
-            characteristic = characts.ExtractCharact(psycho, extr, neuro);
+            timePassed = 0;            
+            characteristic = characts.ExtractCharact(certainty, extr, neuro);
         }
-        UpdateUI();
+        if (neuro_num != null && extra_num != null & psycho_num != null && character_text != null)
+        {
+            UpdateUI();
+        }
     }
 
+    public void UpdateRate()
+    {
+        certainty = rate.getRate(neuro, extr);
+    }
+
+    //Debug, visualized valued. Will be removed from the product.
+    Text neuro_num = GameObject.Find("Neuro_Number").GetComponent<Text>();
+    Text extra_num = GameObject.Find("Extra_Number").GetComponent<Text>();
+    Text psycho_num = GameObject.Find("Psycho_Number").GetComponent<Text>();//psycho changed to certainty.
+    Text character_text = GameObject.Find("CharacteristicText").GetComponent<Text>();
     void UpdateUI()
     {
         neuro_num.text = neuro.ToString();
         extra_num.text = extr.ToString();
-        psycho_num.text = psycho.ToString();
+        psycho_num.text = certainty.ToString();
         character_text.text = characteristic.Item1;
         if (characteristic.Item2 != null)
         {
