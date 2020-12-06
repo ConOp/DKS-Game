@@ -18,9 +18,9 @@ public class Move_neuroticism
     public float getNeuro()
     {
         CheckMove();
-        //CheckHit();//old hit controller
         return neuro;
     }
+
     /// <summary>
     ///CheckMove is called whenever someone wants to get neuro from movement.
     /// </summary>

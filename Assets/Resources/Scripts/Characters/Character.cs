@@ -36,4 +36,6 @@ public interface Character
     /// Destroys the character, using Destroy(gameObject,delay)
     /// </summary>
     void Kill(float delay);
+
+    GameObject Closest(List<GameObject> targets);
 }

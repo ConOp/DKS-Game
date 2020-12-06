@@ -31,7 +31,7 @@ public class LockOnTarget : MonoBehaviour
             }
             if (!lockOn)
             {
-                targeted = mng.Closest(this.gameObject.transform.position, mng.enemies);
+                targeted = GetComponent<Player>().Closest(mng.enemies);
                 TargetLock(targeted);
             }
             else
@@ -54,7 +54,7 @@ public class LockOnTarget : MonoBehaviour
         Ray ray = Camera.main.ScreenPointToRay(finger.position);
         if(Physics.Raycast(ray,out hit, Mathf.Infinity,LayerMask.GetMask("Ground")))
         {
-            GameObject closest = mng.Closest(hit.point, mng.enemies);
+            GameObject closest = GetComponent<Player>().Closest(mng.enemies);
             float dist = Vector2.Distance(hit.point, closest.transform.position);
             if (dist < 0.9f)
             {

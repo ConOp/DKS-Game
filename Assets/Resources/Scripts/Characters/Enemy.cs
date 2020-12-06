@@ -42,4 +42,20 @@ public class Enemy : MonoBehaviour,Character
         manager.enemies.RemoveAt(index);
         Destroy(gameObject, delay);
     }
+
+    public GameObject Closest(List<GameObject> targets)
+    {
+        float distance = Vector3.Distance(gameObject.transform.position, targets[0].transform.position);
+        GameObject closest = targets[0];
+        foreach (GameObject t in targets)
+        {
+            float d = Vector3.Distance(gameObject.transform.position, t.transform.position);
+            if (d < distance)
+            {
+                distance = d;
+                closest = t;
+            }
+        }
+        return closest;
+    }
 }
