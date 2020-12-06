@@ -8,14 +8,11 @@ public class Move_neuroticism
 
     private float moveTime_h = 0;
     private float moveTime_v = 0;
-    private float hitTime_h = 0;
-    private float hitTime_v = 0;
     public static float THRESHOLD = 1;
     private float neuro = 0;
 
 
     public Joystick move_joystick = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>().joystick;
-    public Joystick hit_joystick = GameObject.FindGameObjectWithTag("Player").GetComponentInChildren<PlayerHit>().joystick;
 
     //to get neuro.
     public float getNeuro()
@@ -47,29 +44,6 @@ public class Move_neuroticism
         else if (Math.Abs(move_joystick.Vertical) < 0.2f && Math.Abs(move_joystick.Vertical) > 0)
         {
             ChangeNeuro(ref moveTime_v);
-        }
-    }
-
-    public void CheckHit()
-    {
-        //when key is hold, count time.
-        if (Math.Abs(hit_joystick.Horizontal) > 0.2f)
-        {
-            hitTime_h += Time.deltaTime;
-        }
-        if (Math.Abs(hit_joystick.Vertical) > 0.2f)
-        {
-            hitTime_v += Time.deltaTime;
-        }
-
-        //when key is released, call function to calc time in regard to threshold.
-        if (Math.Abs(hit_joystick.Horizontal) < 0.2f && Math.Abs(hit_joystick.Horizontal) > 0)
-        {
-            ChangeNeuro(ref hitTime_h);
-        }
-        else if (Math.Abs(hit_joystick.Vertical) < 0.2f && Math.Abs(hit_joystick.Vertical) > 0)
-        {
-            ChangeNeuro(ref hitTime_v);
         }
     }
 

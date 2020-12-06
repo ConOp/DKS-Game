@@ -2,19 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour,Character//MonoBehaviour, Character
+public class Enemy : MonoBehaviour,Character
 {
     [SerializeField]
-    protected float hp = 10;
+    [Range(5f,100f)]
+    protected float hp = 20f;
     private bool combatant = false;
-    /// <summary>
-    /// creates a controlled player with given hp.
-    /// </summary>
-    public Player(int hp)
+    public Enemy(int hp)
     {
         this.hp = hp;
     }
-
     public void enterCombat()
     {
         this.combatant = true;
@@ -31,10 +28,18 @@ public class Player : MonoBehaviour,Character//MonoBehaviour, Character
     public void TakeDamage(float damage)
     {
         hp -= damage;
+        if (hp <= 0)
+        {
+            Kill(0.5f);
+        }
     }
 
     public void Kill(float delay)
     {
+        this.exitCombat();
+        Manager manager = GameObject.Find("Manager").GetComponent<Manager>();
+        int index = manager.enemies.FindIndex(en => en == this.gameObject);
+        manager.enemies.RemoveAt(index);
         Destroy(gameObject, delay);
     }
 }
