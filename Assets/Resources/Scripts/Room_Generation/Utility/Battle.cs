@@ -113,10 +113,6 @@ public class Battle
             Debug.Log("Waiting... "+currentWave);
             yield return new WaitUntil(() => waveFinished);
         }
-        foreach(GameObject player in playersInvolved)
-        {
-            RemovePlayer(player);
-        }
         Battle_Manager.GetInstance().RemoveBattle(this);
     }
     private void SpawnWave( int numberOfEnemies)

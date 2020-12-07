@@ -36,6 +36,10 @@ public class Battle_Manager
     /// <param name="battle"></param>
     public void RemoveBattle(Battle battle)
     {
+        foreach(GameObject player in battle.GetPlayers())
+        {
+            player.GetComponent<Player>().exitCombat();
+        }
         battle.GetRoom().OpenDoors();
         activeBattles.Remove(battle);
     }
