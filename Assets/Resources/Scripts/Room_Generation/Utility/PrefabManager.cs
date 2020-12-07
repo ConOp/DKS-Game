@@ -2,16 +2,37 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public static class PrefabManager
+public class PrefabManager
 {
-    static List<GameObject> allroomtiles;
-     static List<GameObject> allcorridortiles;
+    #region Singleton
+    private static PrefabManager instance = null;
+
+    public static PrefabManager GetInstance()
+    {
+        if (instance != null)
+        {
+            return instance;
+        }
+        else
+        {
+            return new PrefabManager();
+        }
+
+    }
+    private PrefabManager()
+    {
+        instance = this;
+        LoadPrefabs();
+    }
+    #endregion
+     private List<GameObject> allroomtiles;
+     private List<GameObject> allcorridortiles;
 
     /// <summary>
     /// Returns all loaded tiles from project.
     /// </summary>
     /// <returns></returns>
-    public static List<GameObject> GetAllRoomTiles()
+    public  List<GameObject> GetAllRoomTiles()
     {
         return allroomtiles;
     }
@@ -20,7 +41,7 @@ public static class PrefabManager
     /// Returns all loaded corridors from project.
     /// </summary>
     /// <returns></returns>
-    public static List<GameObject> GetAllCorridorTiles()
+    public  List<GameObject> GetAllCorridorTiles()
     {
         return allcorridortiles;
     }
@@ -28,7 +49,7 @@ public static class PrefabManager
     /// Loads all prefabs from project.
     /// </summary>
     /// <returns></returns>
-    public static bool LoadPrefabs()
+    public  bool LoadPrefabs()
     {
         try
         {

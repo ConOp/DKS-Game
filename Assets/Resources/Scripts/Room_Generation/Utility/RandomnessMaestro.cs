@@ -5,26 +5,45 @@ using UnityEngine;
 
 public class RandomnessMaestro
 {
+    #region Singleton
+    private static RandomnessMaestro instance = null;
 
-    public static bool endRoomPlaced = false;
+    public static RandomnessMaestro GetInstance()
+    {
+        if (instance != null)
+        {
+            return instance;
+        }
+        else
+        {
+            return new RandomnessMaestro();
+        }
+
+    }
+    private RandomnessMaestro()
+    {
+        instance = this;
+    }
+    #endregion
+    public bool endRoomPlaced = false;
 
     //Room or Corridor chances.
-    static List<(string, float)> room_corridor_chance = new List<(string, float)>{
+    private List<(string, float)> room_corridor_chance = new List<(string, float)>{
         ("Corridor",60f),
         ("Room",40f) };
-    //
-    static List<(string, float)> corridor_type = new List<(string, float)>{
+    //Corridor type chances.
+    private List<(string, float)> corridor_type = new List<(string, float)>{
         ("Corner",30f),
         ("Straight",70f) };
     //Room size chances.
-    static List<(string, float)> room_size = new List<(string, float)>{
+    private List<(string, float)> room_size = new List<(string, float)>{
         ("Small",20f),
         ("Medium",50f),
         ("Large",30f)
     };
 
     //Room type chances.
-    static List<(string, float)> room_type = new List<(string, float)>{
+    private List<(string, float)> room_type = new List<(string, float)>{
         ("FightingRoom",98.9f),
         ("ChestRoom",1f),
         ("EndRoom",0.1f)
@@ -35,7 +54,7 @@ public class RandomnessMaestro
     /// Shows appropriate error (debug perposes)
     /// </summary>
     /// <param name="error"></param>
-    private static void ShowError(string error)
+    private  void ShowError(string error)
     {
         switch (error)
         {
@@ -49,7 +68,7 @@ public class RandomnessMaestro
     /// </summary>
     /// <param name="room"></param>
     /// <returns>Random available side</returns>
-    public static string OpenRandomAvailableSide(IRoom room)
+    public  string OpenRandomAvailableSide(IRoom room)
     {
         if (room.Available_Sides.Count > 0)
         {
@@ -65,7 +84,7 @@ public class RandomnessMaestro
     /// Decides if next room is corridor or room.
     /// </summary>
     /// <returns></returns>
-    public static string Choose_Room_Or_Corridor()
+    public  string Choose_Room_Or_Corridor()
     {
         return RandomProbability.Choose(room_corridor_chance);
     }
@@ -73,17 +92,16 @@ public class RandomnessMaestro
     /// Decides the next room size.
     /// </summary>
     /// <returns></returns>
-    public static string Choose_Room_Size()
+    public  string Choose_Room_Size()
     {
         return RandomProbability.Choose(room_size);
     }
-
     /// <summary>
     /// Decides the next room type depending on the list of the available rooms.
     /// </summary>
     /// <param name="available_rooms"></param>
     /// <returns></returns>
-    public static string Choose_Room_Type(List<string> available_rooms)
+    public  string Choose_Room_Type(List<string> available_rooms)
     {
         List<(string, float)> appropriateProbabilities = CalculateProbabilites(available_rooms);
         return RandomProbability.Choose(appropriateProbabilities);
@@ -92,7 +110,7 @@ public class RandomnessMaestro
     /// Decides the corridor type.
     /// </summary>
     /// <returns></returns>
-    public static string Choose_Corridor_Type()
+    public  string Choose_Corridor_Type()
     {
         return RandomProbability.Choose(corridor_type);
     }
@@ -101,7 +119,7 @@ public class RandomnessMaestro
     /// </summary>
     /// <param name="available_rooms"></param>
     /// <returns></returns>
-    static List<(string, float)> CalculateProbabilites(List<string>available_rooms)
+     List<(string, float)> CalculateProbabilites(List<string>available_rooms)
     {
         List<(string, float)> appropriateProbabilities = new List<(string, float)>();
         foreach (string room in available_rooms)

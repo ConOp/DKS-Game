@@ -18,6 +18,7 @@ public abstract class Basic_Room : IRoom
     public IRoom AdjRoomLeft { get; set; }
     public IRoom AdjRoomRight { get; set; }
     public IRoom AdjRoomBottom { get; set; }
+    protected bool explored;
 
     public Basic_Room(List<GameObject> tiles, string type, int tiles_x, int tiles_z)
     {
@@ -26,7 +27,24 @@ public abstract class Basic_Room : IRoom
         this.Type = type;
         this.Tiles_number_x = tiles_x;
         this.Tiles_number_z = tiles_z;
+        explored = false;
         CreateRoom(tiles);
+    }
+    /// <summary>
+    /// Checks if the room is explored.
+    /// </summary>
+    /// <returns></returns>
+    public bool IsExplored()
+    {
+        return explored;
+    }
+    /// <summary>
+    /// Sets the room explored variable.
+    /// </summary>
+    /// <param name="exp"></param>
+    public void SetExplored(bool exp)
+    {
+        explored = exp;
     }
     public abstract void CreateRoom(List<GameObject> tiles);
     /// <summary>
@@ -72,19 +90,19 @@ public abstract class Basic_Room : IRoom
         //Tile to be placed.
         if (side == "Top")
         {
-             t = new Tile("Top_Door", PrefabManager.GetAllRoomTiles().Where(obj => obj.name == "Top_Door").First(), RoomTiles[indexopening].Position);
+             t = new Tile("Top_Door", PrefabManager.GetInstance().GetAllRoomTiles().Where(obj => obj.name == "Top_Door").First(), RoomTiles[indexopening].Position);
         }
         else if (side == "Right")
         {
-            t = new Tile("Right_Door", PrefabManager.GetAllRoomTiles().Where(obj => obj.name == "Right_Door").First(), RoomTiles[indexopening].Position);
+            t = new Tile("Right_Door", PrefabManager.GetInstance().GetAllRoomTiles().Where(obj => obj.name == "Right_Door").First(), RoomTiles[indexopening].Position);
         }
         else if (side == "Bottom")
         {
-            t = new Tile("Bottom_Door", PrefabManager.GetAllRoomTiles().Where(obj => obj.name == "Bottom_Door").First(), RoomTiles[indexopening].Position);
+            t = new Tile("Bottom_Door", PrefabManager.GetInstance().GetAllRoomTiles().Where(obj => obj.name == "Bottom_Door").First(), RoomTiles[indexopening].Position);
         }
         else
         {
-            t = new Tile("Left_Door", PrefabManager.GetAllRoomTiles().Where(obj => obj.name == "Left_Door").First(), RoomTiles[indexopening].Position);
+            t = new Tile("Left_Door", PrefabManager.GetInstance().GetAllRoomTiles().Where(obj => obj.name == "Left_Door").First(), RoomTiles[indexopening].Position);
         }
 
         //Replace opening.
@@ -111,7 +129,7 @@ public abstract class Basic_Room : IRoom
     public (IRoom,Vector3) CreateAdjacentRoom()
     {
         //Chose if next room is gonna be corridor or room.
-        string room_corridor = RandomnessMaestro.Choose_Room_Or_Corridor();
+        string room_corridor = RandomnessMaestro.GetInstance().Choose_Room_Or_Corridor();
         List<string> available_rooms = new List<string>();
         //Get all the available rooms based on the available sides of the current room.
         foreach (string availableSide in Available_Sides)
@@ -121,9 +139,9 @@ public abstract class Basic_Room : IRoom
         available_rooms = available_rooms.Distinct().ToList();//Remove duplicates.
         if (room_corridor == "Room")
         {
-            string roomsize = RandomnessMaestro.Choose_Room_Size();//Select the room size.
-            (int sizex, int sizez) = DataManager.Search_Sizes_Dictionary(roomsize);//Get the room size data.
-            IRoom new_room = RoomFactory.Build(RandomnessMaestro.Choose_Room_Type(available_rooms), PrefabManager.GetAllRoomTiles(), sizex, sizez);//Construct the new room.
+            string roomsize = RandomnessMaestro.GetInstance().Choose_Room_Size();//Select the room size.
+            (int sizex, int sizez) = DataManager.GetInstance().Search_Sizes_Dictionary(roomsize);//Get the room size data.
+            IRoom new_room = RoomFactory.Build(RandomnessMaestro.GetInstance().Choose_Room_Type(available_rooms), PrefabManager.GetInstance().GetAllRoomTiles(), sizex, sizez);//Construct the new room.
             string connectionSide="";
             foreach(string avside in Available_Sides)
             {
@@ -149,9 +167,9 @@ public abstract class Basic_Room : IRoom
                     end = true;
                 }
                 //Return a smaller size.
-                (roomsize, sizex, sizez) = DataManager.ReturnSmallerSize(roomsize, 1);
+                (roomsize, sizex, sizez) = DataManager.GetInstance().ReturnSmallerSize(roomsize, 1);
                 //Re-Construct the room.
-                new_room = RoomFactory.Build(RandomnessMaestro.Choose_Room_Type(available_rooms), PrefabManager.GetAllRoomTiles(), sizex, sizez);
+                new_room = RoomFactory.Build(RandomnessMaestro.GetInstance().Choose_Room_Type(available_rooms), PrefabManager.GetInstance().GetAllRoomTiles(), sizex, sizez);
                 //Re-Calculate opening.
                 new_opening_index = new_room.CalculateOpening(adjside);
                 //Re-Place the room appropriately.
@@ -165,7 +183,7 @@ public abstract class Basic_Room : IRoom
             if (new_room.Type.Equals("EndRoom"))//Check if the floor end room is placed.
             {
                 new_room.Available_Sides.Clear();
-                RandomnessMaestro.endRoomPlaced = true;
+                RandomnessMaestro.GetInstance().endRoomPlaced = true;
                 Debug.LogError("Placed end room at: " + NewRoomGen.roomsPlaced);
             }
             //If everything is okay, place the room normally.
@@ -216,10 +234,10 @@ public abstract class Basic_Room : IRoom
         else
         {
             //Choose randomly the type of corridor.
-            string corridor_chosen_type = RandomnessMaestro.Choose_Corridor_Type();
+            string corridor_chosen_type = RandomnessMaestro.GetInstance().Choose_Corridor_Type();
             //Choose only corridors that match the type
             List<string> proper_rooms = available_rooms.Where(x => x.Contains(corridor_chosen_type)).ToList();
-            IRoom new_room = RoomFactory.Build(proper_rooms[Random.Range(0,proper_rooms.Count-1)], PrefabManager.GetAllCorridorTiles(), 1, 1);
+            IRoom new_room = RoomFactory.Build(proper_rooms[Random.Range(0,proper_rooms.Count-1)], PrefabManager.GetInstance().GetAllCorridorTiles(), 1, 1);
             string connectionSide = "";
             foreach(string avside in Available_Sides)
             {
@@ -276,7 +294,6 @@ public abstract class Basic_Room : IRoom
         }
 
     }
-
     /// <summary>
     /// Detects and seals the opening with a wall depending on the side.
     /// </summary>
@@ -288,20 +305,20 @@ public abstract class Basic_Room : IRoom
         if (side == "Left")
         { 
             
-            newtile = new Tile("Left_Wall", PrefabManager.GetAllRoomTiles().Where(obj => obj.name == "Left_Wall").First(), RoomTiles[openingindex].Position);
+            newtile = new Tile("Left_Wall", PrefabManager.GetInstance().GetAllRoomTiles().Where(obj => obj.name == "Left_Wall").First(), RoomTiles[openingindex].Position);
             
         }
         else if (side == "Top")
         {
-            newtile = new Tile("Top_Wall", PrefabManager.GetAllRoomTiles().Where(obj => obj.name == "Top_Wall").First(), RoomTiles[openingindex].Position);
+            newtile = new Tile("Top_Wall", PrefabManager.GetInstance().GetAllRoomTiles().Where(obj => obj.name == "Top_Wall").First(), RoomTiles[openingindex].Position);
         }
         else if (side == "Right")
         {
-            newtile = new Tile("Right_Wall", PrefabManager.GetAllRoomTiles().Where(obj => obj.name == "Right_Wall").First(), RoomTiles[openingindex].Position);
+            newtile = new Tile("Right_Wall", PrefabManager.GetInstance().GetAllRoomTiles().Where(obj => obj.name == "Right_Wall").First(), RoomTiles[openingindex].Position);
         }
         else
         {
-            newtile = new Tile("Bottom_Wall", PrefabManager.GetAllRoomTiles().Where(obj => obj.name == "Bottom_Wall").First(), RoomTiles[openingindex].Position);
+            newtile = new Tile("Bottom_Wall", PrefabManager.GetInstance().GetAllRoomTiles().Where(obj => obj.name == "Bottom_Wall").First(), RoomTiles[openingindex].Position);
         }
         RoomTiles[openingindex] = newtile;
         Vector3 oldtileloc = new Vector3(0, 0, 0);
@@ -315,7 +332,6 @@ public abstract class Basic_Room : IRoom
             Instantiated_Tiles[openingindex] = Object.Instantiate(newtile.Objtile, oldtileloc, new Quaternion(), RoomObject.transform);
         }
     }
-
     /// <summary>
     /// Returns the adjacent side of choosen side.
     /// </summary>

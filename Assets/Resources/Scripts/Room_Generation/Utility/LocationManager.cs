@@ -4,6 +4,15 @@ using UnityEngine;
 
 public static class LocationManager
 {
+    /// <summary>
+    /// Calculates and returns the appropriate location for the room to be placed.
+    /// </summary>
+    /// <param name="connectionSide"></param>
+    /// <param name="opening_location"></param>
+    /// <param name="new_opening_index"></param>
+    /// <param name="TilesX"></param>
+    /// <param name="TilesZ"></param>
+    /// <returns></returns>
     public  static Vector3 GetApropriateLocationForRoom(string connectionSide,Vector3 opening_location,int new_opening_index,int TilesX,int TilesZ)
     {
         Vector3 new_placed_location = new Vector3(0, 0, 0);

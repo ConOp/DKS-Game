@@ -16,12 +16,12 @@ public class ValidationMaestro
         List<(string, string)> rooms = new List<(string, string)>();
         if (room_corridor == "Room")
         {
-            return DataManager.Search_Available_Sides(connect_side, "Room");
+            return DataManager.GetInstance().Search_Available_Sides(connect_side, "Room");
 
         }
         else
         {
-            return DataManager.Search_Available_Sides(connect_side, "Corridor");
+            return DataManager.GetInstance().Search_Available_Sides(connect_side, "Corridor");
             
         }
        

@@ -8,7 +8,7 @@ public class ChestRoom : Basic_Room
 
     public ChestRoom(List<GameObject> tiles, string type, int tiles_x, int tiles_z) : base(tiles, type, 3, 3)
     {
-        Available_Sides = DataManager.GetRoomAvailableSides(type);
+        Available_Sides = DataManager.GetInstance().GetRoomAvailableSides(type);
     }
     public override void CreateRoom(List<GameObject> tiles)
     {
