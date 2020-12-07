@@ -21,7 +21,7 @@ public class Distance_extraversion
     /// <param name="dist"></param>
     void CheckDistance()
     {
-        float dist = GameObject.Find("Manager").GetComponent<Manager>().dist;
+        float dist = Vector3.Distance(player.transform.position, enemy.transform.position);
         float angle = 60;
         if ((Math.Abs(move_joystick.Horizontal)>0.2f || Math.Abs(move_joystick.Vertical) > 0.2f) && dist <= THRESHOLD)
         {

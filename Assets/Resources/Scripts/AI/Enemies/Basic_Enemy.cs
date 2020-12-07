@@ -162,6 +162,7 @@ public abstract class Basic_Enemy:MonoBehaviour
         if (current_health <= 0)
         {
             Battle_Manager.GetInstance().RemoveEnemy(this.gameObject);//Remove enemy from battle.
+            Destroy(gameObject);
             return true;
         }
         else

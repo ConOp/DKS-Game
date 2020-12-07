@@ -94,4 +94,20 @@ public class Battle_Manager
         }
         return null;
     }
+    /// <summary>
+    /// Returns the on-going battle in the selected room.
+    /// </summary>
+    /// <param name="room"></param>
+    /// <returns></returns>
+    public Battle GetBattle(GameObject player)
+    {
+        foreach (Battle battle in activeBattles)
+        {
+            if (battle.GetPlayers().Contains(player))
+            {
+                return battle;
+            }
+        }
+        return null;
+    }
 }

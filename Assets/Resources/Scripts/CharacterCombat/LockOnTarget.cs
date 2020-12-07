@@ -7,7 +7,6 @@ using UnityEngine;
 public class LockOnTarget : MonoBehaviour
 {
     bool lockOn = false;
-    Manager mng;
     GameObject same = null;
     GameObject arrow;
     GameObject targeted;
@@ -15,23 +14,20 @@ public class LockOnTarget : MonoBehaviour
     public GameObject arrows;
     public GameObject hand;
 
-    private void Start()
-    {
-        mng = GameObject.Find("Manager").GetComponent<Manager>();
-    }
-
     // Update is called once per frame
     void Update()
     {
-        if (mng.enemies.Any())
+
+        Battle currentBattle = Battle_Manager.GetInstance().GetBattle(gameObject);
+        if (currentBattle!=null)
         {
             if (Input.touchCount > 0 && Input.GetTouch(Input.touchCount - 1).phase == TouchPhase.Began)
             {
-                SelectEnemy(Input.GetTouch(Input.touchCount - 1));
+                SelectEnemy(Input.GetTouch(Input.touchCount - 1),currentBattle.GetEnemies());
             }
             if (!lockOn)
             {
-                targeted = GetComponent<Player>().Closest(mng.enemies);
+                targeted = GetComponent<Player>().Closest(currentBattle.GetEnemies());
                 TargetLock(targeted);
             }
             else
@@ -41,6 +37,7 @@ public class LockOnTarget : MonoBehaviour
             PointToEnemy();
         }
         
+        
     }
 
     void PointToEnemy()
@@ -48,13 +45,13 @@ public class LockOnTarget : MonoBehaviour
         transform.LookAt(targeted.transform);
     }
 
-    void SelectEnemy(Touch finger)
+    void SelectEnemy(Touch finger,List<GameObject> enemies)
     {
         RaycastHit hit;
         Ray ray = Camera.main.ScreenPointToRay(finger.position);
         if(Physics.Raycast(ray,out hit, Mathf.Infinity,LayerMask.GetMask("Ground")))
         {
-            GameObject closest = GetComponent<Player>().Closest(mng.enemies);
+            GameObject closest = GetComponent<Player>().Closest(enemies);
             float dist = Vector2.Distance(hit.point, closest.transform.position);
             if (dist < 0.9f)
             {

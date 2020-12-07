@@ -51,6 +51,7 @@ public class Battle
     /// <param name="player"></param>
     public void AddPlayer(GameObject player)
     {
+        player.GetComponent<Player>().enterCombat();
         playersInvolved.Add(player);
     }
     /// <summary>
@@ -59,6 +60,7 @@ public class Battle
     /// <param name="player"></param>
     public void RemovePlayer(GameObject player)
     {
+        player.GetComponent<Player>().exitCombat();
         playersInvolved.Remove(player);
     }
     /// <summary>
@@ -67,7 +69,10 @@ public class Battle
     /// <param name="enemy"></param>
     public void AddEnemy(GameObject enemy)
     {
-        enemiesInvolved.Add(enemy);
+        if (!enemiesInvolved.Contains(enemy))
+        {
+            enemiesInvolved.Add(enemy);
+        }
     }
     /// <summary>
     /// Removes an enemy from the battle.
@@ -78,6 +83,7 @@ public class Battle
         enemiesInvolved.Remove(enemy);
         if (enemiesInvolved.Count.Equals(0))
         {
+            Debug.Log("Wave Finished.");
             waveFinished = true;//If there are no enemies left in the battle wave is finished.
         }
     }
@@ -94,7 +100,7 @@ public class Battle
         {
             currentWave++;
             waveFinished = false;
-            Debug.Log("Spawning...");
+            Debug.Log("Spawning... "+currentWave);
             if (remainingEnemies - totalActiveEnemies >= 0)
             {
                 SpawnWave(totalActiveEnemies);
@@ -104,8 +110,12 @@ public class Battle
                 SpawnWave(remainingEnemies);
             }
             
-            Debug.Log("Waiting...");
+            Debug.Log("Waiting... "+currentWave);
             yield return new WaitUntil(() => waveFinished);
+        }
+        foreach(GameObject player in playersInvolved)
+        {
+            RemovePlayer(player);
         }
         Battle_Manager.GetInstance().RemoveBattle(this);
     }

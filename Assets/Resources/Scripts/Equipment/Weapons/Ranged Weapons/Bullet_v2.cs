@@ -32,7 +32,7 @@ public class Bullet_v2 : MonoBehaviour
     {
         if (other.tag == "Enemy")
         {
-            other.GetComponent<Enemy>().TakeDamage(damage);
+            other.GetComponent<Basic_Enemy>().TakeDamage(damage);
             Destroy(gameObject);
         }
     }

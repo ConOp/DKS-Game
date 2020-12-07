@@ -5,12 +5,10 @@ using UnityEngine;
 public class CharacterBehaviour : MonoBehaviour
 {
     public pen_model pen;
-    Manager mng;
     // Start is called before the first frame update
     void Start()
     {
         pen = new pen_model();
-        mng = GameObject.Find("Manager").GetComponent<Manager>();
     }
 
     // Update is called once per frame
@@ -22,7 +20,7 @@ public class CharacterBehaviour : MonoBehaviour
         }
         else
         {
-            pen.UpdateValues(gameObject, GetComponent<Player>().Closest(mng.enemies));
+            pen.UpdateValues(gameObject, GetComponent<Player>().Closest(Battle_Manager.GetInstance().GetBattle(gameObject).GetEnemies()));
         }
     }
 }
