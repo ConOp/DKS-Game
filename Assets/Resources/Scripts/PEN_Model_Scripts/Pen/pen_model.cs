@@ -35,7 +35,20 @@ public class pen_model
 
     //for Characteristics
     Characteristics characts = new Characteristics();
-    
+
+    public float GetNeurotism()
+    {
+        return neuro;
+    }
+    public float GetExtraversion()
+    {
+        return extr;
+    }
+    public float GetCertainty()
+    {
+        return certainty;
+    }
+
     /// <summary>
     /// Update works like the MonoBehavior Update and should be called like that. Calls every check for PEN alterations.
     /// </summary>
