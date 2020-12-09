@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
@@ -27,14 +28,21 @@ public class LockOnTarget : MonoBehaviour
             }
             if (!lockOn)
             {
-                targeted = GetComponent<Player>().Closest(currentBattle.GetEnemies());
-                TargetLock(targeted);
+                try
+                {
+                    targeted = GetComponent<Player>().Closest(currentBattle.GetEnemies());
+                    TargetLock(targeted);
+                }catch(Exception e) { }
+                
             }
             else
             {
                 TargetLock(targeted);
             }
-            PointToEnemy();
+            if (targeted != null)
+            {
+                PointToEnemy();
+            }
         }
         
         

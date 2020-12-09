@@ -65,7 +65,7 @@ public class Sword : MonoBehaviour, MeleeWeapon
                 //if enemy is withing the weapon arc
                 if (Vector3.Angle(transform.parent.parent.forward, enemy.transform.position - transform.parent.parent.position) <= arc)
                 {                    
-                    enemy.GetComponent<Enemy>().TakeDamage(damage);
+                    enemy.GetComponent<Basic_Enemy>().TakeDamage(damage);
                 }
             }
             return true;

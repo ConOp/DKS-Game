@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class CharacterBehaviour : MonoBehaviour
@@ -20,7 +21,11 @@ public class CharacterBehaviour : MonoBehaviour
         }
         else
         {
-            pen.UpdateValues(gameObject, GetComponent<Player>().Closest(Battle_Manager.GetInstance().GetBattle(gameObject).GetEnemies()));
+            List<GameObject> temp = Battle_Manager.GetInstance().GetBattle(gameObject).GetEnemies();
+            if (temp.Any())
+            {
+                pen.UpdateValues(gameObject, GetComponent<Player>().Closest(temp));
+            }
         }
     }
 }
