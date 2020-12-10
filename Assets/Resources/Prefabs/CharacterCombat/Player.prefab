@@ -207,6 +207,7 @@ MonoBehaviour:
   overEquipment: 0
   interactObject: {fileID: 0}
   hand: {fileID: 1714671536597105135}
+  body: {fileID: 2722522721658318472}
 --- !u!114 &8684117830143908590
 MonoBehaviour:
   m_ObjectHideFlags: 0

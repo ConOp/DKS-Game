@@ -19,7 +19,6 @@ public class Sword : MonoBehaviour, MeleeWeapon
     [SerializeField]
     [Range(1f, 360f)]
     protected float arc = 120f;
-    private float oldFire = 0f;
     #endregion
 
     public string GetTypeOfWeapon()
