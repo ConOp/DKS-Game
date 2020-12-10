@@ -11,6 +11,7 @@ public class Bullet_v2 : MonoBehaviour
     [HideInInspector]
     public float damage = 10f;
     Vector3 initpos;
+    public GameObject effect;
 
     private void Start()
     {
@@ -33,8 +34,14 @@ public class Bullet_v2 : MonoBehaviour
         if (other.tag == "Enemy")
         {
             other.GetComponent<Basic_Enemy>().TakeDamage(damage);
-            Destroy(gameObject);
+            GameObject flash = GameObject.Instantiate(effect, transform.position, Quaternion.identity);
+            flash.transform.forward = -transform.forward;
         }
+        if(other.tag == "Player")
+        {
+            return;
+        }
+        Destroy(gameObject);
     }
 
 }

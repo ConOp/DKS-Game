@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Distance_extraversion
 {
-    private static float THRESHOLD = 15;
+    private static float THRESHOLD = 105;
     private float extr = 0;
     private float oldpos = THRESHOLD;
 
@@ -23,7 +23,8 @@ public class Distance_extraversion
     {
         float dist = Vector3.Distance(player.transform.position, enemy.transform.position);
         float angle = 60;
-        if ((Math.Abs(move_joystick.Horizontal)>0.2f || Math.Abs(move_joystick.Vertical) > 0.2f) && dist <= THRESHOLD)
+        bool seen = enemy.GetComponentInChildren<Renderer>().isVisible;
+        if ((Math.Abs(move_joystick.Horizontal)>0.2f || Math.Abs(move_joystick.Vertical) > 0.2f) && dist <= THRESHOLD && seen)
         {
             //if player is moving towards enemy
             if (Vector3.Angle(player.transform.forward, enemy.transform.position - player.transform.position) < angle)

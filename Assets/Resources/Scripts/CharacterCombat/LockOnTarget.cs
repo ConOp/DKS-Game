@@ -13,7 +13,7 @@ public class LockOnTarget : MonoBehaviour
     GameObject targeted;
 
     public GameObject arrows;
-    public GameObject hand;
+    public GameObject body;
 
     // Update is called once per frame
     void Update()
@@ -50,7 +50,7 @@ public class LockOnTarget : MonoBehaviour
 
     void PointToEnemy()
     {
-        transform.LookAt(targeted.transform);
+        body.transform.LookAt(targeted.transform);
     }
 
     void SelectEnemy(Touch finger,List<GameObject> enemies)
@@ -59,14 +59,29 @@ public class LockOnTarget : MonoBehaviour
         Ray ray = Camera.main.ScreenPointToRay(finger.position);
         if(Physics.Raycast(ray,out hit, Mathf.Infinity,LayerMask.GetMask("Ground")))
         {
-            GameObject closest = GetComponent<Player>().Closest(enemies);
+            GameObject closest = Closest(hit.point,enemies);
             float dist = Vector2.Distance(hit.point, closest.transform.position);
-            if (dist < 0.9f)
+            if (dist < 2f)
             {
                 lockOn = true;
                 targeted = closest;
             }
         }
+    }
+    public GameObject Closest(Vector3 hit, List<GameObject> targets)
+    {
+        float distance = Vector3.Distance(hit, targets[0].transform.position);
+        GameObject closest = targets[0];
+        foreach (GameObject t in targets)
+        {
+            float d = Vector3.Distance(hit, t.transform.position);
+            if (d < distance)
+            {
+                distance = d;
+                closest = t;
+            }
+        }
+        return closest;
     }
 
     void TargetLock(GameObject closest)

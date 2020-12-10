@@ -70,7 +70,7 @@ public class Model_Certainty
         {
             if (value > threshold)
             {
-                rate += value;
+                rate -= value;
                 timepassed = 0;
                 return;
             }
@@ -78,7 +78,7 @@ public class Model_Certainty
         {
             if (value > threshold)
             {
-                rate -= value;
+                rate += value;
                 timepassed = 0;
                 return;
             }                
