@@ -28,25 +28,25 @@ public class RandomnessMaestro
     public bool endRoomPlaced = false;
 
     //Room or Corridor chances.
-    private List<(string, float)> room_corridor_chance = new List<(string, float)>{
-        ("Corridor",60f),
-        ("Room",40f) };
+    private List<Possibility> room_corridor_chance = new List<Possibility>{
+       new Possibility("Corridor",60f),
+        new Possibility("Room",40f) };
     //Corridor type chances.
-    private List<(string, float)> corridor_type = new List<(string, float)>{
-        ("Corner",30f),
-        ("Straight",70f) };
+    private List<Possibility> corridor_type = new List<Possibility>{
+        new Possibility("Corner",30f),
+        new Possibility("Straight",70f) };
     //Room size chances.
-    private List<(string, float)> room_size = new List<(string, float)>{
-        ("Small",20f),
-        ("Medium",50f),
-        ("Large",30f)
+    private List<Possibility> room_size = new List<Possibility>{
+        new Possibility("Small",20f),
+        new Possibility("Medium",50f),
+        new Possibility("Large",30f)
     };
 
     //Room type chances.
-    private List<(string, float)> room_type = new List<(string, float)>{
-        ("FightingRoom",98.9f),
-        ("ChestRoom",1f),
-        ("EndRoom",0.1f)
+    private List<Possibility> room_type = new List<Possibility>{
+        new Possibility("FightingRoom",98.9f),
+        new Possibility("ChestRoom",1f),
+        new Possibility("EndRoom",0.1f)
     };
 
 
@@ -103,7 +103,7 @@ public class RandomnessMaestro
     /// <returns></returns>
     public  string Choose_Room_Type(List<string> available_rooms)
     {
-        List<(string, float)> appropriateProbabilities = CalculateProbabilites(available_rooms);
+        List<Possibility> appropriateProbabilities = CalculateProbabilites(available_rooms);
         return RandomProbability.Choose(appropriateProbabilities);
     }
     /// <summary>
@@ -119,15 +119,15 @@ public class RandomnessMaestro
     /// </summary>
     /// <param name="available_rooms"></param>
     /// <returns></returns>
-     List<(string, float)> CalculateProbabilites(List<string>available_rooms)
-    {
-        List<(string, float)> appropriateProbabilities = new List<(string, float)>();
+     List<Possibility> CalculateProbabilites(List<string>available_rooms)
+     { 
+        List<Possibility> appropriateProbabilities = new List<Possibility> ();
         foreach (string room in available_rooms)
         {
-            appropriateProbabilities.Add(room_type.Find(x => x.Item1 == room));//Get only the available rooms probabilities.
+            appropriateProbabilities.Add(room_type.Find(x => x.GetItem() == room));//Get only the available rooms probabilities.
         }
         float endRoomProbability;
-        float endRoomStartingProb = room_type.Find(x => x.Item1 == "EndRoom").Item2;
+        float endRoomStartingProb = room_type.Find(x => x.GetItem() == "EndRoom").GetValue();
         float t;
         float probabilityNotEndroom;
         if (!endRoomPlaced)
@@ -146,13 +146,13 @@ public class RandomnessMaestro
         }
         for (int i = 0; i < appropriateProbabilities.Count; i++)
         {
-            if (appropriateProbabilities[i].Item1.Equals("EndRoom"))
+            if (appropriateProbabilities[i].GetItem().Equals("EndRoom"))
             {
-                appropriateProbabilities[i] = (appropriateProbabilities[i].Item1, endRoomProbability);
+                appropriateProbabilities[i].SetValue(endRoomProbability);
             }
             else
             {
-                appropriateProbabilities[i] = (appropriateProbabilities[i].Item1, appropriateProbabilities[i].Item2 * probabilityNotEndroom / (100 - endRoomStartingProb));
+                appropriateProbabilities[i].SetValue(appropriateProbabilities[i].GetValue() * probabilityNotEndroom / (100 - endRoomStartingProb));
             }
         }
         return appropriateProbabilities;
