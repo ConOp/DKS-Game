@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -24,6 +24,12 @@ public class NewRoomGen : MonoBehaviour
     {
         //Construct Spawn Room.
         InstantiateIRoom(RoomFactory.Build("SpawningRoom", PrefabManager.GetInstance().GetAllRoomTiles(), 5, 5), new Vector3(0, 0, 0), PrefabManager.GetInstance().GetAllRoomTiles());
+        //TO BE REMOVED! TESTING CODE.
+        allrooms[0].RoomObject.AddComponent<SpawnRoomScript>();
+        allrooms[0].RoomObject.AddComponent<BoxCollider>();//Create new collider for the room.
+        allrooms[0].RoomObject.GetComponent<BoxCollider>().size = new Vector3(allrooms[0].Tiles_number_x * Tile.X_length - 2, 5, allrooms[0].Tiles_number_z * Tile.Z_length - 2);//Set the size of the collider to cover all the room.
+        allrooms[0].RoomObject.GetComponent<BoxCollider>().isTrigger = true;//Set collider to trigger.
+        //TO BE REMOVED!
         bool foundcorridor, foundroom;
         while (true)
         {

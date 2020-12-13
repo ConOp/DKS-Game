@@ -35,7 +35,7 @@ public class PenStatsManager
     /// </summary>
     /// <param name="players"></param>
     /// <returns></returns>
-    public (float,float,float) GetMeanPen(List<GameObject> players)
+    public (float Neurotisism,float Extraversion,float Certainty) GetMeanPen(List<GameObject> players)
     {
         float neuro = 0;
         float extra = 0;

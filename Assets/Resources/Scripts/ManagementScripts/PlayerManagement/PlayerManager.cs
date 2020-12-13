@@ -17,6 +17,7 @@ public class PlayerManager
     PlayerManager()
     {
         instance = this;
+        activePlayers = new List<GameObject>();
     }
     #endregion
     List<GameObject> activePlayers;
