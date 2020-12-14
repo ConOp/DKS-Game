@@ -6,7 +6,7 @@ using UnityEngine;
 public class Player : MonoBehaviour,Character
 {
     [SerializeField]
-    [Range(1, 100)]
+    [Range(1, 500)]
     protected float hp = 10;
     private bool combatant = false;
     [HideInInspector]
@@ -22,18 +22,12 @@ public class Player : MonoBehaviour,Character
     public GameObject interactObject;
 
     public GameObject hand;
+    public GameObject body;
+    
 
     private void Start()
     {
         weapons = new List<GameObject> { null, null };
-    }
-
-    /// <summary>
-    /// creates a controlled player with given hp.
-    /// </summary>
-    public Player(int hp)
-    {
-        this.hp = hp;
     }
 
     public void enterCombat()
@@ -43,7 +37,9 @@ public class Player : MonoBehaviour,Character
     public void exitCombat()
     {
         this.combatant = false;
+        body.transform.localRotation = Quaternion.identity;
     }
+
     public bool InCombat()
     {
         return combatant;

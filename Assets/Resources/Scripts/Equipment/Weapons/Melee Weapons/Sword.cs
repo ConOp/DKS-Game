@@ -19,7 +19,6 @@ public class Sword : MonoBehaviour, MeleeWeapon
     [SerializeField]
     [Range(1f, 360f)]
     protected float arc = 120f;
-    private float oldFire = 0f;
     #endregion
 
     public string GetTypeOfWeapon()
@@ -65,7 +64,7 @@ public class Sword : MonoBehaviour, MeleeWeapon
                 //if enemy is withing the weapon arc
                 if (Vector3.Angle(transform.parent.parent.forward, enemy.transform.position - transform.parent.parent.position) <= arc)
                 {                    
-                    enemy.GetComponent<Enemy>().TakeDamage(damage);
+                    enemy.GetComponent<Basic_Enemy>().TakeDamage(damage);
                 }
             }
             return true;
