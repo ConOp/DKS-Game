@@ -126,12 +126,20 @@ public class Battle
             int melee_ranged = UnityEngine.Random.Range(0, 2);
             if (melee_ranged == 0)
             {
-                UnityEngine.Object.Instantiate(Enemy_Prefab_Manager.GetInstance().GetMeleeEnemies()[0], center, new Quaternion());
+                GameObject enemy=UnityEngine.Object.Instantiate(Enemy_Prefab_Manager.GetInstance().GetMeleeEnemies()[0], center, new Quaternion());
+                for(int i = 0; i < enemy.GetComponent<Basic_Enemy>().Attachments.Length; i++)
+                {
+                    enemy.GetComponent<Basic_Enemy>().Add_Modification(ModMaestro.GetInstance().ChooseMeleeModification());
+                }
 
             }
             else
             {
-                UnityEngine.Object.Instantiate(Enemy_Prefab_Manager.GetInstance().GetRangedEnemies()[0], center, new Quaternion());
+                GameObject enemy=UnityEngine.Object.Instantiate(Enemy_Prefab_Manager.GetInstance().GetRangedEnemies()[0], center, new Quaternion());
+                for (int i = 0; i < enemy.GetComponent<Basic_Enemy>().Attachments.Length; i++)
+                {
+                    enemy.GetComponent<Basic_Enemy>().Add_Modification(ModMaestro.GetInstance().ChooseRangedModification());
+                }
             }
             spawnedEnemies++;
         }

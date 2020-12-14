@@ -11,20 +11,20 @@ public class RandomProbability
     /// </summary>
     /// <param name="probabilities"></param>
     /// <returns></returns>
- public static string Choose(List<(string,float)> probabilities  )
+ public static string Choose(List<Possibility> probabilities)
     {
-        probabilities.Sort((p, q) => p.Item2.CompareTo(q.Item2));
-        float maxprob = probabilities.Sum(s => s.Item2);
+        probabilities.Sort((p, q) => p.GetValue().CompareTo(q.GetValue()));
+        float maxprob = probabilities.Sum(s => s.GetValue());
         double prob =UnityEngine.Random.Range(0,maxprob);
         int item=-1;
         double counter =0;
         while (prob > counter)
         {
             item++;
-            counter += probabilities[item].Item2;
+            counter += probabilities[item].GetValue();
             
         }
-        return probabilities[item].Item1;
+        return probabilities[item].GetItem();
 
 
     }
