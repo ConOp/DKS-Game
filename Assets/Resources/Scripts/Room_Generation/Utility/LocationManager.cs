@@ -38,4 +38,13 @@ public static class LocationManager
         }
         return new_placed_location;
     }
+    /// <summary>
+    /// finds and returns the location of the center of the room.
+    /// </summary>
+    /// <param name="room"></param>
+    /// <returns></returns>
+    public static Vector3 FindCenterOfRoom(IRoom room)
+    {
+        return new Vector3((room.RoomObject.transform.position.x + (room.RoomObject.transform.position.x + room.Tiles_number_x * Tile.X_length)) / 2f, 0, (room.RoomObject.transform.position.z + (room.RoomObject.transform.position.z - room.Tiles_number_z * Tile.Z_length)) / 2f);
+    }
 }
