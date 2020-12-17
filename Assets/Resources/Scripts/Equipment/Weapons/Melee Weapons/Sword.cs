@@ -50,7 +50,7 @@ public class Sword : MonoBehaviour, MeleeWeapon
         return false;        
     }
 
-    public bool Attack()
+    public bool Attack(GameObject target)
     {
         if (ReadyToAttack())
         {
@@ -63,8 +63,17 @@ public class Sword : MonoBehaviour, MeleeWeapon
                 }
                 //if enemy is withing the weapon arc
                 if (Vector3.Angle(transform.parent.parent.forward, enemy.transform.position - transform.parent.parent.position) <= arc)
-                {                    
-                    enemy.GetComponent<Basic_Enemy>().TakeDamage(damage);
+                {
+                    //if target is a child of the collided object (aka the target is a modification)
+                    if (target.transform.parent == enemy.transform)
+                    {
+                        target.GetComponent<Modification>().TakeDamage(damage);
+                        enemy.GetComponent<Basic_Enemy>().TakeDamage(damage / 10);
+                    }
+                    else
+                    {
+                        enemy.GetComponent<Basic_Enemy>().TakeDamage(damage);
+                    }
                 }
             }
             return true;

@@ -58,12 +58,12 @@ public class Handgun : MonoBehaviour, RangedWeapon
         return false;
     }
 
-    public bool Attack()
+    public bool Attack(GameObject target)
     {
         if (ReadyToAttack())
         {
             GameObject bullet = Instantiate(this.bullet, gameObject.transform.position, Quaternion.identity);
-            //bullet.transform.parent = transform;
+            bullet.GetComponent<Bullet_v2>().target = target;
             bullet.transform.rotation = transform.rotation;
             bullet.GetComponent<Bullet_v2>().range = range;
             bullet.GetComponent<Bullet_v2>().speed = speed;

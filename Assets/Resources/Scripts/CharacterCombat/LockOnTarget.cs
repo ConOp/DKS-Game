@@ -12,13 +12,15 @@ public class LockOnTarget : MonoBehaviour
     GameObject same = null;
     GameObject lockIcon;
     GameObject targetedCreature;
-    GameObject targeted;
+    [HideInInspector]
+    public GameObject targeted;
     GameObject[] attachments;
 
-    public GameObject arrows;
-    public GameObject body;
-
     //temp
+    public GameObject arrows;
+    //endtemp
+
+    public GameObject body;
     public GameObject target;
 
     // Update is called once per frame
@@ -27,12 +29,15 @@ public class LockOnTarget : MonoBehaviour
         Battle currentBattle = Battle_Manager.GetInstance().GetBattle(gameObject);
         if (currentBattle!=null)
         {
+            //if user taps on the screen
             if (Input.touchCount > 0 && Input.GetTouch(Input.touchCount - 1).phase == TouchPhase.Began)
             {
                 SelectEnemy(Input.GetTouch(Input.touchCount - 1),currentBattle.GetEnemies());
             }
+            //if no enemy is manually selected
             if (!lockOn)
             {
+                //try to select the closest as the target.
                 try
                 {
                     GameObject target = GetComponent<Player>().Closest(currentBattle.GetEnemies());
@@ -46,7 +51,8 @@ public class LockOnTarget : MonoBehaviour
             }
             else
             {
-                if (targetedCreature)
+                //if selected enemy exists and the target is on the body
+                if (targetedCreature && targeted==targetedCreature)
                 {
                     TargetLock(targetedCreature);
                 }
@@ -64,6 +70,11 @@ public class LockOnTarget : MonoBehaviour
         body.transform.LookAt(targetedCreature.transform);
     }
 
+    /// <summary>
+    /// checks with raycast if tap is close enough to enemy to trigger selection.
+    /// </summary>
+    /// <param name="finger"></param>
+    /// <param name="enemies"></param>
     void SelectEnemy(Touch finger,List<GameObject> enemies)
     {
         RaycastHit hit;
@@ -72,7 +83,7 @@ public class LockOnTarget : MonoBehaviour
         {
             GameObject closest = Closest(hit.point,enemies);
             float dist = Vector2.Distance(hit.point, closest.transform.position);
-            if (dist < 2f)
+            if (dist < 2.5f)
             {
                 lockOn = true;
                 targetedCreature = closest;
@@ -80,6 +91,13 @@ public class LockOnTarget : MonoBehaviour
             }
         }
     }
+
+    /// <summary>
+    /// finds the closest enemy to the tap position.
+    /// </summary>
+    /// <param name="hit"></param>
+    /// <param name="targets"></param>
+    /// <returns></returns>
     public GameObject Closest(Vector3 hit, List<GameObject> targets)
     {
         float distance = Vector3.Distance(hit, targets[0].transform.position);
@@ -128,8 +146,9 @@ public class LockOnTarget : MonoBehaviour
         else
         {
             position = ChangeValueBy(-1);
-            if (position == -1)
+            if (position <= -1)
             {
+                position = -1;
                 lockOn = false;
                 targeted = targetedCreature;
             }
@@ -145,6 +164,11 @@ public class LockOnTarget : MonoBehaviour
         }
         Debug.LogError(targeted.name);
         TargetLock(targeted);
+        if (targeted != targetedCreature)
+        {
+            lockIcon.transform.localScale = new Vector3(1, 1, 1);
+            lockIcon.transform.localPosition = new Vector3(-0.5f, 1, 0);
+        }
     }
 
     public void NextMod() 
@@ -174,6 +198,11 @@ public class LockOnTarget : MonoBehaviour
         }
         Debug.LogError(targeted.transform.localPosition);
         TargetLock(targeted);
+        if (targeted != targetedCreature)
+        {
+            lockIcon.transform.localScale = new Vector3(1, 1, 1);
+            lockIcon.transform.localPosition = new Vector3(-0.5f, 1, 0);
+        }
     }
 
     public void UnLock()
