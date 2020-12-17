@@ -1,24 +1,44 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using UnityEngine;
 
-public class NewRoomGen : MonoBehaviour
+public class DungeonGenerator
 {
+    #region Singleton
+    private static DungeonGenerator instance = null;
+    /// <summary>
+    /// Get access to the only instance of the Stage Manager.
+    /// </summary>
+    /// <returns></returns>
+    public static DungeonGenerator GetInstance()
+    {
+        if (instance == null)
+        {
+            return new DungeonGenerator();
+        }
+        return instance;
+    }
+    private DungeonGenerator()
+    {
+        instance = this;
+    }
+    #endregion
     public List<IRoom> allrooms;  //All instantiated rooms in the game.
-    public static int RoomNumber = 20; //Target room number.
-    public static int roomsPlaced = 0;
+    public  int roomsPlaced;
+    public int RoomNumber;
     GameObject dungeon;
 
-
-    void Start()
+    public void CompleteDungeon(int room_number)
     {
-        allrooms = new List<IRoom>();
+        RoomNumber = room_number;
+        roomsPlaced = 0;
+        allrooms=new List<IRoom>();
         dungeon = new GameObject("Dungeon");
-        CreateDungeon(RoomNumber);
+        CreateDungeon(room_number);
         RefineDungeon();
     }
-
 
     public void CreateDungeon(int room_number)
     {
@@ -120,7 +140,7 @@ public class NewRoomGen : MonoBehaviour
         foreach (Tile tile in room.RoomTiles)
         {
             //Instantiate every tile.
-            instantiated_tiles.Add(Instantiate(tile.Objtile, new Vector3(pos.x + tile.Position.x, 0, pos.z + tile.Position.z), new Quaternion(), gr.transform));
+            instantiated_tiles.Add(Object.Instantiate(tile.Objtile, new Vector3(pos.x + tile.Position.x, 0, pos.z + tile.Position.z), new Quaternion(), gr.transform));
         }
         room.Instantiated_Tiles = instantiated_tiles;
         room.RoomObject = gr;
@@ -130,6 +150,13 @@ public class NewRoomGen : MonoBehaviour
             gr.GetComponent<BoxCollider>().size = new Vector3(room.Tiles_number_x * Tile.X_length - 2, 5, room.Tiles_number_z * Tile.Z_length - 2);//Set the size of the collider to cover all the room.
             gr.GetComponent<BoxCollider>().isTrigger = true;//Set collider to trigger.
             gr.AddComponent<RoomEventsHandler>();
+        }
+        if (room.Type == "EndRoom")
+        {
+            gr.AddComponent<Change_Floor>();
+            gr.AddComponent<SphereCollider>();
+            gr.GetComponent<SphereCollider>().radius = 8;
+            gr.GetComponent<SphereCollider>().isTrigger = true;
         }
         gr.transform.parent = dungeon.transform;
         room.Position = pos;
@@ -184,7 +211,7 @@ public class NewRoomGen : MonoBehaviour
                         ((Basic_Corridor)((Basic_Corridor)currrent_room).Parent).Child = null;
                     }
                     //Destroy the corridor.
-                    Destroy(currrent_room.RoomObject);
+                    Object.Destroy(currrent_room.RoomObject);
                     currrent_room = ((Basic_Corridor)currrent_room).Parent;
                    
                     if (currrent_room.Category == "Room")
@@ -203,6 +230,15 @@ public class NewRoomGen : MonoBehaviour
             }
         }
         allrooms = cleanrooms;
+    }
+
+    public void ClearDungeon()
+    {
+        foreach(IRoom room in allrooms)
+        {
+            Object.Destroy(room.RoomObject);
+        }
+        Object.Destroy(dungeon);
     }
 }
  

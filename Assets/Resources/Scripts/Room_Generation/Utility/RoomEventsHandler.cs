@@ -7,7 +7,7 @@ public class RoomEventsHandler : MonoBehaviour
     private Basic_Room thisRoom;
     private void Start()
     {
-        foreach (Basic_Room room in GameObject.FindGameObjectWithTag("DungeonMaster").GetComponent<NewRoomGen>().allrooms)
+        foreach (Basic_Room room in DungeonGenerator.GetInstance().allrooms)
         {
             if (room.RoomObject.Equals(gameObject))
             {
