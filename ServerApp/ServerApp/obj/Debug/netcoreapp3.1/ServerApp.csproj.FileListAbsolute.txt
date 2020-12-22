@@ -1,0 +1,13 @@
+C:\Users\dgaze\Documents\Ptyxiakh\DKS-Game\ServerApp\ServerApp\bin\Debug\netcoreapp3.1\ServerApp.exe
+C:\Users\dgaze\Documents\Ptyxiakh\DKS-Game\ServerApp\ServerApp\bin\Debug\netcoreapp3.1\ServerApp.deps.json
+C:\Users\dgaze\Documents\Ptyxiakh\DKS-Game\ServerApp\ServerApp\bin\Debug\netcoreapp3.1\ServerApp.runtimeconfig.json
+C:\Users\dgaze\Documents\Ptyxiakh\DKS-Game\ServerApp\ServerApp\bin\Debug\netcoreapp3.1\ServerApp.runtimeconfig.dev.json
+C:\Users\dgaze\Documents\Ptyxiakh\DKS-Game\ServerApp\ServerApp\bin\Debug\netcoreapp3.1\ServerApp.dll
+C:\Users\dgaze\Documents\Ptyxiakh\DKS-Game\ServerApp\ServerApp\bin\Debug\netcoreapp3.1\ServerApp.pdb
+C:\Users\dgaze\Documents\Ptyxiakh\DKS-Game\ServerApp\ServerApp\obj\Debug\netcoreapp3.1\ServerApp.csprojAssemblyReference.cache
+C:\Users\dgaze\Documents\Ptyxiakh\DKS-Game\ServerApp\ServerApp\obj\Debug\netcoreapp3.1\ServerApp.AssemblyInfoInputs.cache
+C:\Users\dgaze\Documents\Ptyxiakh\DKS-Game\ServerApp\ServerApp\obj\Debug\netcoreapp3.1\ServerApp.AssemblyInfo.cs
+C:\Users\dgaze\Documents\Ptyxiakh\DKS-Game\ServerApp\ServerApp\obj\Debug\netcoreapp3.1\ServerApp.csproj.CoreCompileInputs.cache
+C:\Users\dgaze\Documents\Ptyxiakh\DKS-Game\ServerApp\ServerApp\obj\Debug\netcoreapp3.1\ServerApp.dll
+C:\Users\dgaze\Documents\Ptyxiakh\DKS-Game\ServerApp\ServerApp\obj\Debug\netcoreapp3.1\ServerApp.pdb
+C:\Users\dgaze\Documents\Ptyxiakh\DKS-Game\ServerApp\ServerApp\obj\Debug\netcoreapp3.1\ServerApp.genruntimeconfig.cache
