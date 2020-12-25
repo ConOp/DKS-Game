@@ -10,7 +10,7 @@ public class Move_neuroticism
     private float moveTime_v = 0;
     public static float THRESHOLD = 1;
     private float neuro = 0;
-
+    private float maxNeuro;
 
     public Joystick move_joystick = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>().joystick;
 
@@ -19,6 +19,17 @@ public class Move_neuroticism
     {
         CheckMove();
         return neuro;
+    }
+
+    public void SetMax(float max)
+    {
+        maxNeuro = max;
+    }
+
+    float Normalizer()
+    {
+        float dist = maxNeuro - neuro;
+        return dist / 10;
     }
 
     /// <summary>
@@ -54,18 +65,27 @@ public class Move_neuroticism
     /// <param name="key"></param>
     private void ChangeNeuro(ref float timer)
     {
-        if (timer >= THRESHOLD)
+        if (Math.Abs(neuro) <= maxNeuro)
         {
-            neuro -= (timer - THRESHOLD) / 2;
-        }
-        else if (timer == 0)
-        {
-            return;
+            float multiplier = Normalizer();
+            if (timer >= THRESHOLD)
+            {
+                neuro -= (timer - THRESHOLD) / 2 * multiplier;
+            }
+            else if (timer == 0)
+            {
+                return;
+            }
+            else
+            {
+                neuro += (THRESHOLD - timer) / 2 * multiplier;
+            }
         }
         else
         {
-            neuro += (THRESHOLD - timer)/2;
+            neuro = neuro<0?maxNeuro-maxNeuro:maxNeuro;
         }
         timer = 0;
+
     }
 }

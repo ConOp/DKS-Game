@@ -14,6 +14,8 @@ public class pen_model
     protected (string,string,int) characteristic;
     static float INTERVAL = 1;
     float timePassed = 0;
+    float maxNeuro;
+    float maxExtra;
 
     //Debug, visualized valued. Will be removed from the product.
     Text neuro_num = GameObject.Find("Neuro_Number").GetComponent<Text>();
@@ -47,6 +49,20 @@ public class pen_model
     public float GetCertainty()
     {
         return certainty;
+    }
+
+    public void SetMaxNeuro(float max)
+    {
+        maxNeuro = max;
+        float largePart = max * 0.7f;
+        mover.SetMax(largePart);
+        atk.SetMax(max-largePart);
+    }
+
+    public void SetMaxExtra(float max)
+    {
+        maxExtra = max;
+        dister.SetMax(max);
     }
 
     /// <summary>

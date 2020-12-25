@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class FollowCamera : MonoBehaviour
 {
-    Transform camera;
+    Transform mainCamera;
     private void Start()
     {
-        camera = GameObject.FindGameObjectWithTag("MainCamera").transform;
+        mainCamera = GameObject.FindGameObjectWithTag("MainCamera").transform;
     }
     // Update is called once per frame
     void Update()
     {
-        transform.LookAt(camera);
+        transform.LookAt(mainCamera);
     }
 }
