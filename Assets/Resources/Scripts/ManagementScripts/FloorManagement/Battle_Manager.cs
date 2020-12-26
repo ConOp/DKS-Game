@@ -103,11 +103,11 @@ public class Battle_Manager
     /// </summary>
     /// <param name="room"></param>
     /// <returns></returns>
-    public Battle GetBattle(GameObject player)
+    public Battle GetBattle(GameObject entity)
     {
         foreach (Battle battle in activeBattles)
         {
-            if (battle.GetPlayers().Contains(player))
+            if (battle.GetPlayers().Contains(entity)||battle.GetEnemies().Contains(entity))
             {
                 return battle;
             }

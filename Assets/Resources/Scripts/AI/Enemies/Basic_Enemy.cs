@@ -15,15 +15,75 @@ public abstract class Basic_Enemy:MonoBehaviour
     public float current_attack_speed;
     public float current_health;
     public float current_range;
-   
-    public float max_movement_speed;
     public float current_damage;
 
+    public float max_movement_speed;
+    public List<Basic_Ability> abilities;
     public List<(Transform base_position, string base_size,string base_side, bool used)> Attachment_Bases;
     public GameObject[] Attachments;
 
+    //
+    public Basic_Ability readyAbility;
+    public Basic_Ability activeAbility;
+    public GameObject target;
+    public Battle battle;
+    //STATES
+    public bool attacking;
+    public bool preparingAttack;
+    public bool stunned;
+
+
+
+
     public abstract void InitializeModificationBases();
 
+    private void Awake()
+    {
+        InitializeModificationBases();
+        Attachments = new GameObject[Attachment_Bases.Count];
+        if (gameObject.GetComponents<Basic_Ability>().Length > 0)
+        {
+            abilities = new List<Basic_Ability>(gameObject.GetComponents<Basic_Ability>());
+        }
+    }
+
+    private void Update()
+    {
+        
+        if (!stunned)
+        {
+            FindTarget();
+            if (!preparingAttack&&!attacking)
+            {
+                MovementBehaviour();
+            }
+                    if (readyAbility != null)
+             {
+                if (!preparingAttack)
+                {
+                    if (!attacking)
+                    {
+                        if (readyAbility.PrerequisitesMet())
+                        {
+                            readyAbility.InitiateAttack();
+                            activeAbility = readyAbility;
+                            readyAbility = null;
+                        }
+                        else
+                        {
+                            if (target != null)
+                            {
+                                readyAbility.Behaviour();
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    /// <summary>
+    /// Applies all the modification Boosts.
+    /// </summary>
     public void Appy_Modification_Boosts()
     {
         float totalmovementspeedboost = 0;
@@ -73,9 +133,8 @@ public abstract class Basic_Enemy:MonoBehaviour
             current_range = RANGE;
         }
     }
-
     /// <summary>
-    /// Adds att
+    /// Adds a modification.
     /// </summary>
     /// <param name="mod_type"></param>
     public void Add_Modification(string mod_type)
@@ -123,7 +182,6 @@ public abstract class Basic_Enemy:MonoBehaviour
             Appy_Modification_Boosts();
         }
     }
-
     /// <summary>
     /// Rotates the modification to be placed appropriately to fit on the enemy.
     /// </summary>
@@ -149,7 +207,6 @@ public abstract class Basic_Enemy:MonoBehaviour
 
         return modificationobj;
     }
-
     /// <summary>
     /// Receives damage when damaged by player.
     /// </summary>
@@ -171,4 +228,32 @@ public abstract class Basic_Enemy:MonoBehaviour
         }
     }
 
+    public void CheckForReadyAttack()
+    {
+        if (abilities.Count > 0)
+        {
+            foreach(Basic_Ability ability in abilities)
+            {
+                if (ability.cdReady)
+                {
+                    readyAbility = ability;
+                    return;
+                }
+            }
+        }
+        readyAbility = null;
+    }
+
+    protected void Unstun()
+    {
+        stunned = false;
+    }
+
+    protected void FindTarget()
+    {
+        target = TargetManager.GetInstance().GetClosestTarget(gameObject, battle.GetPlayers());
+        return;
+    }
+
+    protected abstract void MovementBehaviour();
 }
