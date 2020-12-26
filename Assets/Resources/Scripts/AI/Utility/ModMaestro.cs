@@ -45,21 +45,6 @@ public class ModMaestro
         };
         RefreshProbabilities();
         RefreshModLevelProbabilities();
-        Debug.LogError("Melee Probabilities");
-        foreach (Possibility pos in meleeModificationType)
-        {
-            Debug.Log(pos.GetItem() + ": " + pos.GetValue());
-        }
-        Debug.LogError("Ranged Probabilities");
-        foreach (Possibility pos in rangedModificationType)
-        {
-            Debug.Log(pos.GetItem() + ": " + pos.GetValue());
-        }
-        Debug.LogError("Mod Level Probabilities");
-        foreach (Possibility pos in modLevel)
-        {
-            Debug.Log(pos.GetItem() + ": " + pos.GetValue());
-        }
     }
     #endregion
 
