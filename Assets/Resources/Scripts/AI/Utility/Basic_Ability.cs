@@ -9,6 +9,7 @@ public abstract class Basic_Ability:MonoBehaviour
     public bool cdReady;
     public bool ready;
     protected float cooldown;
+    protected float cdReduction;
     protected float timeRemaining;
     protected float timeToAttack;
     protected float timeToEnd;
@@ -34,7 +35,8 @@ public abstract class Basic_Ability:MonoBehaviour
                 else
                 {
                     cdReady = true;
-                    timeRemaining = cooldown;
+                    Debug.Log(cooldown - (cooldown * enemyScript.current_attack_speed * cdReduction / 10));
+                    timeRemaining = cooldown-(cooldown*enemyScript.current_attack_speed*cdReduction/100);
                     enemyScript.CheckForReadyAttack();
                 }
             }

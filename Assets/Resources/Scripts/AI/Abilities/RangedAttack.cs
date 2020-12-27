@@ -10,6 +10,7 @@ public class RangedAttack : Basic_Ability
         abilityname = "Ranged_Attack";
         timeToEnd = 0.2f;
         cooldown = 2f;
+        cdReduction = 0.5f;
         timeRemaining = cooldown;
         executingAttack = false;
         cdReady = false;
@@ -21,6 +22,7 @@ public class RangedAttack : Basic_Ability
         {
             transform.rotation = Quaternion.LookRotation(enemyScript.target.transform.position - transform.position);
         }
+
         CoolDownTime();
     }
     public override void Behaviour()
