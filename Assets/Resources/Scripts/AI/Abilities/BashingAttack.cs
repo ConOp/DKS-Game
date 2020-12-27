@@ -12,10 +12,11 @@ public class BashingAttack : Basic_Ability
         timeToAttack = 2f;
         timeToEnd = 3f;
         cooldown = 10f;
+        cdReduction = 0.9f;
         timeRemaining = cooldown;
         executingAttack = false;
         cdReady = false;
-        enemyScript = this.gameObject.GetComponent<Basic_Enemy>();
+        enemyScript = gameObject.GetComponent<Basic_Enemy>();
     }
     private void Update()
     {

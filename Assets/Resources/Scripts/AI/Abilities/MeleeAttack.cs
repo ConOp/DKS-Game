@@ -10,6 +10,7 @@ public class MeleeAttack : Basic_Ability
         abilityname = "Melee_Attack";
         timeToEnd = 0.2f;
         cooldown = 2f;
+        cdReduction = 0.5f;
         timeRemaining = cooldown;
         executingAttack = false;
         cdReady = false;
