@@ -5,12 +5,13 @@ using UnityEngine;
 public class EndPortal_Approach : MonoBehaviour
 {
 
-    GameObject canvas;
-
+    public GameObject canvas;
+    PopUpButton button;
     // Start is called before the first frame update
     void Start()
     {
         canvas.SetActive(false);
+        button = new PopUpButton(canvas, "Teleport to Next Room", null);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -18,6 +19,7 @@ public class EndPortal_Approach : MonoBehaviour
         if(other.tag == "Player")
         {
             canvas.SetActive(true);
+            button.ShowButton();
         }
     }
 
@@ -26,6 +28,7 @@ public class EndPortal_Approach : MonoBehaviour
         if(other.tag == "Player")
         {
             canvas.SetActive(false);
+            button.HideButton();
         }
     }
 }
