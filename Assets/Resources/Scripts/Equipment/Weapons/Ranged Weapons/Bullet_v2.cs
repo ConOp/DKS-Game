@@ -13,6 +13,9 @@ public class Bullet_v2 : MonoBehaviour
     Vector3 initpos;
     public GameObject effect;
 
+    [HideInInspector]
+    public GameObject target;
+
     private void Start()
     {
         initpos = transform.position;
@@ -33,7 +36,16 @@ public class Bullet_v2 : MonoBehaviour
     {
         if (other.tag == "Enemy")
         {
-            other.GetComponent<Basic_Enemy>().TakeDamage(damage);
+            //if target is a child of the collided object (aka the target is a modification)
+            if(target.transform.parent == other.gameObject.transform)
+            {
+                target.GetComponent<Modification>().TakeDamage(damage);
+                other.GetComponent<Basic_Enemy>().TakeDamage(damage/10);
+            }
+            else
+            {
+                other.GetComponent<Basic_Enemy>().TakeDamage(damage);
+            }
             GameObject flash = GameObject.Instantiate(effect, transform.position, Quaternion.identity);
             flash.transform.forward = -transform.forward;
         }

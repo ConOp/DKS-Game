@@ -310,6 +310,12 @@ PrefabInstance:
       propertyPath: joystick
       value: 
       objectReference: {fileID: 919669634}
+    - target: {fileID: 8684117830143908590, guid: 2a743f76bd920ce44905542dd893b3b6,
+        type: 3}
+      propertyPath: target
+      value: 
+      objectReference: {fileID: 1603246096663166246, guid: 5147b9c1b9e2e6f45a4185f32b456eb5,
+        type: 3}
     - target: {fileID: 8684117830143908598, guid: 2a743f76bd920ce44905542dd893b3b6,
         type: 3}
       propertyPath: m_Name
@@ -317,6 +323,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2a743f76bd920ce44905542dd893b3b6, type: 3}
+--- !u!114 &217335162 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8684117830143908590, guid: 2a743f76bd920ce44905542dd893b3b6,
+    type: 3}
+  m_PrefabInstance: {fileID: 217335161}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea3c272ec5dc8924983e20babb0c2925, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &271278944
 GameObject:
   m_ObjectHideFlags: 0
@@ -953,6 +971,16 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
+    - target: {fileID: 846528985131508528, guid: 51bbd7e735458694eb0e697b1881b056,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 217335162}
+    - target: {fileID: 846528985198441839, guid: 51bbd7e735458694eb0e697b1881b056,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 217335162}
     - target: {fileID: 2037389162028225863, guid: 51bbd7e735458694eb0e697b1881b056,
         type: 3}
       propertyPath: m_Name

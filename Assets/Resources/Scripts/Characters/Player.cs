@@ -151,7 +151,7 @@ public class Player : MonoBehaviour,Character
         bool attacked = false;
         if (weapons[currentWeaponIndex] != null)
         {
-            attacked = weapons[currentWeaponIndex].GetComponent<Weapon>().Attack();
+            attacked = weapons[currentWeaponIndex].GetComponent<Weapon>().Attack(GetComponent<LockOnTarget>().targeted);
         }
         //depending on the result, alter neuroticism.
         GetComponent<CharacterBehaviour>().pen.AttackNeuro(attacked);

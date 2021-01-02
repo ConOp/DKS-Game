@@ -4,55 +4,78 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class LockOnTarget : MonoBehaviour
 {
     bool lockOn = false;
     GameObject same = null;
-    GameObject arrow;
-    GameObject targeted;
+    GameObject lockIcon;
+    GameObject targetedCreature;
+    [HideInInspector]
+    public GameObject targeted;
+    GameObject[] attachments;
 
+    //temp
     public GameObject arrows;
+    //endtemp
+
     public GameObject body;
+    public GameObject target;
 
     // Update is called once per frame
     void Update()
     {
-
         Battle currentBattle = Battle_Manager.GetInstance().GetBattle(gameObject);
         if (currentBattle!=null)
         {
+            //if user taps on the screen
             if (Input.touchCount > 0 && Input.GetTouch(Input.touchCount - 1).phase == TouchPhase.Began)
             {
                 SelectEnemy(Input.GetTouch(Input.touchCount - 1),currentBattle.GetEnemies());
             }
+            //if no enemy is manually selected
             if (!lockOn)
             {
+                //try to select the closest as the target.
                 try
                 {
-                    targeted = GetComponent<Player>().Closest(currentBattle.GetEnemies());
-                    TargetLock(targeted);
+                    GameObject target = GetComponent<Player>().Closest(currentBattle.GetEnemies());
+                    if (target != targetedCreature)
+                    {
+                        targetedCreature = target;
+                        targeted = targetedCreature;
+                        TargetLock(targetedCreature);
+                    }
                 }catch(Exception e) { }
                 
             }
             else
             {
-                TargetLock(targeted);
+                //if selected enemy exists and the target is on the body
+                if (targetedCreature && targeted==targetedCreature)
+                {
+                    TargetLock(targetedCreature);
+                }
             }
-            if (targeted != null)
+
+            if (targetedCreature != null)
             {
                 PointToEnemy();
             }
         }
-        
-        
     }
 
     void PointToEnemy()
     {
-        body.transform.LookAt(targeted.transform);
+        body.transform.LookAt(targetedCreature.transform);
     }
 
+    /// <summary>
+    /// checks with raycast if tap is close enough to enemy to trigger selection.
+    /// </summary>
+    /// <param name="finger"></param>
+    /// <param name="enemies"></param>
     void SelectEnemy(Touch finger,List<GameObject> enemies)
     {
         RaycastHit hit;
@@ -61,13 +84,21 @@ public class LockOnTarget : MonoBehaviour
         {
             GameObject closest = Closest(hit.point,enemies);
             float dist = Vector2.Distance(hit.point, closest.transform.position);
-            if (dist < 2f)
+            if (dist < 2.5f)
             {
                 lockOn = true;
-                targeted = closest;
+                targetedCreature = closest;
+                targeted = targetedCreature;
             }
         }
     }
+
+    /// <summary>
+    /// finds the closest enemy to the tap position.
+    /// </summary>
+    /// <param name="hit"></param>
+    /// <param name="targets"></param>
+    /// <returns></returns>
     public GameObject Closest(Vector3 hit, List<GameObject> targets)
     {
         float distance = Vector3.Distance(hit, targets[0].transform.position);
@@ -88,10 +119,90 @@ public class LockOnTarget : MonoBehaviour
     {
         if (closest != same)
         {
-            Destroy(arrow);
+            Destroy(lockIcon);
             same = closest;
-            arrow = Instantiate(arrows, new Vector3(closest.transform.position.x, 0, closest.transform.position.z), Quaternion.identity);
-            arrow.transform.parent = closest.transform;
+            lockIcon = Instantiate(target,new Vector3(0, 2, 2), Quaternion.identity);
+            //lockIcon = Instantiate(arrows, new Vector3(closest.transform.position.x, 0, closest.transform.position.z), Quaternion.identity);
+            lockIcon.transform.SetParent(closest.transform,false);
+            //lockIcon.transform.parent = closest.transform;
+            attachments = targetedCreature.GetComponent<Basic_Enemy>().Attachments;
+        }
+    }
+
+    int position = -1;
+    int ChangeValueBy(int change)
+    {
+        position += change;
+        position = position == attachments.Count() ? -1 : position;
+        return position;
+    }
+
+    public void PreviousMod()
+    {
+        if (targeted == targetedCreature)
+        {
+            position = attachments.Count() - 1;
+            targeted = attachments[position];
+        }
+        else
+        {
+            position = ChangeValueBy(-1);
+            if (position <= -1)
+            {
+                position = -1;
+                lockOn = false;
+                targeted = targetedCreature;
+            }
+            else
+            {
+                lockOn = true;
+                targeted = attachments[position];
+            }            
+        }
+        while (targeted == null)
+        {
+            PreviousMod();
+        }
+        Debug.LogError(targeted.name);
+        TargetLock(targeted);
+        if (targeted != targetedCreature)
+        {
+            lockIcon.transform.localScale = new Vector3(1, 1, 1);
+            lockIcon.transform.localPosition = new Vector3(-0.5f, 1, 0);
+        }
+    }
+
+    public void NextMod() 
+    { 
+        if (targeted == targetedCreature)
+        {
+            position = 0;
+            targeted = attachments[position];
+        }
+        else
+        {
+            position = ChangeValueBy(1);
+            if (position == -1)
+            {
+                lockOn = false;
+                targeted = targetedCreature;
+            }
+            else
+            {
+                lockOn = true;
+                targeted = attachments[position];
+            }
+        }
+        while (targeted == null)
+        {
+            NextMod();
+        }
+        Debug.LogError(targeted.transform.localPosition);
+        TargetLock(targeted);
+        if (targeted != targetedCreature)
+        {
+            lockIcon.transform.localScale = new Vector3(1, 1, 1);
+            lockIcon.transform.localPosition = new Vector3(-0.5f, 1, 0);
         }
     }
 
