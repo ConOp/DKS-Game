@@ -10,6 +10,7 @@ public abstract class Basic_Ability:MonoBehaviour
     public bool ready;
     protected float cooldown;
     protected float cdReduction;
+    protected float damageMultiplier;//Need to make damage multiplier to be applied
     protected float timeRemaining;
     protected float timeToAttack;
     protected float timeToEnd;
