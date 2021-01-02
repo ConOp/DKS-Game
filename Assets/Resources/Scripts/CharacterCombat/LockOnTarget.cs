@@ -44,6 +44,7 @@ public class LockOnTarget : MonoBehaviour
                     if (target != targetedCreature)
                     {
                         targetedCreature = target;
+                        targeted = targetedCreature;
                         TargetLock(targetedCreature);
                     }
                 }catch(Exception e) { }
