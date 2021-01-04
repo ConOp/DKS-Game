@@ -547,8 +547,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1.76, y: 3.77, z: 3.72}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1.76, y: 3.77, z: 4}
+  m_Center: {x: 0, y: 0, z: 0.36}
 --- !u!114 &2402803507208825150
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -576,6 +576,7 @@ MonoBehaviour:
   Attachments: []
   readyAbility: {fileID: 0}
   activeAbility: {fileID: 0}
+  target: {fileID: 0}
   attacking: 0
   preparingAttack: 0
   stunned: 0
