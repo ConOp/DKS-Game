@@ -61,4 +61,12 @@ public abstract class Basic_Ability:MonoBehaviour
     /// </summary>
     /// <returns></returns>
     public abstract bool PrerequisitesMet();
+    /// <summary>
+    /// Returns the total amount of damage to deal to a player.
+    /// </summary>
+    /// <returns></returns>
+    public float DealDamage()
+    {
+        return damageMultiplier * enemyScript.current_damage;
+    }
 }

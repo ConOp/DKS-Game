@@ -11,6 +11,7 @@ public class RangedAttack : Basic_Ability
         timeToEnd = 0.2f;
         cooldown = 2f;
         cdReduction = 0.5f;
+        damageMultiplier = 1f;
         timeRemaining = cooldown;
         executingAttack = false;
         cdReady = false;
@@ -58,6 +59,7 @@ public class RangedAttack : Basic_Ability
         enemyScript.preparingAttack = false;
         enemyScript.attacking = true;
         GameObject bullet = Instantiate(this.bullet, gameObject.transform.position+transform.forward*2, Quaternion.identity);
+        bullet.GetComponent<Enemy_Bullet>().damage = enemyScript.DAMAGE * damageMultiplier;
         bullet.transform.rotation = transform.rotation;
         Invoke("EndAttack", timeToEnd);
     }

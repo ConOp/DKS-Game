@@ -244,6 +244,11 @@ public abstract class Basic_Enemy:MonoBehaviour
         readyAbility = null;
     }
 
+    protected void Stun()
+    {
+        stunned = true;
+        Invoke("Unstun", 3f);
+    }
     protected void Unstun()
     {
         stunned = false;

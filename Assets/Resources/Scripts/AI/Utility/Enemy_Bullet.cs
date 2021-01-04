@@ -18,8 +18,6 @@ public class Enemy_Bullet : MonoBehaviour
         initpos = transform.position;
     }
 
-
-    // Update is called once per frame
     void Update()
     {
         transform.position += transform.forward * speed * Time.deltaTime;
@@ -33,7 +31,7 @@ public class Enemy_Bullet : MonoBehaviour
     {
         if(other.tag == "Player")
         {
-            return;
+            other.GetComponent<Player>().TakeDamage(damage);
         }
         Destroy(gameObject);
     }

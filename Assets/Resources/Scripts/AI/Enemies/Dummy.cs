@@ -28,11 +28,17 @@ public class Dummy:Basic_Enemy
     {
         if (activeAbility != null)
         {
-            if (activeAbility.abilityname.Equals("Bash_Attack") && collision.transform.gameObject.tag.Equals("Wall"))
+            if (collision.transform.gameObject.tag.Equals("Player"))
             {
-                stunned = true;
-                activeAbility.EndAttack();
-                Invoke("Unstun", 3f);
+                collision.transform.gameObject.GetComponent<Player>().TakeDamage(activeAbility.DealDamage());
+            }
+            else if (collision.transform.gameObject.tag.Equals("Wall"))
+            {
+                if (activeAbility.abilityname.Equals("Bash_Attack"))
+                {
+                    Stun();
+                    activeAbility.EndAttack();
+                }
             }
         }
     }

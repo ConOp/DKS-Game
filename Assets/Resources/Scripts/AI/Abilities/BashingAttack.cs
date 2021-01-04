@@ -13,6 +13,7 @@ public class BashingAttack : Basic_Ability
         timeToEnd = 3f;
         cooldown = 10f;
         cdReduction = 0.9f;
+        damageMultiplier = 1.5f;
         timeRemaining = cooldown;
         executingAttack = false;
         cdReady = false;

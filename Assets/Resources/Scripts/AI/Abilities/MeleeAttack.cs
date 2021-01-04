@@ -11,6 +11,7 @@ public class MeleeAttack : Basic_Ability
         timeToEnd = 0.2f;
         cooldown = 2f;
         cdReduction = 0.5f;
+        damageMultiplier = 1f;
         timeRemaining = cooldown;
         executingAttack = false;
         cdReady = false;
@@ -27,7 +28,7 @@ public class MeleeAttack : Basic_Ability
         CoolDownTime();
         if (enemyScript.target != null)
         {
-            if (Vector3.Distance(gameObject.transform.position, enemyScript.target.transform.position) < 3) inrange = true;
+            if (Vector3.Distance(gameObject.transform.position, enemyScript.target.transform.position) <3) inrange = true;
             else inrange = false;
         }
     }
@@ -44,6 +45,7 @@ public class MeleeAttack : Basic_Ability
         Debug.Log("Executing Melee Attack");
         enemyScript.preparingAttack = false;
         enemyScript.attacking = true;
+        enemyScript.target.GetComponent<Player>().TakeDamage(DealDamage());
         Invoke("EndAttack", timeToEnd);
     }
 
