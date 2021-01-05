@@ -9,6 +9,7 @@ TagManager:
   - Equipment
   - Ground
   - Wall
+  - UIManager
   layers:
   - Default
   - TransparentFX
