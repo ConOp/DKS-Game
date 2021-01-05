@@ -57,4 +57,15 @@ public class Stage_Manager
     {
         return ((int)Mathf.Floor(startingRoomNumber + (floorNumber *(maxRoomNumber-startingRoomNumber)/maxFloorNumber)));
     }
+    public IEnumerator ChangeFloor()
+    {
+        //Change Floor
+        floorNumber++;
+        RandomnessMaestro.GetInstance().RefreshProbabilities();
+        PlayerManager.GetInstance().DespawnPlayers();
+        DungeonGenerator.GetInstance().ClearDungeon();
+        yield return new WaitForSeconds(2);
+        DungeonGenerator.GetInstance().CompleteDungeon(GetNextFloorRoomNumber());
+        PlayerManager.GetInstance().SpawnPlayers();
+    }
 }

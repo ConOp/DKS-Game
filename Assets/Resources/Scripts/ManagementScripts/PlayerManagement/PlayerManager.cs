@@ -14,7 +14,7 @@ public class PlayerManager
         }
         return instance;
     }
-    PlayerManager()
+    private PlayerManager()
     {
         instance = this;
         activePlayers = new List<GameObject>();
@@ -33,5 +33,21 @@ public class PlayerManager
     {
         if (activePlayers.Contains(player)) activePlayers.Remove(player);
     }
+    public void SpawnPlayers()
+    {
+        foreach(GameObject player in activePlayers)
+        {
+            player.transform.position = new Vector3(5, 1, -3);
+        }
+    }
+    public void DespawnPlayers()
+    {
+        foreach (GameObject player in activePlayers)
+        {
+            player.transform.position = player.transform.position - new Vector3(0, -3, 0);
+           // Object.Destroy(player);
+        }
+    }
+
 
 }

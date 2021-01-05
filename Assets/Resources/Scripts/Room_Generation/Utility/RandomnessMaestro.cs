@@ -23,31 +23,40 @@ public class RandomnessMaestro
     private RandomnessMaestro()
     {
         instance = this;
+        RefreshProbabilities();
     }
     #endregion
     public bool endRoomPlaced = false;
 
-    //Room or Corridor chances.
-    private List<Possibility> room_corridor_chance = new List<Possibility>{
-       new Possibility("Corridor",60f),
+    public void RefreshProbabilities()
+    {
+        room_corridor_chance = new List<Possibility>{
+        new Possibility("Corridor",60f),
         new Possibility("Room",40f) };
-    //Corridor type chances.
-    private List<Possibility> corridor_type = new List<Possibility>{
+        corridor_type = new List<Possibility>{
         new Possibility("Corner",30f),
         new Possibility("Straight",70f) };
-    //Room size chances.
-    private List<Possibility> room_size = new List<Possibility>{
+        room_size = new List<Possibility>{
         new Possibility("Small",20f),
         new Possibility("Medium",50f),
         new Possibility("Large",30f)
-    };
-
-    //Room type chances.
-    private List<Possibility> room_type = new List<Possibility>{
+        };
+        room_type = new List<Possibility>{
         new Possibility("FightingRoom",98.9f),
         new Possibility("ChestRoom",1f),
         new Possibility("EndRoom",0.1f)
-    };
+        };
+        endRoomPlaced = false;
+    }
+    //Room or Corridor chances.
+    private List<Possibility> room_corridor_chance;
+    //Corridor type chances.
+    private List<Possibility> corridor_type;
+    //Room size chances.
+    private List<Possibility> room_size;
+
+    //Room type chances.
+    private List<Possibility> room_type;
 
 
     /// <summary>
@@ -135,7 +144,7 @@ public class RandomnessMaestro
             /*Variable to decide if the room has more probabilities to spawn the start, middle or the end of the dungeon.
              * Low --------> High Power = Start --------> End.
             */
-            t = (float)System.Math.Pow((float)(NewRoomGen.roomsPlaced + 1) / NewRoomGen.RoomNumber, 10);
+            t = (float)System.Math.Pow((float)(DungeonGenerator.GetInstance().roomsPlaced + 1) / DungeonGenerator.GetInstance().RoomNumber, 10);
             endRoomProbability = endRoomStartingProb * (1 - t) + 100 * t;
             probabilityNotEndroom = 100 - endRoomProbability;
         }

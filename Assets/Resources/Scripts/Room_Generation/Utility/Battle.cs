@@ -83,7 +83,6 @@ public class Battle
         enemiesInvolved.Remove(enemy);
         if (enemiesInvolved.Count.Equals(0))
         {
-            Debug.Log("Wave Finished.");
             waveFinished = true;//If there are no enemies left in the battle wave is finished.
         }
     }
@@ -95,12 +94,10 @@ public class Battle
         numberOfWaves = (int)Math.Ceiling((float)totalEnemies / totalActiveEnemies);
         int currentWave = 0;
         int remainingEnemies = totalEnemies;
-        Debug.Log("Started Spawning...");
         while (currentWave <= numberOfWaves)
         {
             currentWave++;
             waveFinished = false;
-            Debug.Log("Spawning... "+currentWave);
             if (remainingEnemies - totalActiveEnemies >= 0)
             {
                 SpawnWave(totalActiveEnemies);
@@ -109,8 +106,6 @@ public class Battle
             {
                 SpawnWave(remainingEnemies);
             }
-            
-            Debug.Log("Waiting... "+currentWave);
             yield return new WaitUntil(() => waveFinished);
         }
         Battle_Manager.GetInstance().RemoveBattle(this);
@@ -127,7 +122,9 @@ public class Battle
             if (melee_ranged == 0)
             {
                 GameObject enemy=UnityEngine.Object.Instantiate(Enemy_Prefab_Manager.GetInstance().GetMeleeEnemies()[0], center, new Quaternion());
-                for(int i = 0; i < enemy.GetComponent<Basic_Enemy>().Attachments.Length; i++)
+                enemy.GetComponent<Basic_Enemy>().battle = this;
+                AddEnemy(enemy);
+                for(int i = 0; i < enemy.GetComponent<Basic_Enemy>().Modification_Bases.GetAllBases().Count; i++)
                 {
                     enemy.GetComponent<Basic_Enemy>().Add_Modification(ModMaestro.GetInstance().ChooseMeleeModification());
                 }
@@ -136,7 +133,9 @@ public class Battle
             else
             {
                 GameObject enemy=UnityEngine.Object.Instantiate(Enemy_Prefab_Manager.GetInstance().GetRangedEnemies()[0], center, new Quaternion());
-                for (int i = 0; i < enemy.GetComponent<Basic_Enemy>().Attachments.Length; i++)
+                enemy.GetComponent<Basic_Enemy>().battle = this;
+                AddEnemy(enemy);
+                for (int i = 0; i < enemy.GetComponent<Basic_Enemy>().Modification_Bases.GetAllBases().Count; i++)
                 {
                     enemy.GetComponent<Basic_Enemy>().Add_Modification(ModMaestro.GetInstance().ChooseRangedModification());
                 }
