@@ -126,7 +126,7 @@ public class LockOnTarget : MonoBehaviour
             //lockIcon = Instantiate(arrows, new Vector3(closest.transform.position.x, 0, closest.transform.position.z), Quaternion.identity);
             lockIcon.transform.SetParent(closest.transform,false);
             //lockIcon.transform.parent = closest.transform;
-            RefreshTargets();
+            modifications = targetedCreature.GetComponent<Basic_Enemy>().Modification_Bases.GetAllModifications();
         }
     }
 
@@ -134,13 +134,17 @@ public class LockOnTarget : MonoBehaviour
     int ChangeValueBy(int change)
     {
         position += change;
-        position = position == modifications.Count() ? -1 : position;
+        position = position >= modifications.Count() ? -1 : position;
         return position;
     }
 
     public void PreviousMod()
     {
-        if (targeted == targetedCreature)
+        if (!modifications.Any())
+        {
+            targeted = targetedCreature;
+        }
+        else if (targeted == targetedCreature)
         {
             position = modifications.Count() - 1;
             targeted = modifications[position];
@@ -174,8 +178,12 @@ public class LockOnTarget : MonoBehaviour
     }
 
     public void NextMod() 
-    { 
-        if (targeted == targetedCreature)
+    {        
+        if (!modifications.Any())
+        {
+            targeted = targetedCreature;
+        }
+        else if (targeted == targetedCreature)
         {
             position = 0;
             targeted = modifications[position];
@@ -197,7 +205,7 @@ public class LockOnTarget : MonoBehaviour
         while (targeted == null)
         {
             NextMod();
-        }
+        }        
         Debug.LogError(targeted.transform.localPosition);
         TargetLock(targeted);
         if (targeted != targetedCreature)
@@ -215,5 +223,6 @@ public class LockOnTarget : MonoBehaviour
     public void RefreshTargets()
     {
         modifications = targetedCreature.GetComponent<Basic_Enemy>().Modification_Bases.GetAllModifications();
+        NextMod();
     }
 }
