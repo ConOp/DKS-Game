@@ -573,7 +573,6 @@ MonoBehaviour:
   current_damage: 50
   max_movement_speed: 6
   abilities: []
-  Attachments: []
   readyAbility: {fileID: 0}
   activeAbility: {fileID: 0}
   target: {fileID: 0}
@@ -857,7 +856,7 @@ PrefabInstance:
     - target: {fileID: 1823503258310178588, guid: d03bf824c50c5434384320ac4bb1a87a,
         type: 3}
       propertyPath: m_Name
-      value: Attachment1
+      value: Medium_Base
       objectReference: {fileID: 0}
     - target: {fileID: 2751310673296746029, guid: d03bf824c50c5434384320ac4bb1a87a,
         type: 3}
@@ -914,6 +913,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5695838579328394614, guid: d03bf824c50c5434384320ac4bb1a87a,
+        type: 3}
+      propertyPath: base_side
+      value: E
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d03bf824c50c5434384320ac4bb1a87a, type: 3}
 --- !u!4 &620387839165897 stripped
@@ -932,7 +936,7 @@ PrefabInstance:
     - target: {fileID: 1823503258310178588, guid: d03bf824c50c5434384320ac4bb1a87a,
         type: 3}
       propertyPath: m_Name
-      value: Attachment2
+      value: Medium_Base
       objectReference: {fileID: 0}
     - target: {fileID: 2751310673296746029, guid: d03bf824c50c5434384320ac4bb1a87a,
         type: 3}
@@ -988,6 +992,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5695838579328394614, guid: d03bf824c50c5434384320ac4bb1a87a,
+        type: 3}
+      propertyPath: base_side
+      value: W
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d03bf824c50c5434384320ac4bb1a87a, type: 3}

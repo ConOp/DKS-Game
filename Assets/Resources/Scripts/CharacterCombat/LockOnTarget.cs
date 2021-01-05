@@ -11,10 +11,11 @@ public class LockOnTarget : MonoBehaviour
     bool lockOn = false;
     GameObject same = null;
     GameObject lockIcon;
-    GameObject targetedCreature;
+    [HideInInspector]
+    public GameObject targetedCreature;
     [HideInInspector]
     public GameObject targeted;
-    GameObject[] attachments;
+    List<GameObject> modifications;
 
     //temp
     public GameObject arrows;
@@ -125,7 +126,7 @@ public class LockOnTarget : MonoBehaviour
             //lockIcon = Instantiate(arrows, new Vector3(closest.transform.position.x, 0, closest.transform.position.z), Quaternion.identity);
             lockIcon.transform.SetParent(closest.transform,false);
             //lockIcon.transform.parent = closest.transform;
-            attachments = targetedCreature.GetComponent<Basic_Enemy>().Attachments;
+            modifications = targetedCreature.GetComponent<Basic_Enemy>().Modification_Bases.GetAllModifications();
         }
     }
 
@@ -133,16 +134,20 @@ public class LockOnTarget : MonoBehaviour
     int ChangeValueBy(int change)
     {
         position += change;
-        position = position == attachments.Count() ? -1 : position;
+        position = position >= modifications.Count() ? -1 : position;
         return position;
     }
 
     public void PreviousMod()
     {
-        if (targeted == targetedCreature)
+        if (!modifications.Any())
         {
-            position = attachments.Count() - 1;
-            targeted = attachments[position];
+            targeted = targetedCreature;
+        }
+        else if (targeted == targetedCreature)
+        {
+            position = modifications.Count() - 1;
+            targeted = modifications[position];
         }
         else
         {
@@ -156,7 +161,7 @@ public class LockOnTarget : MonoBehaviour
             else
             {
                 lockOn = true;
-                targeted = attachments[position];
+                targeted = modifications[position];
             }            
         }
         while (targeted == null)
@@ -173,11 +178,15 @@ public class LockOnTarget : MonoBehaviour
     }
 
     public void NextMod() 
-    { 
-        if (targeted == targetedCreature)
+    {        
+        if (!modifications.Any())
+        {
+            targeted = targetedCreature;
+        }
+        else if (targeted == targetedCreature)
         {
             position = 0;
-            targeted = attachments[position];
+            targeted = modifications[position];
         }
         else
         {
@@ -190,13 +199,13 @@ public class LockOnTarget : MonoBehaviour
             else
             {
                 lockOn = true;
-                targeted = attachments[position];
+                targeted = modifications[position];
             }
         }
         while (targeted == null)
         {
             NextMod();
-        }
+        }        
         Debug.LogError(targeted.transform.localPosition);
         TargetLock(targeted);
         if (targeted != targetedCreature)
@@ -209,5 +218,11 @@ public class LockOnTarget : MonoBehaviour
     public void UnLock()
     {
         lockOn = false;
+    }
+
+    public void RefreshTargets()
+    {
+        modifications = targetedCreature.GetComponent<Basic_Enemy>().Modification_Bases.GetAllModifications();
+        NextMod();
     }
 }
