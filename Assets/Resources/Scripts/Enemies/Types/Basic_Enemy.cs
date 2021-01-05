@@ -160,16 +160,20 @@ public abstract class Basic_Enemy:MonoBehaviour
     {
         foreach(Modification_Base mbase in Modification_Bases.GetAllBases())
         {
-            if (mbase.mod.Equals(mod_to_remove))
+            if (mbase.mod != null)
             {
-                mbase.DetachModification();
-                Apply_Modification_Boosts();
-                foreach(GameObject player in Battle_Manager.GetInstance().GetBattle(gameObject).GetPlayers())
+                if (mbase.mod.Equals(mod_to_remove))
                 {
-                    if (player.GetComponent<LockOnTarget>().targetedCreature.Equals(gameObject))
+                    mbase.DetachModification();
+                    Apply_Modification_Boosts();
+                    foreach (GameObject player in Battle_Manager.GetInstance().GetBattle(gameObject).GetPlayers())
                     {
-                        player.GetComponent<LockOnTarget>().RefreshTargets();
+                        if (player.GetComponent<LockOnTarget>().targetedCreature.Equals(gameObject))
+                        {
+                            player.GetComponent<LockOnTarget>().RefreshTargets();
+                        }
                     }
+                    return;
                 }
             }
         }
