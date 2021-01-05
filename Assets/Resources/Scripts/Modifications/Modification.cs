@@ -22,11 +22,8 @@ public class Modification : MonoBehaviour
         mod_health -= damage;
         if (mod_health <= 0)
         {
-            
             gameObject.GetComponentInParent<Basic_Enemy>().Remove_Modification(gameObject);
-            Vector3 explosionLocation = gameObject.transform.parent.position;
             gameObject.transform.SetParent(null);
-            gameObject.GetComponent<Rigidbody>().AddExplosionForce(10, explosionLocation, 5, 3.0F);
             return true;
         }
         else
