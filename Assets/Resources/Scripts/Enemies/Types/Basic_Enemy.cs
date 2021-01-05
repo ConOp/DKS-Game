@@ -16,7 +16,6 @@ public abstract class Basic_Enemy:MonoBehaviour
     public float current_health;
     public float current_range;
     public float current_damage;
-
     public float max_movement_speed;
     public List<Basic_Ability> abilities;
     public Modification_Base_Collection Modification_Bases;
@@ -140,6 +139,13 @@ public abstract class Basic_Enemy:MonoBehaviour
             if (mBase.AttachModification(mod))
             {
                 Apply_Modification_Boosts();
+                foreach (GameObject player in Battle_Manager.GetInstance().GetBattle(gameObject).GetPlayers())
+                {
+                    if (player.GetComponent<LockOnTarget>().targetedCreature.Equals(gameObject))
+                    {
+                        player.GetComponent<LockOnTarget>().RefreshTargets();
+                    }
+                }
             }
         }
       
@@ -158,6 +164,13 @@ public abstract class Basic_Enemy:MonoBehaviour
             {
                 mbase.DetachModification();
                 Apply_Modification_Boosts();
+                foreach(GameObject player in Battle_Manager.GetInstance().GetBattle(gameObject).GetPlayers())
+                {
+                    if (player.GetComponent<LockOnTarget>().targetedCreature.Equals(gameObject))
+                    {
+                        player.GetComponent<LockOnTarget>().RefreshTargets();
+                    }
+                }
             }
         }
     }

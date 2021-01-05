@@ -11,7 +11,8 @@ public class LockOnTarget : MonoBehaviour
     bool lockOn = false;
     GameObject same = null;
     GameObject lockIcon;
-    GameObject targetedCreature;
+    [HideInInspector]
+    public GameObject targetedCreature;
     [HideInInspector]
     public GameObject targeted;
     List<GameObject> modifications;
@@ -125,7 +126,7 @@ public class LockOnTarget : MonoBehaviour
             //lockIcon = Instantiate(arrows, new Vector3(closest.transform.position.x, 0, closest.transform.position.z), Quaternion.identity);
             lockIcon.transform.SetParent(closest.transform,false);
             //lockIcon.transform.parent = closest.transform;
-            modifications = targetedCreature.GetComponent<Basic_Enemy>().Modification_Bases.GetAllModifications();
+            RefreshTargets();
         }
     }
 
@@ -209,5 +210,10 @@ public class LockOnTarget : MonoBehaviour
     public void UnLock()
     {
         lockOn = false;
+    }
+
+    public void RefreshTargets()
+    {
+        modifications = targetedCreature.GetComponent<Basic_Enemy>().Modification_Bases.GetAllModifications();
     }
 }
