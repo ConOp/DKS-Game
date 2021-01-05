@@ -17,12 +17,14 @@ public class LockOnTarget : MonoBehaviour
     public GameObject targeted;
     List<GameObject> modifications;
 
-    //temp
-    public GameObject arrows;
-    //endtemp
-
     public GameObject body;
-    public GameObject target;
+    //public GameObject target;
+    GameObject target;
+    private void Start()
+    {
+        target = UIManager.GetInstance().TargetLockObject();
+    }
+
 
     // Update is called once per frame
     void Update()
