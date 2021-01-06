@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class EndPortal_Approach : MonoBehaviour
 {
@@ -11,7 +12,10 @@ public class EndPortal_Approach : MonoBehaviour
         if (!players.Contains(other.gameObject) && PlayerManager.GetInstance().GetActivePlayers().Contains(other.gameObject))
         {
             players.Add(other.gameObject);
-            button = Instantiate(UIManager.GetInstance().PopUpButtonObject("Teleport to Next Floor",ReadyToLeave), other.gameObject.transform.Find("PopUpCanvas").transform);
+            button = Instantiate(UIManager.GetInstance().PopUpButtonObject(), other.gameObject.transform.Find("PopUpCanvas").transform);
+            Button b = button.GetComponentInChildren<Button>();
+            b.GetComponentInChildren<Text>().text = "Teleport to Next Floor";
+            b.onClick.AddListener(ReadyToLeave);
         }
             
     }
