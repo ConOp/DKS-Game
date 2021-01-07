@@ -72,12 +72,13 @@ public class UIManager
     /// <param name="text"></param>
     /// <param name="method"></param>
     /// <returns></returns>
-    public GameObject PopUpButtonObject(string text, UnityAction method)
+    public GameObject PopUpButtonObject()
     {
-        GameObject button = SearchObject("PopUpButton");
-        Button b = button.GetComponentInChildren<Button>();
-        b.GetComponentInChildren<Text>().text = text;
-        b.onClick.AddListener(method);
-        return button;
+        return SearchObject("PopUpButton");
+    }
+
+    void Test()
+    {
+        Debug.LogError("test");
     }
 }
