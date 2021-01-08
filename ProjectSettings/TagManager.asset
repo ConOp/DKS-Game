@@ -21,9 +21,9 @@ TagManager:
   - Obstacles
   - Enemies
   - Ground
-  - 
-  - 
-  - 
+  - Mods
+  - Wall
+  - PostProcessing
   - 
   - 
   - 
