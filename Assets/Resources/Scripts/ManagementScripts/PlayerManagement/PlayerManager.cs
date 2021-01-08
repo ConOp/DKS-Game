@@ -35,9 +35,25 @@ public class PlayerManager
     }
     public void SpawnPlayers()
     {
+        int pCount = 0;
         foreach(GameObject player in activePlayers)
         {
-            player.transform.position = new Vector3(5, 1, -3);
+            switch(pCount)
+            {
+                case 0:
+                    player.transform.position = new Vector3(22f, 1, -28f);
+                    break;
+                case 1:
+                    player.transform.position = new Vector3(28f, 1, -28f);
+                    break;
+                case 2:
+                    player.transform.position = new Vector3(22f, 1, -22f);
+                    break;
+                case 3:
+                    player.transform.position = new Vector3(28f, 1, -22f);
+                    break;
+            }
+            pCount++;
         }
     }
     public void DespawnPlayers()
