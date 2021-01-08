@@ -23,11 +23,14 @@ public class Player : MonoBehaviour,Character
 
     public GameObject hand;
     public GameObject body;
-    
+
+    HealthBar hpbar;
 
     private void Start()
     {
         weapons = new List<GameObject> { null, null };
+        hpbar = transform.parent.Find("HealthCanvas").GetComponentInChildren<HealthBar>();
+        hpbar.InitHealth(hp);
     }
 
     public void enterCombat()
@@ -48,6 +51,7 @@ public class Player : MonoBehaviour,Character
     public void TakeDamage(float damage)
     {
         hp -= damage;
+        hpbar.SetHealth(hp);
     }
 
     public void Kill(float delay)

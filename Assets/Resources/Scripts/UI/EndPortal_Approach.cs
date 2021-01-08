@@ -22,17 +22,22 @@ public class EndPortal_Approach : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (players.Contains(other.gameObject))
+        if (PlayerManager.GetInstance().GetActivePlayers().Contains(other.gameObject))
         {
-            players.Remove(other.gameObject);
-            Destroy(button);
+            if (players.Contains(other.gameObject))
+            {
+                players.Remove(other.gameObject);
+                Destroy(button);
+            }
         }
+        
     }
 
     public void ReadyToLeave()
     {
         if (players.Count.Equals(PlayerManager.GetInstance().GetActivePlayers().Count))
         {
+            Destroy(button);
             GameObject.FindGameObjectWithTag("DungeonMaster").GetComponent<TestLoad>().ProceedNextStage();
         }
     }
