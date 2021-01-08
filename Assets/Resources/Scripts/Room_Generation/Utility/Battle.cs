@@ -90,8 +90,8 @@ public class Battle
     public IEnumerator SpawnEnemies()
     {
         totalEnemies = (int)Math.Ceiling(room.Tiles_number_x * room.Tiles_number_z * 0.8f * Difficulty_Manager.GetInstance().GetDifficultyFactor() / 100);
-        totalActiveEnemies = (int)Math.Ceiling(0.2f * totalEnemies);
-        numberOfWaves = (int)Math.Ceiling((float)totalEnemies / totalActiveEnemies);
+        totalActiveEnemies = totalEnemies; //(int)Math.Ceiling(0.2f * totalEnemies); for later use
+        numberOfWaves = 1; //(int)Math.Ceiling((float)totalEnemies / totalActiveEnemies); for later use
         int currentWave = 0;
         int remainingEnemies = totalEnemies;
         while (currentWave <= numberOfWaves)

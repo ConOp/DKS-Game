@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7304944280757371342}
   - component: {fileID: 3423191928564064438}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Attack_Speed_Modification_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -64,7 +64,7 @@ GameObject:
   - component: {fileID: 8811286931366492895}
   - component: {fileID: 5908491006369744550}
   - component: {fileID: 8298215726756055353}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Attack_Speed_Mod
   m_TagString: Untagged
   m_Icon: {fileID: 0}

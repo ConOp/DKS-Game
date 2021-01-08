@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 293238005263972493}
   - component: {fileID: 6621806707947766772}
   - component: {fileID: 5978409521955033040}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Movement_Speed_Mod
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -120,7 +120,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3510038819391583554}
   - component: {fileID: 940357868628202461}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Movement_Speed_Modification_5
   m_TagString: Untagged
   m_Icon: {fileID: 0}

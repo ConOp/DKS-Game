@@ -153,7 +153,7 @@ public class DungeonGenerator
         }
         if (room.Type == "EndRoom")
         {
-            gr.AddComponent<Change_Floor>();
+            gr.AddComponent<EndPortal_Approach>();
             gr.AddComponent<SphereCollider>();
             gr.GetComponent<SphereCollider>().radius = 8;
             gr.GetComponent<SphereCollider>().isTrigger = true;
