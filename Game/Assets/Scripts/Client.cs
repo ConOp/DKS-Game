@@ -23,7 +23,7 @@ public class Client : MonoBehaviour
         else if (client != this)
         {
             Debug.Log("Incorrect instance needs to be destroyed...");
-            Destroy(this);                      //only one instance of Client class must exist
+            Destroy(this);                      //only one instance of Client class must exist (meaning only one local player)
         }
     }
     //Start is called before the first frame update
@@ -41,12 +41,13 @@ public class Client : MonoBehaviour
     {
         public TcpClient socket;
         private NetworkStream stream;
-        private byte[] receivedBuffer;
+        private byte[] received_buffer;
+        private Packet received_data;            //packet (sent by server) and received from client
 
         public void ConnectedPlayer()
         {
             socket = new TcpClient { ReceiveBufferSize = dataBufferSize, SendBufferSize = dataBufferSize };
-            receivedBuffer = new byte[dataBufferSize];
+            received_buffer = new byte[dataBufferSize];
             socket.BeginConnect(client.ip, client.port, ConnectionCallback, socket);
         }
 
@@ -58,7 +59,8 @@ public class Client : MonoBehaviour
                 return;
             }
             stream = socket.GetStream();
-            stream.BeginRead(receivedBuffer, 0, dataBufferSize, ReceivedCallback, null);
+            received_data = new Packet();       //initialize Packet instance
+            stream.BeginRead(received_buffer, 0, dataBufferSize, ReceivedCallback, null);
         }
 
         private void ReceivedCallback(IAsyncResult asyncResult)
@@ -72,8 +74,8 @@ public class Client : MonoBehaviour
                 }
                 byte[] data = new byte[byte_length];                //if data has been received, create new buffer for the data
 
-                Array.Copy(receivedBuffer, data, byte_length);      //copy from one array to another
-                stream.BeginRead(receivedBuffer, 0, dataBufferSize, ReceivedCallback, null);    //continue reading data from the NetworkStream
+                Array.Copy(received_buffer, data, byte_length);      //copy from one array to another
+                stream.BeginRead(received_buffer, 0, dataBufferSize, ReceivedCallback, null);    //continue reading data from the NetworkStream
             }
             catch { }
         }

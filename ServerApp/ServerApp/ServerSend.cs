@@ -10,10 +10,10 @@ namespace ServerApp
         {
             using (Packet packet = new Packet((int)ServerPackets.welcome))  //create the welcome packet (using statement ensures the correct use of IDisposable objects)
             {
-                packet.Write(message);                                      //fill with data
+                packet.Write(message);                                      //fill with data (write a message and client's id)
                 packet.Write(toClient);
 
-                SendTcpData(toClient, packet);
+                SendTcpData(toClient, packet);                              //sent packet to specified client
             }
         }
         //----------------------------------------------send TCP data--------------------------------------------
