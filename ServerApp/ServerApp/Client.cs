@@ -10,9 +10,9 @@ namespace ServerApp
     {
         public int client_id;
         public TCP tcp;
-        public static int dataBufferSize = 4096;    //bytes
+        public static int dataBufferSize = 4096;                    //bytes
 
-        public Client(int ci)                 //constructor of outter class Client
+        public Client(int ci)                                       //constructor of outter class Client
         {
             client_id = ci;
             tcp = new TCP(client_id);
@@ -39,6 +39,8 @@ namespace ServerApp
                 stream = socket.GetStream();                        //get the NetworkStream used to send and receive data from TcpClient
                 receivedBuffer = new byte[dataBufferSize];
                 stream.BeginRead(receivedBuffer, 0, receivedBuffer.Length, ReceivedCallback, null); //begin to read from NetworkStream
+
+                ServerSend.Welcome(id, "Welcome to the server!!");  //once client-server communication has been established, send a welcome packet from server to the client
             }
 
             private void ReceivedCallback(IAsyncResult asyncResult)
@@ -60,6 +62,22 @@ namespace ServerApp
                     Console.WriteLine($"Error occured while receiving TCP data: {e}");
                 }
             }
-         }
+
+            public void SendData(Packet packet)
+            {
+                try
+                {
+                    if (socket != null)                             //check if client's socket has been initialized
+                    {
+
+                        stream.BeginWrite(packet.ToArray(), 0, packet.Length(), null, null);
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine($"Error sending packet data to player (client) with {id} via TCP {e}...");
+                }
+            }
+        }
     }
 }

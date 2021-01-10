@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Numerics;
 using System.Text;
 
-namespace GameServer
+namespace ServerApp
 {
     //sent from server to client
     public enum ServerPackets
