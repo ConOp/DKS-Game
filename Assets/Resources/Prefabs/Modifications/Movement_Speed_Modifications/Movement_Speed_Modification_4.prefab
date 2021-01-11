@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4669669936915336778}
   - component: {fileID: 6567132153249748660}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Movement_Speed_Modification_4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -64,7 +64,7 @@ GameObject:
   - component: {fileID: 3789399410987914958}
   - component: {fileID: 7737763446101634487}
   - component: {fileID: 7093449854802993555}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Movement_Speed_Mod
   m_TagString: Untagged
   m_Icon: {fileID: 0}

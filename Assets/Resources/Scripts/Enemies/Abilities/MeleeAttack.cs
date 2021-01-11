@@ -59,7 +59,7 @@ public class MeleeAttack : Basic_Ability
         {
             enemyScript.current_speed += enemyScript.max_movement_speed * 0.01f;
         }
-        transform.LookAt(enemyScript.target.transform);
+        transform.LookAt(new Vector3(enemyScript.target.transform.position.x,gameObject.transform.position.y, enemyScript.target.transform.position.z));
         transform.position += transform.forward * enemyScript.current_speed * Time.deltaTime;
     }
 }

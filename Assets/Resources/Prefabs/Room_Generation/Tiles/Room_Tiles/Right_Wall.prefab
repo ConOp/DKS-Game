@@ -106,7 +106,7 @@ GameObject:
   - component: {fileID: 5212332236822895088}
   - component: {fileID: 8528127716918278115}
   - component: {fileID: 1820876092209511721}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Cube
   m_TagString: Wall
   m_Icon: {fileID: 0}

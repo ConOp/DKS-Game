@@ -34,7 +34,7 @@ public class BashingAttack : Basic_Ability
         cdReady = false;
         enemyScript.preparingAttack = true;
         enemyScript.current_speed = 0;
-        transform.rotation = Quaternion.LookRotation(enemyScript.target.transform.position - transform.position);
+        transform.LookAt(new Vector3(enemyScript.target.transform.position.x, gameObject.transform.position.y, enemyScript.target.transform.position.z));
         Invoke("BeginAttack",timeToAttack);
     }
     public override void EndAttack()

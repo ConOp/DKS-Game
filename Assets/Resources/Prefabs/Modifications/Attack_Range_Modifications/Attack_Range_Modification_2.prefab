@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4853084844110573883}
   - component: {fileID: 5916370918792141847}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Attack_Range_Modification_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -64,7 +64,7 @@ GameObject:
   - component: {fileID: 3510524123179396246}
   - component: {fileID: 2975115911982971920}
   - component: {fileID: 3781791372774469042}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Attack_Range_Mod
   m_TagString: Untagged
   m_Icon: {fileID: 0}
