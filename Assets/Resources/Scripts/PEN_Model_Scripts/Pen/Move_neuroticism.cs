@@ -28,7 +28,8 @@ public class Move_neuroticism
 
     float Normalizer()
     {
-        float dist = maxNeuro - neuro;
+        float dist = maxNeuro - Math.Abs(neuro);
+        dist += 0.1f;
         return dist / 10;
     }
 
@@ -65,7 +66,7 @@ public class Move_neuroticism
     /// <param name="key"></param>
     private void ChangeNeuro(ref float timer)
     {
-        if (Math.Abs(neuro) <= maxNeuro)
+        if (neuro <= maxNeuro && neuro >= maxNeuro-20)
         {
             float multiplier = Normalizer();
             if (timer >= THRESHOLD)

@@ -6,17 +6,15 @@ using UnityEngine;
 public class CharacterBehaviour : MonoBehaviour
 {
     public pen_model pen;
-    float maxNeuro = 10;
-    float maxExtra = 10;
 
     bool entering = true;
     bool unlocked = true;
+    bool updater = false;
     // Start is called before the first frame update
     void Start()
     {
         pen = new pen_model();
-        pen.SetMaxNeuro(maxNeuro);
-        pen.SetMaxExtra(maxExtra);
+        pen.SetMaxPen();
         entering = true;
     }
 
@@ -25,12 +23,16 @@ public class CharacterBehaviour : MonoBehaviour
     {
         if (!gameObject.GetComponent<Player>().InCombat())
         {
-            pen.UpdateRate();
-            maxNeuro = pen.GetNeurotism() + 10;
-            maxExtra = pen.GetExtraversion() + 10;
+            if (updater)
+            {
+                updater = false;
+                pen.UpdateRate();
+                pen.SetMaxPen();
+            }            
         }
         else
         {
+            updater = true;
             if (entering)
             {
                 StartCoroutine(Waiter());
@@ -51,7 +53,7 @@ public class CharacterBehaviour : MonoBehaviour
         if (entering && unlocked)
         {
             unlocked = false;
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(1f);
             entering = false;
         }
     }
