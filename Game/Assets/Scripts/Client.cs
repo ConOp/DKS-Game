@@ -14,6 +14,10 @@ public class Client : MonoBehaviour
     public int local_client_id = 0;             //local client's id
     public TCP tcp;                             //reference to client's TCP class
 
+    private delegate void PacketHandler(Packet packet);
+    private static Dictionary<int, PacketHandler> packetHandlers;   //packet's id, corresponding packet handler
+
+
     private void Awake()
     {
         if (client == null)
@@ -42,7 +46,7 @@ public class Client : MonoBehaviour
         public TcpClient socket;
         private NetworkStream stream;
         private byte[] received_buffer;
-        private Packet received_data;            //packet (sent by server) and received from client
+        private Packet received_packet;            //packet (sent by server) and received from client
 
         public void ConnectedPlayer()
         {
@@ -59,7 +63,7 @@ public class Client : MonoBehaviour
                 return;
             }
             stream = socket.GetStream();
-            received_data = new Packet();       //initialize Packet instance
+            received_packet = new Packet();                         //initialize Packet instance
             stream.BeginRead(received_buffer, 0, dataBufferSize, ReceivedCallback, null);
         }
 
@@ -67,19 +71,64 @@ public class Client : MonoBehaviour
         {
             try
             {
-                int byte_length = stream.EndRead(asyncResult);      //returns number of bytes read from the NetworkStream
-                if (byte_length <= 0)
+                int bytes_length = stream.EndRead(asyncResult);     //returns number of bytes read from the NetworkStream
+                if (bytes_length <= 0)
                 {
                     return;                                         //get out of the method
                 }
-                byte[] data = new byte[byte_length];                //if data has been received, create new buffer for the data
+                byte[] data = new byte[bytes_length];               //if data has been received, create new buffer for the data
 
-                Array.Copy(received_buffer, data, byte_length);      //copy from one array to another
+                Array.Copy(received_buffer, data, bytes_length);    //copy from one array to another
+                received_packet.Reset(HandleData(data));            //reset Packet instance so it can be reused, but first get data from the packet
                 stream.BeginRead(received_buffer, 0, dataBufferSize, ReceivedCallback, null);    //continue reading data from the NetworkStream
             }
             catch { }
         }
 
+        private bool HandleData(byte[] data)                        //returns a boolean, telling Packet's Reset() whether the instance should be cleared
+        {
+            int packet_length = 0;
+            received_packet.SetBytes(data);                         //set packet's bytes to the ones we read from the stream (data)
+            if (received_packet.UnreadLength() >= 4)                //this is the start of packet (first value placed in the packet is its content's length, which is an integer [int consists of 4 bytes])
+            {
+                packet_length = received_packet.ReadInt();          //get packet's length of data that was sent from server and received from client (meaning local player)
+                if (packet_length <= 0)                             //no data stored inside
+                {
+                    return true;                                    //true --> reset packet in order to receive new data
+                }
+            }
+
+            while (packet_length > 0 && packet_length <= received_packet.UnreadLength())     //received packet contains another complete (whole) packet that needs to handled
+            {
+                byte[] packet_bytes = received_packet.ReadBytes(packet_length);
+                ThreadManager.ExecuteOnMainThread(() =>
+                {
+                    using (Packet packet = new Packet(packet_bytes))
+                    {
+                        int packet_id = packet.ReadInt();
+                        packetHandlers[packet_id](packet);              //invoke passing packet instance
+                    }
+                });
+            }
+
+            if (packet_length <= 1)
+            {
+                return true;
+            }
+            return false;                                               //partial packet exists, so don't reset }
+        }
     }
 
+    private void InitializedClientData()                            //intialize dictionary of packet data
+    {
+        packetHandlers = new Dictionary<int, PacketHandler>()
+        {
+            /*{ (int) ServerPackets.welcome, ClientHandle.Welcome},
+            { (int) ServerPackets.spawnPlayer, ClientHandle.SpawnPlayer},
+             { (int) ServerPackets.playerPosition, ClientHandle.PlayerPosition},
+              { (int) ServerPackets.playerRotation, ClientHandle.PlayerRotation}*/
+        };
+
+        Debug.Log("Initialization for packets done");
+    }
 }
