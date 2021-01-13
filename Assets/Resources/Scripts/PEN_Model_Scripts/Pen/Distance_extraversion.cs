@@ -24,8 +24,8 @@ public class Distance_extraversion
     float Normalizer()
     {
         float dist = maxExtra - Math.Abs(extr);
-        dist += 0.1f;
-        return dist / 10;
+        dist = Math.Abs(dist/10+0.01f);
+        return dist;
     }
 
     /// <summary>

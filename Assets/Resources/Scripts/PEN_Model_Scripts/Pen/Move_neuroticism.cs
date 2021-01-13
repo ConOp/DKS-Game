@@ -29,8 +29,8 @@ public class Move_neuroticism
     float Normalizer()
     {
         float dist = maxNeuro - Math.Abs(neuro);
-        dist += 0.1f;
-        return dist / 10;
+        dist = Math.Abs(dist / 10 + 0.01f);
+        return dist;
     }
 
     /// <summary>

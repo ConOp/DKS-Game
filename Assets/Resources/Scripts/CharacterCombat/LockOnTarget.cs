@@ -35,23 +35,15 @@ public class LockOnTarget : MonoBehaviour
             //if user taps on the screen
             if (Input.touchCount > 0 && Input.GetTouch(Input.touchCount - 1).phase == TouchPhase.Began)
             {
-                SelectEnemy(Input.GetTouch(Input.touchCount - 1),currentBattle.GetEnemies());
+                if (currentBattle.GetEnemies().Any())
+                {
+                    SelectEnemy(Input.GetTouch(Input.touchCount - 1), currentBattle.GetEnemies());
+                }
             }
             //if no enemy is manually selected
             if (!lockOn)
             {
-                //try to select the closest as the target.
-                try
-                {
-                    GameObject target = GetComponent<Player>().Closest(currentBattle.GetEnemies());
-                    if (target != targetedCreature)
-                    {
-                        targetedCreature = target;
-                        targeted = targetedCreature;
-                        TargetLock(targetedCreature);
-                    }
-                }catch(Exception e) { }
-                
+                TargetClosest(GetComponent<Player>().Closest(currentBattle.GetEnemies()));                
             }
             else
             {
@@ -66,7 +58,26 @@ public class LockOnTarget : MonoBehaviour
             {
                 PointToEnemy();
             }
+            else
+            {
+                TargetClosest(GetComponent<Player>().Closest(currentBattle.GetEnemies()));
+            }
         }
+    }
+
+    void TargetClosest(GameObject target)
+    {
+        //try to select the closest as the target.
+        try
+        {            
+            if (target != targetedCreature)
+            {
+                targetedCreature = target;
+                targeted = targetedCreature;
+                TargetLock(targetedCreature);
+            }
+        }
+        catch { }
     }
 
     void PointToEnemy()
@@ -90,8 +101,12 @@ public class LockOnTarget : MonoBehaviour
             if (dist < 2.5f)
             {
                 lockOn = true;
-                targetedCreature = closest;
-                targeted = targetedCreature;
+                if (targetedCreature != closest)
+                {
+                    targetedCreature = closest;
+                    targeted = targetedCreature;
+                }
+                
             }
         }
     }
@@ -104,18 +119,22 @@ public class LockOnTarget : MonoBehaviour
     /// <returns></returns>
     public GameObject Closest(Vector3 hit, List<GameObject> targets)
     {
-        float distance = Vector3.Distance(hit, targets[0].transform.position);
-        GameObject closest = targets[0];
-        foreach (GameObject t in targets)
+        if (targets.Any())
         {
-            float d = Vector3.Distance(hit, t.transform.position);
-            if (d < distance)
+            float distance = Vector3.Distance(hit, targets[0].transform.position);
+            GameObject closest = targets[0];
+            foreach (GameObject t in targets)
             {
-                distance = d;
-                closest = t;
+                float d = Vector3.Distance(hit, t.transform.position);
+                if (d < distance)
+                {
+                    distance = d;
+                    closest = t;
+                }
             }
+            return closest;
         }
-        return closest;
+        return null;
     }
 
     void TargetLock(GameObject closest)
@@ -142,79 +161,85 @@ public class LockOnTarget : MonoBehaviour
 
     public void PreviousMod()
     {
-        if (!modifications.Any())
+        if (targetedCreature != null)
         {
-            targeted = targetedCreature;
-        }
-        else if (targeted == targetedCreature)
-        {
-            position = modifications.Count() - 1;
-            targeted = modifications[position];
-        }
-        else
-        {
-            position = ChangeValueBy(-1);
-            if (position <= -1)
+            if (!modifications.Any())
             {
-                position = -1;
-                lockOn = false;
                 targeted = targetedCreature;
+            }
+            else if (targeted == targetedCreature)
+            {
+                position = modifications.Count() - 1;
+                targeted = modifications[position];
             }
             else
             {
-                lockOn = true;
-                targeted = modifications[position];
-            }            
-        }
-        while (targeted == null)
-        {
-            PreviousMod();
-        }
-        Debug.LogError(targeted.name);
-        TargetLock(targeted);
-        if (targeted != targetedCreature)
-        {
-            lockIcon.transform.localScale = new Vector3(1, 1, 1);
-            lockIcon.transform.localPosition = new Vector3(-0.5f, 1, 0);
-        }
+                position = ChangeValueBy(-1);
+                if (position <= -1)
+                {
+                    position = -1;
+                    lockOn = false;
+                    targeted = targetedCreature;
+                }
+                else
+                {
+                    lockOn = true;
+                    targeted = modifications[position];
+                }
+            }
+            while (targeted == null)
+            {
+                PreviousMod();
+            }
+            Debug.LogError(targeted.name);
+            TargetLock(targeted);
+            if (targeted != targetedCreature)
+            {
+                lockIcon.transform.localScale = new Vector3(1, 1, 1);
+                lockIcon.transform.localPosition = new Vector3(-0.5f, 1, 0);
+            }
+        }        
     }
 
     public void NextMod() 
-    {        
-        if (!modifications.Any())
+    {
+        if (targetedCreature != null)
         {
-            targeted = targetedCreature;
-        }
-        else if (targeted == targetedCreature)
-        {
-            position = 0;
-            targeted = modifications[position];
-        }
-        else
-        {
-            position = ChangeValueBy(1);
-            if (position == -1)
+            if (!modifications.Any())
             {
-                lockOn = false;
                 targeted = targetedCreature;
+            }
+            else if (targeted == targetedCreature)
+            {
+                position = 0;
+                targeted = modifications[position];
             }
             else
             {
-                lockOn = true;
-                targeted = modifications[position];
+                position = ChangeValueBy(1);
+                if (position == -1)
+                {
+                    lockOn = false;
+                    targeted = targetedCreature;
+                }
+                else
+                {
+                    lockOn = true;
+                    targeted = modifications[position];
+                }
             }
-        }
-        while (targeted == null)
-        {
-            NextMod();
-        }        
-        Debug.LogError(targeted.transform.localPosition);
-        TargetLock(targeted);
-        if (targeted != targetedCreature)
-        {
-            lockIcon.transform.localScale = new Vector3(1, 1, 1);
-            lockIcon.transform.localPosition = new Vector3(-0.5f, 1, 0);
-        }
+            while (targeted == null)
+            {
+                NextMod();
+            }
+            Debug.LogError(targeted.transform.localPosition);
+            TargetLock(targeted);
+            if (targeted != targetedCreature)
+            {
+                lockIcon.transform.localScale = new Vector3(1, 1, 1);
+                lockIcon.transform.localPosition = new Vector3(-0.5f, 1, 0);
+            }
+        }      
     }
 
     public void UnLock()

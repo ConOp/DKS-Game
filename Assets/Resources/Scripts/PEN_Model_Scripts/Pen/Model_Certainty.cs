@@ -27,14 +27,13 @@ public class Model_Certainty
     {
         int newNdirect = CheckDirection(newN, oldNeuroticism, Ndirection);
         int newEdirect = CheckDirection(newE, oldExtraversion, Edirection);
-        GameObject.Find("Old_Number").GetComponent<Text>().text = timepassed.ToString();
-        float neuroRate = newN - oldNeuroticism;
-        float extraRate = newE - oldExtraversion;
+        float neuroRate = Math.Abs(newN - oldNeuroticism);
+        float extraRate = Math.Abs(newE - oldExtraversion);
         oldNeuroticism = newN;
         oldExtraversion = newE;
         
-        ThresholdChecker(newNdirect, Ndirection, Math.Abs(neuroRate), 2.5f);
-        ThresholdChecker(newEdirect, Edirection, Math.Abs(extraRate), 1);
+        ThresholdChecker(newNdirect, Ndirection, neuroRate, 1);
+        ThresholdChecker(newEdirect, Edirection, extraRate, 1);
 
         if (newNdirect != 0)
         {
@@ -44,24 +43,6 @@ public class Model_Certainty
         {
             Edirection = newEdirect;
         }
-        /*
-        if (timepassed/2 > 10)
-        {
-            //normalizes rate closer to zero if no changes have been made for 2 seconds.
-            if (rate != 0)
-            {
-                if (rate > 0)
-                {
-                    rate = Math.Max(rate - 2,0);
-                }
-                else
-                {
-                    rate = Math.Min(rate + 2, 0);
-                }
-            }
-            timepassed = 0;
-        }
-        */
     }
 
     void ThresholdChecker(int newDirection, int oldDirection, float value, float threshold)
@@ -71,7 +52,6 @@ public class Model_Certainty
             if (value > threshold)
             {
                 rate -= value;
-                timepassed = 0;
                 return;
             }
         }else if(newDirection!=0 && newDirection == oldDirection)
@@ -79,11 +59,9 @@ public class Model_Certainty
             if (value > threshold)
             {
                 rate += value;
-                timepassed = 0;
                 return;
             }                
         }
-        timepassed += 1;
     }
 
     /// <summary>
@@ -94,7 +72,6 @@ public class Model_Certainty
     /// <param name="direction"></param>
     int CheckDirection(float newPos, float oldPos, float direction)
     {
-
         if (newPos > oldPos)
         {
             return 1;
