@@ -19,6 +19,7 @@ namespace ServerApp
             maximum_players = m; port = p;
 
             Console.WriteLine("Starting server...\nWaiting for connections...");
+            InitializedServerData();                                                           //initialize dictionary of clients
             server = new TcpListener(IPAddress.Any, port);
             server.Start();                                                                   //start listening for client requests
             server.BeginAcceptTcpClient(new AsyncCallback(AcceptTcpClientCallback), null);    //begin an asynchronous operation to accept an incoming connection attempt

@@ -38,6 +38,7 @@ public class Client : MonoBehaviour
 
     public void ConnectToServer()
     {
+        InitializedClientData();
         tcp.ConnectedPlayer();
     }
 
@@ -109,6 +110,16 @@ public class Client : MonoBehaviour
                         packetHandlers[packet_id](packet);              //invoke passing packet instance
                     }
                 });
+
+                packet_length = 0;                                      //reset packet's length
+                if (received_packet.UnreadLength() >= 4)                //this is the start of packet (first value placed in the packet is its content's length, which is an integer [int consists of 4 bytes])
+                {
+                    packet_length = received_packet.ReadInt();          //get packet's length of data that was sent from server and received from client (meaning local player)
+                    if (packet_length <= 0)                             //no data stored inside
+                    {
+                        return true;                                    //true --> reset packet in order to receive new data
+                    }
+                }
             }
 
             if (packet_length <= 1)
@@ -119,14 +130,11 @@ public class Client : MonoBehaviour
         }
     }
 
-    private void InitializedClientData()                            //intialize dictionary of packet data
+    private void InitializedClientData()                                //intialize dictionary of packet data
     {
         packetHandlers = new Dictionary<int, PacketHandler>()
         {
-            /*{ (int) ServerPackets.welcome, ClientHandle.Welcome},
-            { (int) ServerPackets.spawnPlayer, ClientHandle.SpawnPlayer},
-             { (int) ServerPackets.playerPosition, ClientHandle.PlayerPosition},
-              { (int) ServerPackets.playerRotation, ClientHandle.PlayerRotation}*/
+            { (int) ServerPackets.welcome, ClientHandle.Welcome}
         };
 
         Debug.Log("Initialization for packets done");
