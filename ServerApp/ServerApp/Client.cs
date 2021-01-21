@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Net;
 using System.Net.Sockets;
+using System.Numerics;
 
 namespace ServerApp
 {
@@ -11,6 +12,7 @@ namespace ServerApp
         public int client_id;
         public TCP tcp;
         public static int dataBufferSize = 4096;                    //bytes
+        public Player player;                                       //reference to player
 
         public Client(int ci)                                       //constructor of outter class Client
         {
@@ -122,6 +124,26 @@ namespace ServerApp
                     return true;
                 }
                 return false;                                               //partial packet exists, so don't reset }
+            }
+        }
+
+        public void SendToGame(string player_name)
+        {
+            player = new Player(client_id, player_name, new Vector3(0, 0, 0)); //initialize player instance
+            foreach (Client client in Server.clients.Values) {                  //send info from all other players (already connected to the new connected player)
+                if (client.player != null) {
+                    if (client.client_id != client_id)                          //for every remote client except local player
+                    {
+                        //ServerSend.Generate(client_id, client.player);
+                    }
+                }
+            }
+            foreach (Client client in Server.clients.Values)                    //send new player's info to all other remote clients (players)
+            {
+                if (client.player != null)
+                {
+                    //ServerSend.Generate(client.client_id, player);
+                }
             }
         }
     }
