@@ -43,5 +43,17 @@ namespace ServerApp
                 }
             }
         }
+
+        public static void Generate(int toClient, Player player)
+        {
+            using (Packet packet = new Packet((int)ServerPackets.generated_player))     //after generating player send him a test packet
+            {
+                packet.Write(player.player_id);
+                packet.Write(player.username);
+                packet.Write(player.position);
+                packet.Write(player.rotation);
+                SendTcpData(toClient, packet);
+            }
+        }
     }
 }

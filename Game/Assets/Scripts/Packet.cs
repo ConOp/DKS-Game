@@ -1,18 +1,23 @@
-﻿using System;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 using System.Text;
 
 //sent from server to client
 public enum ServerPackets
 {
-    welcome = 1
+    welcome = 1,
+    generated_player,
+    player_position,
+    player_rotation
 }
 
 //sent from client to server
 public enum ClientPackets
 {
-    welcomeReceived = 1
+    welcomeReceived = 1,
+    player_movement
 }
 
 public class Packet : IDisposable                               //interface that provides a mechanism for releasing unmanaged resources
@@ -130,6 +135,21 @@ public class Packet : IDisposable                               //interface that
     {
         Write(value.Length);                                   //add the length of the string to the packet
         buffer.AddRange(Encoding.ASCII.GetBytes(value));       //add the string itself
+    }
+
+    public void Write(Vector3 value)                           //add given Vector3 to the packet (position)
+    {
+        Write(value.x);
+        Write(value.y);
+        Write(value.z);
+    }
+
+    public void Write(Quaternion value)                       //add given Quaternion to the packet (rotation)
+    {
+        Write(value.x);
+        Write(value.y);
+        Write(value.z);
+        Write(value.w);
     }
 
     //--------------------------------------------------------------------------------------------------------------------------
@@ -276,6 +296,16 @@ public class Packet : IDisposable                               //interface that
         {
             throw new Exception("Could not read value of type 'string'!");
         }
+    }
+
+    public Vector3 ReadVector3(bool moveReadPos = true)                    //read Vector3 from the packet
+    {
+        return new Vector3(ReadFloat(moveReadPos), ReadFloat(moveReadPos), ReadFloat(moveReadPos));     //return the created instance
+    }
+
+    public Quaternion ReadQuaternion(bool moveReadPos = true)              //read Quaternion from the packet
+    {
+        return new Quaternion(ReadFloat(moveReadPos), ReadFloat(moveReadPos), ReadFloat(moveReadPos), ReadFloat(moveReadPos));
     }
 
     //------------------------------------------------------------------------------------------------------------------------------

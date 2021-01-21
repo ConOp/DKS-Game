@@ -15,4 +15,14 @@ public class ClientHandle : MonoBehaviour                           //[client-si
         ClientSend.Welcome_Received();
 
     }
+
+    public static void Generate(Packet packet)                      //handle packet, extract info (then generate player in game field)
+    {
+        int id = packet.ReadInt();                                  //player's id
+        string username = packet.ReadString();
+        Vector3 position = packet.ReadVector3();
+        Quaternion rotation = packet.ReadQuaternion();
+
+        GameManager.game.Generate(id, username, position, rotation);
+    }
 }

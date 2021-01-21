@@ -15,7 +15,7 @@ namespace ServerApp
             {
                 Console.WriteLine("Wrong client id...");
             }
-            //Server.clients[fromClient].SendInfoGame(username_received);
+            Server.clients[fromClient].SendToGame(username_received);
         }
     }
 }
