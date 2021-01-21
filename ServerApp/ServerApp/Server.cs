@@ -14,6 +14,9 @@ namespace ServerApp
         private static TcpListener server = null;
         public static Dictionary<int, Client> clients = new Dictionary<int, Client>(); //(key = client's id, value = instance of Client)
 
+        public delegate void PacketHandler(int fromClient, Packet packet);
+        public static Dictionary<int, PacketHandler> packetHandlers;                            //packet's id, corresponding packet handler
+
         public static void StartServer(int m, int p)
         {
             maximum_players = m; port = p;
@@ -49,6 +52,11 @@ namespace ServerApp
             {
                 clients.Add(i, new Client(i));          //(key,value)
             }
+            packetHandlers = new Dictionary<int, PacketHandler>()
+            {
+                { (int) ClientPackets.welcomeReceived, ServerHandle.Welcome_Received}
+            };
+            Console.WriteLine($"Server: initiliazation of packets have been completed");
         }
     }
 }

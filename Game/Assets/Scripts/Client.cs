@@ -14,7 +14,7 @@ public class Client : MonoBehaviour
     public int local_client_id = 0;             //local client's id
     public TCP tcp;                             //reference to client's TCP class
 
-    private delegate void PacketHandler(Packet packet);
+    private delegate void PacketHandler(Packet packet);             //type that represents references to methods
     private static Dictionary<int, PacketHandler> packetHandlers;   //packet's id, corresponding packet handler
 
 
@@ -84,6 +84,21 @@ public class Client : MonoBehaviour
                 stream.BeginRead(received_buffer, 0, dataBufferSize, ReceivedCallback, null);    //continue reading data from the NetworkStream
             }
             catch { }
+        }
+
+        public void SendData(Packet packet)                         //send packet to server
+        {
+            try
+            {
+                if (socket != null)
+                {
+                    stream.BeginWrite(packet.ToArray(), 0, packet.Length(), null, null);
+                }
+            }
+            catch (Exception _ex)
+            {
+                Debug.Log($"Error sending data from client to server via TCP: {_ex}");
+            }
         }
 
         private bool HandleData(byte[] data)                        //returns a boolean, telling Packet's Reset() whether the instance should be cleared

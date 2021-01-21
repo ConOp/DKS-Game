@@ -23,7 +23,8 @@ namespace ServerApp
             public TcpClient socket;
             private readonly int id;
             private NetworkStream stream;
-            private byte[] receivedBuffer;
+            private byte[] received_buffer;
+            private Packet received_packet;                         //packet (sent by client) and received from server
 
             public TCP(int i)                                       //constructor of inner class TCP
             {                    
@@ -37,8 +38,9 @@ namespace ServerApp
                 socket.SendBufferSize = dataBufferSize;
 
                 stream = socket.GetStream();                        //get the NetworkStream used to send and receive data from TcpClient
-                receivedBuffer = new byte[dataBufferSize];
-                stream.BeginRead(receivedBuffer, 0, receivedBuffer.Length, ReceivedCallback, null); //begin to read from NetworkStream
+                received_packet = new Packet();                                                        //initialize packet instance
+                received_buffer = new byte[dataBufferSize];
+                stream.BeginRead(received_buffer, 0, received_buffer.Length, ReceivedCallback, null); //begin to read from NetworkStream
 
                 ServerSend.Welcome(id, "Welcome to the server!!");  //once client-server communication has been established, send a welcome packet from server to the client
             }
@@ -53,9 +55,9 @@ namespace ServerApp
                         return;
                     }
                     byte[] data = new byte[byte_length];                //if data has been received, create new buffer for the data
-                    Array.Copy(receivedBuffer, data, byte_length);      //copy from one array to another
-                    
-                    stream.BeginRead(receivedBuffer, 0, dataBufferSize, ReceivedCallback, null);    //continue reading data from the NetworkStream
+                    Array.Copy(received_buffer, data, byte_length);     //copy from one array to another
+                    received_packet.Reset(HandleData(data));            //reset Packet instance so it can be reused, but first get data from the packet
+                    stream.BeginRead(received_buffer, 0, dataBufferSize, ReceivedCallback, null);    //continue reading data from the NetworkStream
                 }
                 catch (Exception e)
                 {
@@ -77,6 +79,49 @@ namespace ServerApp
                 {
                     Console.WriteLine($"Error sending packet data to player (client) with {id} via TCP {e}...");
                 }
+            }
+
+            private bool HandleData(byte[] data)                        //returns a boolean, telling Packet's Reset() whether the instance should be cleared
+            {
+                int packet_length = 0;
+                received_packet.SetBytes(data);                         //set packet's bytes to the ones we read from the stream (data)
+                if (received_packet.UnreadLength() >= 4)                //this is the start of packet (first value placed in the packet is its content's length, which is an integer [int consists of 4 bytes])
+                {
+                    packet_length = received_packet.ReadInt();          //get packet's length of data that was sent from client and received from server
+                    if (packet_length <= 0)                             //no data stored inside
+                    {
+                        return true;                                    //true --> reset packet in order to receive new data
+                    }
+                }
+
+                while (packet_length > 0 && packet_length <= received_packet.UnreadLength())     //received packet contains another complete (whole) packet that needs to handled
+                {
+                    byte[] packet_bytes = received_packet.ReadBytes(packet_length);
+                    ThreadManager.ExecuteOnMainThread(() =>
+                    {
+                        using (Packet packet = new Packet(packet_bytes))
+                        {
+                            int packet_id = packet.ReadInt();
+                            Server.packetHandlers[packet_id](id,packet);              //invoke passing packet instance
+                        }
+                    });
+
+                    packet_length = 0;                                      //reset packet's length
+                    if (received_packet.UnreadLength() >= 4)                //this is the start of packet (first value placed in the packet is its content's length, which is an integer [int consists of 4 bytes])
+                    {
+                        packet_length = received_packet.ReadInt();          //get packet's length of data that was sent from client and received from server
+                        if (packet_length <= 0)                             //no data stored inside
+                        {
+                            return true;                                    //true --> reset packet in order to receive new data
+                        }
+                    }
+                }
+
+                if (packet_length <= 1)
+                {
+                    return true;
+                }
+                return false;                                               //partial packet exists, so don't reset }
             }
         }
     }
