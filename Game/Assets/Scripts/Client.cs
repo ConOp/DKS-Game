@@ -95,9 +95,9 @@ public class Client : MonoBehaviour
                     stream.BeginWrite(packet.ToArray(), 0, packet.Length(), null, null);
                 }
             }
-            catch (Exception _ex)
+            catch (Exception ex)
             {
-                Debug.Log($"Error sending data from client to server via TCP: {_ex}");
+                Debug.Log($"Error sending data from client to server via TCP: {ex}");
             }
         }
 
@@ -150,7 +150,7 @@ public class Client : MonoBehaviour
         packetHandlers = new Dictionary<int, PacketHandler>()
         {
             { (int) ServerPackets.welcome, ClientHandle.Welcome},
-            { (int) ServerPackets.generated_player, ClientHandle.Generate},
+            { (int) ServerPackets.generated_player, ClientHandle.Generate}
         };
 
         Debug.Log("Initialization for packets done");

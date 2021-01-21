@@ -42,7 +42,7 @@ namespace ServerApp
                 stream = socket.GetStream();                        //get the NetworkStream used to send and receive data from TcpClient
                 received_packet = new Packet();                                                        //initialize packet instance
                 received_buffer = new byte[dataBufferSize];
-                stream.BeginRead(received_buffer, 0, received_buffer.Length, ReceivedCallback, null); //begin to read from NetworkStream
+                stream.BeginRead(received_buffer, 0, dataBufferSize, ReceivedCallback, null); //begin to read from NetworkStream
 
                 ServerSend.Welcome(id, "Welcome to the server!!");  //once client-server communication has been established, send a welcome packet from server to the client
             }
@@ -134,7 +134,7 @@ namespace ServerApp
                 if (client.player != null) {
                     if (client.client_id != client_id)                          //for every remote client except local player
                     {
-                        //ServerSend.Generate(client_id, client.player);
+                        ServerSend.Generate(client_id, client.player);
                     }
                 }
             }
@@ -142,7 +142,7 @@ namespace ServerApp
             {
                 if (client.player != null)
                 {
-                    //ServerSend.Generate(client.client_id, player);
+                    ServerSend.Generate(client.client_id, player);
                 }
             }
         }

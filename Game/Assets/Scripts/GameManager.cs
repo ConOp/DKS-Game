@@ -36,5 +36,6 @@ public class GameManager : MonoBehaviour
         player.GetComponent<PlayerManager>().id = id;                                           //assign id, username to player gameobject
         player.GetComponent<PlayerManager>().username = username;
         players.Add(id, player.GetComponent<PlayerManager>());                                  //add corresponding player manager of the player that has been just generated to the dictionary [key = id, value = player manager]
+        Debug.Log("Player has been instatiated successfully...");
     }
 }
