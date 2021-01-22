@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Numerics;
 
 namespace ServerApp
 {
@@ -16,6 +17,17 @@ namespace ServerApp
                 Console.WriteLine("Wrong client id...");
             }
             Server.clients[fromClient].SendToGame(username_received);
+        }
+
+        public static void PlayerMovement(int fromClient, Packet packet)        //extract info sent to server about player's movement
+        {
+            bool[] inputs = new bool[packet.ReadInt()];
+            for (int i = 0; i < inputs.Length; i++)
+            {
+                inputs[i] = packet.ReadBool();
+            }
+            Quaternion rotation = packet.ReadQuaternion();
+            Server.clients[fromClient].player.SetInput(inputs, rotation);
         }
     }
 }

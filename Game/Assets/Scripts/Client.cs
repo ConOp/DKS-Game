@@ -150,7 +150,9 @@ public class Client : MonoBehaviour
         packetHandlers = new Dictionary<int, PacketHandler>()
         {
             { (int) ServerPackets.welcome, ClientHandle.Welcome},
-            { (int) ServerPackets.generated_player, ClientHandle.Generate}
+            { (int) ServerPackets.generated_player, ClientHandle.Generate},
+            { (int) ServerPackets.player_position, ClientHandle.PlayerPosition},
+            { (int) ServerPackets.player_rotation, ClientHandle.PlayerRotation}
         };
 
         Debug.Log("Initialization for packets done");

@@ -25,4 +25,17 @@ public class ClientHandle : MonoBehaviour                           //[client-si
 
         GameManager.game.Generate(id, username, position, rotation);
     }
+
+    public static void PlayerPosition(Packet packet)
+    {
+        int id = packet.ReadInt();                                  //read client's id (local player's) that is moving
+        Vector3 position = packet.ReadVector3();
+        GameManager.players[id].transform.position = position;      //set player to the new position
+    }
+    public static void PlayerRotation(Packet packet)
+    {
+        int id = packet.ReadInt();                                  //read client's id (local player's) that is rotating
+        Quaternion rotation = packet.ReadQuaternion();
+        GameManager.players[id].transform.rotation = rotation;      //rotate player (local)
+    }
 }

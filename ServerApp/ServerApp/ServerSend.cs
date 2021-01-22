@@ -44,6 +44,7 @@ namespace ServerApp
             }
         }
 
+        //---------------------------------------------player initialization and movement------------------------
         public static void Generate(int toClient, Player player)
         {
             using (Packet packet = new Packet((int)ServerPackets.generated_player))     //after generating player send him a test packet
@@ -53,6 +54,26 @@ namespace ServerApp
                 packet.Write(player.position);
                 packet.Write(player.rotation);
                 SendTcpData(toClient, packet);
+            }
+        }
+
+        public static void PlayerPosition(Player player)                        //inform all players about a player's position
+        {
+            using (Packet packet = new Packet((int)ServerPackets.player_position))
+            {
+                packet.Write(player.player_id);
+                packet.Write(player.position);                                  //write to the packet player's new position
+                SendDataToAll(packet);
+            }
+        }
+
+        public static void PlayerRotation(Player player)                        //inform all players about a player's rotation
+        {
+            using (Packet packet = new Packet((int)ServerPackets.player_rotation))
+            {
+                packet.Write(player.player_id);
+                packet.Write(player.rotation);                                  //write to the packet player's new rotation
+                SendDataToAll(player.player_id, packet);                        //inform everyone except the player that has been rotating
             }
         }
     }

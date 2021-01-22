@@ -19,4 +19,20 @@ public class ClientSend : MonoBehaviour
             SendTcpData(packet);                                        //send the created packet to the server
         }
     }
+
+    public static void PlayerMovement(bool[] inputs)
+    {
+        using (Packet packet = new Packet((int)ClientPackets.player_movement))
+        {
+            packet.Write(inputs.Length);
+            foreach (bool input in inputs)
+            {
+                packet.Write(input);
+            }
+            packet.Write(GameManager.players[Client.client.local_client_id].transform.rotation);
+
+            SendTcpData(packet);
+        }
+    }
+
 }

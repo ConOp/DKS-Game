@@ -54,7 +54,8 @@ namespace ServerApp
             }
             packetHandlers = new Dictionary<int, PacketHandler>()
             {
-                { (int) ClientPackets.welcomeReceived, ServerHandle.Welcome_Received}
+                { (int) ClientPackets.welcomeReceived, ServerHandle.Welcome_Received},
+                { (int) ClientPackets.player_movement, ServerHandle.PlayerMovement}
             };
             Console.WriteLine($"Server: initiliazation of packets have been completed");
         }
