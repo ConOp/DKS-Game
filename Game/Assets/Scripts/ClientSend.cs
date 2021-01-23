@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ClientSend : MonoBehaviour
+public class ClientSend : MonoBehaviour                                 //logic for sending packets from client to server
 {
-    public static void Welcome_Received()                               //creates an client's first packet, after receiving welcome packet from server
+    public static void Welcome_Received()                               //creates an client's first packet, after receiving welcome packet from server (like handshake)
     {
         using (Packet packet = new Packet((int)ClientPackets.welcomeReceived))
         {
@@ -17,16 +17,16 @@ public class ClientSend : MonoBehaviour
     private static void SendTcpData(Packet packet)
     {
         packet.WriteLength();
-        Client.client.tcp.SendData(packet);                           //send given packet from client to server (through tcp)
+        Client.client.tcp.SendData(packet);                           //send given packet from client to server (using tcp)
     }
 
     private static void SendUdpData(Packet packet)
     {
         packet.WriteLength();
-        Client.client.udp.SendData(packet);                         //send given packet from client to server (through udp)
+        Client.client.udp.SendData(packet);                         //send given packet from client to server (using udp)
     }
 
-    public static void PlayerMovement(bool[] inputs)
+    public static void PlayerMovement(bool[] inputs)                //send player's inputs (about movement) to the server 
     {
         using (Packet packet = new Packet((int)ClientPackets.player_movement))
         {

@@ -9,7 +9,7 @@ public class PlayerController : MonoBehaviour
         SendInputToServer();
     }
 
-    private void SendInputToServer() //player's movement (local player (client) sends input to the server, then server calculates the player's new position and sends it to all other remote clients)
+    private void SendInputToServer() //send local player's input (about movement) to the server, then server calculates the player's new position and sends it to all other remote clients)
     {
         bool[] inputs = new bool[] {
             Input.GetKey(KeyCode.W),        //physical keys (keyboard) for moving a player

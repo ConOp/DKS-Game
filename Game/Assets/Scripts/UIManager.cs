@@ -22,12 +22,10 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public void ConnectToServer()               //will be called when player presses connect button
+    public void ConnectToServer()               //gets called when player presses connect button (tries to connect client (local player) to the server)
     {
         start_menu.SetActive(false);            //hide start menu once the player connects and starts playing
         username.interactable = false;          //property to enable or disable the ability to select a selectable UI element 
-        Client.client.ConnectToServer();
-
+        Client.client.ConnectToServer();        //connect client to server
     }
-
 }

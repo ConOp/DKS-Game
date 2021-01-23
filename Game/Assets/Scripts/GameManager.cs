@@ -5,7 +5,7 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public static GameManager game;
-    public static Dictionary<int, PlayerManager> players = new Dictionary<int, PlayerManager>();    //[client-side] store player's info
+    public static Dictionary<int, PlayerManager> players = new Dictionary<int, PlayerManager>();    //[client-side] store player's info (game field logic)
     public GameObject local_player_prefab;
     public GameObject player_prefab;
 
