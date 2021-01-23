@@ -11,6 +11,7 @@ namespace ServerApp
     {
         public int client_id;
         public TCP tcp;
+        public UDP udp;
         public static int dataBufferSize = 4096;                    //bytes
         public Player player;                                       //reference to player
 
@@ -18,6 +19,7 @@ namespace ServerApp
         {
             client_id = ci;
             tcp = new TCP(client_id);
+            udp = new UDP(client_id);
         }
 
         public class TCP 
@@ -54,6 +56,7 @@ namespace ServerApp
                     int byte_length = stream.EndRead(asyncResult);
                     if (byte_length <= 0)
                     {
+                        Server.clients[id].Disconnect();                //will disconnect both tcp and udp connections
                         return;
                     }
                     byte[] data = new byte[byte_length];                //if data has been received, create new buffer for the data
@@ -64,6 +67,7 @@ namespace ServerApp
                 catch (Exception e)
                 {
                     Console.WriteLine($"Error occured while receiving TCP data: {e}");
+                    Server.clients[id].Disconnect();                    //will disconnect both tcp and udp connections
                 }
             }
 
@@ -125,6 +129,54 @@ namespace ServerApp
                 }
                 return false;                                               //partial packet exists, so don't reset }
             }
+
+            public void Disconnect() {
+                socket.Close();                                         //dispose TcpClient instance
+                stream = null;                                          //empty NetworkStream
+                received_packet = null;                                 //empty Packet instance
+                received_buffer = null;
+                socket = null;
+            }
+        }
+
+        public class UDP {
+
+            public IPEndPoint iPEndPoint;
+            private int client_id;                                  //will store client's id of udp connection
+
+            public UDP(int id)                                      //constructor of inner class UDP
+            {
+                client_id = id;
+            }
+
+            public void Connect(IPEndPoint endPoint) {
+                iPEndPoint = endPoint;
+            }
+
+            public void SendData(Packet packet)                     //send packet from server to client
+            {
+                Server.SendUdpData(iPEndPoint, packet);
+            }
+
+            public void HandleData(Packet packet_data)
+            {
+                int packet_length = packet_data.ReadInt();
+                byte[] packet_bytes = packet_data.ReadBytes(packet_length);
+
+                ThreadManager.ExecuteOnMainThread(() =>
+                {
+                    using (Packet packet = new Packet(packet_bytes))            //new Packet with the given data
+                    {
+                        int packet_id = packet.ReadInt();                       //extract packet's content
+                        Server.packetHandlers[packet_id](client_id, packet);    //invoke passing packet instance
+                    }
+                });
+            }
+
+            public void Disconnect()
+            {
+                iPEndPoint = null;
+            }
         }
 
         public void SendToGame(string player_name)
@@ -145,6 +197,13 @@ namespace ServerApp
                     ServerSend.Generate(client.client_id, player);
                 }
             }
+        }
+
+        private void Disconnect() {
+            Console.WriteLine($"{tcp.socket.Client.RemoteEndPoint} with username {player.username} has disconnected from the game...");
+            player = null;
+            tcp.Disconnect();
+            udp.Disconnect();
         }
     }
 }

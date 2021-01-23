@@ -23,7 +23,7 @@ namespace ServerApp
             Server.clients[toClient].tcp.SendData(packet);                  //send data from server to the specified client
         }
 
-        private static void SendDataToAll(Packet packet)                    //send data to all connected-remote clients
+        private static void SendTcpDataToAll(Packet packet)                    //send data to all connected-remote clients
         {
             packet.WriteLength();
             for (int i = 1; i <= Server.maximum_players; i++)
@@ -32,7 +32,7 @@ namespace ServerApp
             }
         }
 
-        private static void SendDataToAll(int excepted_client, Packet packet) //send data to all remote clients except one specified client
+        private static void SendTcpDataToAll(int excepted_client, Packet packet) //send data to all remote clients except one specified client
         {
             packet.WriteLength();
             for (int i = 1; i <= Server.maximum_players; i++)
@@ -40,6 +40,34 @@ namespace ServerApp
                 if (i != excepted_client)                                     //check for the specified excepted client
                 {
                     Server.clients[i].tcp.SendData(packet);
+                }
+            }
+        }
+
+        //----------------------------------------------send UDP data--------------------------------------------
+        private static void SendUdpData(int to_client, Packet packet)       //prepare packet to be sent
+        {
+            packet.WriteLength();
+            Server.clients[to_client].udp.SendData(packet);
+        }
+
+        private static void SendUdpDataToAll(Packet packet)                 //send data to all remote clients (connected)
+        {
+            packet.WriteLength();
+            for (int i = 1; i <= Server.maximum_players; i++)
+            {
+                Server.clients[i].udp.SendData(packet);                     //send packet to each client
+            }
+        }
+
+        private static void SendUdpDataToAll(int exceptClient, Packet packet) //send data to all remote clients except specified one
+        {
+            packet.WriteLength();
+            for (int i = 1; i <= Server.maximum_players; i++)
+            {
+                if (i != exceptClient)                                     //check for the specific client
+                {
+                    Server.clients[i].udp.SendData(packet);
                 }
             }
         }
@@ -63,7 +91,7 @@ namespace ServerApp
             {
                 packet.Write(player.player_id);
                 packet.Write(player.position);                                  //write to the packet player's new position
-                SendDataToAll(packet);
+                SendUdpDataToAll(packet);
             }
         }
 
@@ -73,7 +101,7 @@ namespace ServerApp
             {
                 packet.Write(player.player_id);
                 packet.Write(player.rotation);                                  //write to the packet player's new rotation
-                SendDataToAll(player.player_id, packet);                        //inform everyone except the player that has been rotating
+                SendUdpDataToAll(player.player_id, packet);                        //inform everyone except the player that has been rotating
             }
         }
     }

@@ -13,6 +13,8 @@ public class Client : MonoBehaviour
     public int port = 26950;                    //port number
     public int local_client_id = 0;             //local client's id
     public TCP tcp;                             //reference to client's TCP class
+    public UDP udp;                             //reference to client's UDP class
+    private bool connected = false;
 
     private delegate void PacketHandler(Packet packet);             //type that represents references to methods
     private static Dictionary<int, PacketHandler> packetHandlers;   //packet's id, corresponding packet handler
@@ -34,6 +36,12 @@ public class Client : MonoBehaviour
     private void Start()
     {
         tcp = new TCP();
+        udp = new UDP();
+    }
+
+    private void OnApplicationQuit()                                //
+    {
+        
     }
 
     public void ConnectToServer()
@@ -142,6 +150,77 @@ public class Client : MonoBehaviour
                 return true;
             }
             return false;                                               //partial packet exists, so don't reset }
+        }
+    }
+
+    public class UDP {
+
+        public UdpClient socket;
+        public IPEndPoint iPEndPoint;
+
+        public UDP()                                                    //constructor
+        {
+            iPEndPoint = new IPEndPoint(IPAddress.Parse(client.ip), client.port);
+        }
+
+        public void ConnectedPlayer(int local_port_number)
+        {
+            socket = new UdpClient(local_port_number);                  //pass the port in which the client (local player) communicates with server [bind UdpClient to local port]
+            socket.Connect(iPEndPoint);                                 //create default remote host using the specified network endpoint
+            socket.BeginReceive(ReceivedCallback, null);
+            using (Packet packet = new Packet())
+            {                                                           //initiate UDP connection with the server by sending a packet
+                SendData(packet);
+            }
+        }
+
+        private void ReceivedCallback(IAsyncResult asyncResult)
+        {
+            try
+            {
+                byte[] data = socket.EndReceive(asyncResult, ref iPEndPoint);       //ends a pending asynchronous receive and returns bytes of data
+                socket.BeginReceive(ReceivedCallback, null);
+
+                if (data.Length < 4)                                               //check for existing packet in order to handle it (every packet has id at top)
+                {
+                    return;
+                }
+                HandleData(data);
+            }
+            catch { }
+        }
+
+        private void HandleData(byte[] data)
+        {
+            using (Packet packet = new Packet(data))                                //new Packet with the given data
+            {
+                int packet_length = packet.ReadInt();                               //extract packet's content
+                data = packet.ReadBytes(packet_length);
+            }
+            ThreadManager.ExecuteOnMainThread(() =>
+            {
+                using (Packet packet = new Packet(data))                            //new packet with shortened byte array (packet's length has been removed from the top)
+                {
+                    int packet_id = packet.ReadInt();
+                    packetHandlers[packet_id](packet);                              //invoke passing packet instance
+                }
+            });
+        }
+
+        public void SendData(Packet packet)                                         //send packet to server
+        {
+            try
+            {
+                packet.InsertInt(client.local_client_id);                           //insert client's id into packet (in order for server to understand who send it)
+                if (socket != null)
+                {
+                    socket.BeginSend(packet.ToArray(), packet.Length(), null, null);
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.Log($"Error occurred while sending data from client to server via UDP: {e}...");
+            }
         }
     }
 
