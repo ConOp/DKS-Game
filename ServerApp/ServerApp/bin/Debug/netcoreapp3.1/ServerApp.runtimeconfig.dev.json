@@ -1,8 +1,0 @@
-{
-  "runtimeOptions": {
-    "additionalProbingPaths": [
-      "C:\\Users\\dgaze\\.dotnet\\store\\|arch|\\|tfm|",
-      "C:\\Users\\dgaze\\.nuget\\packages"
-    ]
-  }
-}
