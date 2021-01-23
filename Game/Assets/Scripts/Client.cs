@@ -39,14 +39,15 @@ public class Client : MonoBehaviour
         udp = new UDP();
     }
 
-    private void OnApplicationQuit()                                //
+    private void OnApplicationQuit()                                //handle case unity doesn't properly close open connections in play mode
     {
-        
+        Disconnect();
     }
 
     public void ConnectToServer()
     {
         InitializedClientData();
+        connected = true;
         tcp.ConnectedPlayer();
     }
 
@@ -83,6 +84,7 @@ public class Client : MonoBehaviour
                 int bytes_length = stream.EndRead(asyncResult);     //returns number of bytes read from the NetworkStream
                 if (bytes_length <= 0)
                 {
+                    client.Disconnect();                            //will disconnect both tcp and udp connections
                     return;                                         //get out of the method
                 }
                 byte[] data = new byte[bytes_length];               //if data has been received, create new buffer for the data
@@ -91,7 +93,9 @@ public class Client : MonoBehaviour
                 received_packet.Reset(HandleData(data));            //reset Packet instance so it can be reused, but first get data from the packet
                 stream.BeginRead(received_buffer, 0, dataBufferSize, ReceivedCallback, null);    //continue reading data from the NetworkStream
             }
-            catch { }
+            catch {
+                Disconnect();                    //will disconnect both tcp and udp connections
+            }
         }
 
         public void SendData(Packet packet)                         //send packet to server
@@ -151,6 +155,14 @@ public class Client : MonoBehaviour
             }
             return false;                                               //partial packet exists, so don't reset }
         }
+
+        private void Disconnect() {
+            client.Disconnect();
+            stream = null;
+            received_packet = null;
+            received_buffer = null;
+            socket = null;
+        }
     }
 
     public class UDP {
@@ -183,11 +195,14 @@ public class Client : MonoBehaviour
 
                 if (data.Length < 4)                                               //check for existing packet in order to handle it (every packet has id at top)
                 {
+                    client.Disconnect();
                     return;
                 }
                 HandleData(data);
             }
-            catch { }
+            catch {
+                Disconnect();
+            }
         }
 
         private void HandleData(byte[] data)
@@ -222,6 +237,12 @@ public class Client : MonoBehaviour
                 Debug.Log($"Error occurred while sending data from client to server via UDP: {e}...");
             }
         }
+
+        private void Disconnect() {
+            client.Disconnect();
+            iPEndPoint = null;
+            socket = null;
+        }
     }
 
     private void InitializedClientData()                                //intialize dictionary of packet data
@@ -235,5 +256,14 @@ public class Client : MonoBehaviour
         };
 
         Debug.Log("Initialization for packets done");
+    }
+
+    private void Disconnect() {
+        if (connected) {
+            connected = false;
+            tcp.socket.Close();
+            udp.socket.Close();
+            Debug.Log("Client disconnected from server!");
+        }
     }
 }
