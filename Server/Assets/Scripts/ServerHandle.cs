@@ -5,7 +5,7 @@ using System;
 
 public class ServerHandle
 {
-    public static void Welcome_Received(int fromClient, Packet packet)          //server receives welcome packet from client
+    public static void Welcome_Received(int fromClient, Packet packet)          //server receives welcome packet from client (handshake completed)
     {
         int client_id_received = packet.ReadInt();
         string username_received = packet.ReadString();
@@ -14,10 +14,10 @@ public class ServerHandle
         {
             Console.WriteLine("Wrong client id...");
         }
-        Server.clients[fromClient].SendToGame(username_received);
+        Server.clients[fromClient].SendToGame(username_received);               //after successful handshake place client (local player) in game field
     }
 
-    public static void PlayerMovement(int fromClient, Packet packet)        //extract info sent to server about player's movement
+    public static void PlayerMovement(int fromClient, Packet packet)            //extract info sent to server about player's movement
     {
         bool[] inputs = new bool[packet.ReadInt()];
         for (int i = 0; i < inputs.Length; i++)
@@ -25,6 +25,6 @@ public class ServerHandle
             inputs[i] = packet.ReadBool();
         }
         Quaternion rotation = packet.ReadQuaternion();
-        Server.clients[fromClient].player.SetInput(inputs, rotation);
+        Server.clients[fromClient].player.SetInput(inputs, rotation);           //send extracted info about player's movement (for specified client) to get handled
     }
 }

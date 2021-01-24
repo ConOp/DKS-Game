@@ -33,25 +33,25 @@ public class Client
             id = i;
         }
 
-        public void Connect(TcpClient client_socket)
+        public void Connect(TcpClient client_socket)            //initialize necessary instances about tcp connection with the client of newly connected client (specified TcpClient)
         {
             socket = client_socket;
             socket.ReceiveBufferSize = dataBufferSize;
             socket.SendBufferSize = dataBufferSize;
 
             stream = socket.GetStream();                        //get the NetworkStream used to send and receive data from TcpClient
-            received_packet = new Packet();                                                        //initialize packet instance
+            received_packet = new Packet();                     //initialize packet instance
             received_buffer = new byte[dataBufferSize];
-            stream.BeginRead(received_buffer, 0, dataBufferSize, ReceivedCallback, null); //begin to read from NetworkStream
+            stream.BeginRead(received_buffer, 0, dataBufferSize, ReceivedCallback, null); //begin to read from NetworkStream asynchronously
 
-            ServerSend.Welcome(id, "Welcome to the server!!");  //once client-server communication has been established, send a welcome packet from server to the client
+            ServerSend.Welcome(id, "Welcome to the server!!");  //once client-server communication has been established, send a welcome packet from server to the client (handshake)
         }
 
-        private void ReceivedCallback(IAsyncResult asyncResult)
+        private void ReceivedCallback(IAsyncResult asyncResult) //read incoming packet-data from NetworkStream
         {
             try
             {
-                int byte_length = stream.EndRead(asyncResult);
+                int byte_length = stream.EndRead(asyncResult);  //return number of bytes that have been read from NetworkStream then end the asynchronous read
                 if (byte_length <= 0)
                 {
                     Server.clients[id].Disconnect();                //will disconnect both tcp and udp connections
@@ -69,7 +69,7 @@ public class Client
             }
         }
 
-        public void SendData(Packet packet)
+        public void SendData(Packet packet)                     //send data-packet to the client using tcp
         {
             try
             {
@@ -86,27 +86,27 @@ public class Client
         }
 
         private bool HandleData(byte[] data)                        //returns a boolean, telling Packet's Reset() whether the instance should be cleared
-        {
+        {                                                           //prepare received data-packet to get used by suitable packet handler method
             int packet_length = 0;
             received_packet.SetBytes(data);                         //set packet's bytes to the ones we read from the stream (data)
             if (received_packet.UnreadLength() >= 4)                //this is the start of packet (first value placed in the packet is its content's length, which is an integer [int consists of 4 bytes])
             {
                 packet_length = received_packet.ReadInt();          //get packet's length of data that was sent from client and received from server
-                if (packet_length <= 0)                             //no data stored inside
+                if (packet_length <= 0)                             //no data stored inside the packet
                 {
                     return true;                                    //true --> reset packet in order to receive new data
                 }
             }
 
             while (packet_length > 0 && packet_length <= received_packet.UnreadLength())     //received packet contains another complete (whole) packet that needs to handled
-            {
+            {                                                                               //and as long as packet's length doesn't exceed the length of the one we are reading
                 byte[] packet_bytes = received_packet.ReadBytes(packet_length);
                 ThreadManager.ExecuteOnMainThread(() =>
                 {
                     using (Packet packet = new Packet(packet_bytes))
                     {
                         int packet_id = packet.ReadInt();
-                        Server.packetHandlers[packet_id](id, packet);              //invoke passing packet instance
+                        Server.packetHandlers[packet_id](id, packet);              //invoke passing packet instance (call appropriate method to handle Packet)
                     }
                 });
 
@@ -128,7 +128,7 @@ public class Client
             return false;                                               //partial packet exists, so don't reset }
         }
 
-        public void Disconnect()
+        public void Disconnect()                                    //close tcp connections and clean necessary TCP instances
         {
             socket.Close();                                         //dispose TcpClient instance
             stream = null;                                          //empty NetworkStream
@@ -141,7 +141,7 @@ public class Client
     public class UDP
     {
 
-        public IPEndPoint iPEndPoint;
+        public IPEndPoint iPEndPoint;                           //represents a network endpoint as an IP address and a port number
         private int client_id;                                  //will store client's id of udp connection
 
         public UDP(int id)                                      //constructor of inner class UDP
@@ -154,12 +154,12 @@ public class Client
             iPEndPoint = endPoint;
         }
 
-        public void SendData(Packet packet)                     //send packet from server to client
+        public void SendData(Packet packet)                     //send packet from server to client via udp
         {
             Server.SendUdpData(iPEndPoint, packet);
         }
 
-        public void HandleData(Packet packet_data)
+        public void HandleData(Packet packet_data)              //prepare received data-packet to get used by suitable packet handler method
         {
             int packet_length = packet_data.ReadInt();
             byte[] packet_bytes = packet_data.ReadBytes(packet_length);
@@ -169,7 +169,7 @@ public class Client
                 using (Packet packet = new Packet(packet_bytes))            //new Packet with the given data
                 {
                     int packet_id = packet.ReadInt();                       //extract packet's content
-                    Server.packetHandlers[packet_id](client_id, packet);    //invoke passing packet instance
+                    Server.packetHandlers[packet_id](client_id, packet);    //invoke passing packet instance ((call appropriate method to handle Packet)
                 }
             });
         }
@@ -180,12 +180,12 @@ public class Client
         }
     }
 
-    public void SendToGame(string player_name)
+    public void SendToGame(string player_name)                  //send new client (local player) to game field and inform other remote clients about his existence
     {
         player = NetworkManager.network_manager.InstatiatePlayer(); //initialize player instance
         player.InitializePlayer(client_id, player_name);
         foreach (Client client in Server.clients.Values)
-        {                  //send info from all other players (already connected to the new connected player)
+        {                                                       //send info from all other players (already connected to the new connected player)
             if (client.player != null)
             {
                 if (client.client_id != client_id)                          //for every remote client except local player
@@ -203,7 +203,7 @@ public class Client
         }
     }
 
-    private void Disconnect()
+    private void Disconnect()                                   //disconnect client and stop traffic inside the network
     {
         Debug.Log($"{tcp.socket.Client.RemoteEndPoint} with username {player.username} has disconnected from the game...");
         UnityEngine.Object.Destroy(player.gameObject);

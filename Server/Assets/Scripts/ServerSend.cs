@@ -4,33 +4,33 @@ using UnityEngine;
 
 public class ServerSend
 {
-    public static void Welcome(int toClient, string message)            //which client to send the packet, message to be sent
+    public static void Welcome(int toClient, string message)            //which client to send the packet, message to be sent (server sends welcome packet for handshake with the client)
     {
         using (Packet packet = new Packet((int)ServerPackets.welcome))  //create the welcome packet (using statement ensures the correct use of IDisposable objects)
         {
             packet.Write(message);                                      //fill with data (write a message and client's id)
             packet.Write(toClient);
 
-            SendTcpData(toClient, packet);                              //sent packet to specified client
+            SendTcpData(toClient, packet);                              //sent packet to specified client via tcp
         }
     }
     //----------------------------------------------send TCP data--------------------------------------------
-    private static void SendTcpData(int toClient, Packet packet)        //prepare packet to be sent
+    private static void SendTcpData(int toClient, Packet packet)        //prepare packet to be sent to specified client via tcp
     {
         packet.WriteLength();                                           //take packet's content length and put it at the beginning of the packet (buffer)
         Server.clients[toClient].tcp.SendData(packet);                  //send data from server to the specified client
     }
 
-    private static void SendTcpDataToAll(Packet packet)                    //send data to all connected-remote clients
+    private static void SendTcpDataToAll(Packet packet)                 //send data-packet to all connected-remote clients via tcp
     {
         packet.WriteLength();
         for (int i = 1; i <= Server.maximum_players; i++)
         {
-            Server.clients[i].tcp.SendData(packet);                     //send packet to each client
+            Server.clients[i].tcp.SendData(packet);                     //send packet to each client (using tcp)
         }
     }
 
-    private static void SendTcpDataToAll(int excepted_client, Packet packet) //send data to all remote clients except one specified client
+    private static void SendTcpDataToAll(int excepted_client, Packet packet) //send data-packet to all remote clients except one specified client via tcp
     {
         packet.WriteLength();
         for (int i = 1; i <= Server.maximum_players; i++)
@@ -49,21 +49,21 @@ public class ServerSend
         Server.clients[to_client].udp.SendData(packet);
     }
 
-    private static void SendUdpDataToAll(Packet packet)                 //send data to all remote clients (connected)
+    private static void SendUdpDataToAll(Packet packet)                 //send data-packet to all remote clients (connected) via udp
     {
         packet.WriteLength();
         for (int i = 1; i <= Server.maximum_players; i++)
         {
-            Server.clients[i].udp.SendData(packet);                     //send packet to each client
+            Server.clients[i].udp.SendData(packet);                     //send packet to each client using udp
         }
     }
 
-    private static void SendUdpDataToAll(int exceptClient, Packet packet) //send data to all remote clients except specified one
+    private static void SendUdpDataToAll(int exceptClient, Packet packet) //send data-packet to all remote clients except specified one via udp
     {
         packet.WriteLength();
         for (int i = 1; i <= Server.maximum_players; i++)
         {
-            if (i != exceptClient)                                     //check for the specific client
+            if (i != exceptClient)                                      //check for the specific client
             {
                 Server.clients[i].udp.SendData(packet);
             }
