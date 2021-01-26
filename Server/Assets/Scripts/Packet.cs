@@ -10,7 +10,8 @@ public enum ServerPackets
     welcome = 1,
     generated_player,
     player_position,
-    player_rotation
+    player_rotation,
+    disconnected_player
 }
 
 //sent from client to server

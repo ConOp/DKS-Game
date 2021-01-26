@@ -212,5 +212,6 @@ public class Client
         });
         tcp.Disconnect();
         udp.Disconnect();
+        ServerSend.DisconnectPlayer(client_id);                 //when client (local player's disconnects, inform all other connected players) 
     }
 }

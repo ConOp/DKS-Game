@@ -252,7 +252,8 @@ public class Client : MonoBehaviour
             { (int) ServerPackets.welcome, ClientHandle.Welcome},
             { (int) ServerPackets.generated_player, ClientHandle.Generate},
             { (int) ServerPackets.player_position, ClientHandle.PlayerPosition},
-            { (int) ServerPackets.player_rotation, ClientHandle.PlayerRotation}
+            { (int) ServerPackets.player_rotation, ClientHandle.PlayerRotation},
+            { (int) ServerPackets.disconnected_player, ClientHandle.DisconnectedPlayer}
         };
 
         Debug.Log("Initialization for packets done");

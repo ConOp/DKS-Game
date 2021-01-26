@@ -102,4 +102,13 @@ public class ServerSend
             SendUdpDataToAll(player.player_id, packet);                     //inform everyone except the player that has been rotating
         }
     }
+
+    public static void DisconnectPlayer(int player_id) 
+    {
+        using (Packet packet = new Packet((int)ServerPackets.disconnected_player))  //create data-packet with client's id (player's) inside that is disconnected
+        {
+            packet.Write(player_id);
+            SendTcpDataToAll(packet);                                       //inform all other connected players that another player has disconnected
+        }
+    }
 }
