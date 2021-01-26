@@ -27,4 +27,9 @@ public class ServerHandle
         Quaternion rotation = packet.ReadQuaternion();
         Server.clients[fromClient].player.SetInput(inputs, rotation);           //send extracted info about player's movement (for specified client) to get handled
     }
+
+    public static void Shoot(int fromClient, Packet packet) 
+    {
+        Vector3 shooting_direction = packet.ReadVector3();
+    }
 }

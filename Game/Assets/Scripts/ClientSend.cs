@@ -41,4 +41,12 @@ public class ClientSend : MonoBehaviour                                 //logic 
         }
     }
 
+    public static void Shoot(Vector3 facing_direction)              //specified direction that local player is shooting
+    {
+        using (Packet packet = new Packet((int) ClientPackets.shoot)) 
+        {
+            packet.Write(facing_direction);
+            SendTcpData(packet);                                    //send packet to server via tcp
+        }
+    }
 }

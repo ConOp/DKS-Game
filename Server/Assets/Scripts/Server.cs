@@ -107,7 +107,8 @@ public class Server
         packetHandlers = new Dictionary<int, PacketHandler>()
             {
                 { (int) ClientPackets.welcomeReceived, ServerHandle.Welcome_Received},
-                { (int) ClientPackets.player_movement, ServerHandle.PlayerMovement}
+                { (int) ClientPackets.player_movement, ServerHandle.PlayerMovement},
+                { (int) ClientPackets.shoot, ServerHandle.Shoot }
             };
         Console.WriteLine($"Server: initiliazation of packets have been completed");
     }
