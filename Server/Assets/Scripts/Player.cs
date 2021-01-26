@@ -6,16 +6,27 @@ public class Player : MonoBehaviour                                 //[server-si
 {
     public int player_id;
     public string username;
+    public CharacterController characterController;                 //player's reference to unity's character controller
+    public float gravity = (-9.81f) * 2;                                  //gravity acceleration
 
-    private float moving_speed = 5f / Constants.ticks_per_sec;      //player's move speed (calculate like multiplying by unity's time.deltatime)
+    public float moving_speed = 5f;                                 //player's move speed (calculate like multiplying by unity's time.deltatime)
+    public float jumping_speed = 9f;
+    private float vertical_speed_y = 0;
     private bool[] inputs;                                          //store inputs about movement sent from client
+
+    private void Start()
+    {
+        gravity *= Mathf.Pow(Time.fixedDeltaTime, 2);
+        moving_speed *= Time.fixedDeltaTime;
+        jumping_speed *= Time.fixedDeltaTime;
+    }
 
     public void InitializePlayer(int id, string usern)              //necessary initializations
     {
         player_id = id;
         username = usern;
 
-        inputs = new bool[4];                                       //initialize the array (boolean for every keyword that was pressed)
+        inputs = new bool[5];                                       //initialize the array (boolean for every keyword that was pressed)
     }
 
     public void SetInput(bool[] local_inputs, Quaternion local_rotation)    //inputs according to pressed keywords, new rotation according to mouse input
@@ -49,7 +60,18 @@ public class Player : MonoBehaviour                                 //[server-si
     private void Move(Vector2 input_direction)                      //change player's movement and rotation
     {
         Vector3 move_direction = transform.right * input_direction.x + transform.forward * input_direction.y;   //direction to move
-        transform.position += move_direction * moving_speed;
+        move_direction *= moving_speed;
+        
+        if (characterController.isGrounded) {
+            vertical_speed_y = 0f;
+            if (inputs[4]) {                                        //check if jump key was pressed
+                vertical_speed_y = jumping_speed;
+            }
+        }
+
+        vertical_speed_y += gravity;
+        move_direction.y = vertical_speed_y;
+        characterController.Move(move_direction);
 
         ServerSend.PlayerPosition(this);
         ServerSend.PlayerRotation(this);

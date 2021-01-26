@@ -81,7 +81,9 @@ public class Server
                 }
             }
         }
-        catch (Exception e) { Console.WriteLine($"Error occurred while receiving UDP data from server: {e}"); }
+        catch (Exception e) { 
+            Console.WriteLine($"Error occurred while receiving UDP data from server: {e}"); 
+        }
     }
 
     public static void SendUdpData(IPEndPoint iPEnd_client, Packet packet)                  //send packet from server to remote client (specified endpoint) using udp
@@ -108,5 +110,10 @@ public class Server
                 { (int) ClientPackets.player_movement, ServerHandle.PlayerMovement}
             };
         Console.WriteLine($"Server: initiliazation of packets have been completed");
+    }
+
+    public static void Stop() {
+        tcpListener.Stop();
+        udpListener.Close();
     }
 }

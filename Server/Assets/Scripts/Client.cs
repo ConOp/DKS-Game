@@ -206,8 +206,10 @@ public class Client
     private void Disconnect()                                   //disconnect client and stop traffic inside the network
     {
         Debug.Log($"{tcp.socket.Client.RemoteEndPoint} with username {player.username} has disconnected from the game...");
-        UnityEngine.Object.Destroy(player.gameObject);
-        player = null;
+        ThreadManager.ExecuteOnMainThread(() => {
+            UnityEngine.Object.Destroy(player.gameObject);
+            player = null;                                      //destroy Player object from main thread
+        });
         tcp.Disconnect();
         udp.Disconnect();
     }

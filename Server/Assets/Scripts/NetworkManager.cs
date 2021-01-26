@@ -29,6 +29,11 @@ public class NetworkManager : MonoBehaviour
     }
 
     public Player InstatiatePlayer() {
-        return Instantiate(player_prefab, Vector3.zero, Quaternion.identity).GetComponent<Player>();        //return attached player component that has been generated
+        return Instantiate(player_prefab, new Vector3(0f, 0.5f, 0f), Quaternion.identity).GetComponent<Player>();     //return attached player component that has been generated
+    }
+
+    private void OnApplicationQuit()                            //handle case unity doesn't properly close open connections in play mode
+    {
+        Server.Stop();
     }
 }

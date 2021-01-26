@@ -15,7 +15,8 @@ public class PlayerController : MonoBehaviour
             Input.GetKey(KeyCode.W),        //physical keys (keyboard) for moving a player
             Input.GetKey(KeyCode.S),
             Input.GetKey(KeyCode.A),
-            Input.GetKey(KeyCode.D)
+            Input.GetKey(KeyCode.D),
+            Input.GetKey(KeyCode.Space)
         };
         ClientSend.PlayerMovement(inputs);
     }
