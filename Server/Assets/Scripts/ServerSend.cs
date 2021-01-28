@@ -111,4 +111,23 @@ public class ServerSend
             SendTcpDataToAll(packet);                                       //inform all other connected players that another player has disconnected
         }
     }
+
+    public static void PlayerHealth(Player player)                          //inform all players if someone's health has changed
+    {
+        using (Packet packet = new Packet((int)ServerPackets.player_health)) 
+        {
+            packet.Write(player.player_id);                                 //add client's id inside the packet (whose health has changed)
+            packet.Write(player.current_health);
+            SendTcpDataToAll(packet);                                       //send packet to all remote clients via tcp
+        }
+    }
+
+    public static void RegeneratePlayer(Player player) 
+    {
+        using (Packet packet = new Packet((int)ServerPackets.regenerated_player)) 
+        {
+            packet.Write(player.player_id);
+            SendTcpDataToAll(packet);                                       //inform all players that the dead one has been regenerated via tcp
+        }
+    }
 }

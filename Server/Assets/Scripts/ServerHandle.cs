@@ -28,8 +28,9 @@ public class ServerHandle
         Server.clients[fromClient].player.SetInput(inputs, rotation);           //send extracted info about player's movement (for specified client) to get handled
     }
 
-    public static void Shoot(int fromClient, Packet packet) 
+    public static void Shooted(int fromClient, Packet packet) 
     {
         Vector3 shooting_direction = packet.ReadVector3();
+        Server.clients[fromClient].player.Shoot(shooting_direction);
     }
 }

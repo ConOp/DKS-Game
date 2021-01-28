@@ -47,4 +47,16 @@ public class ClientHandle : MonoBehaviour                           //[client-si
         Destroy(GameManager.players[disconnected_id].gameObject);   //remove player that was disconnected (in order to prevent local player to keep seeing him after his disconnection)
         GameManager.players.Remove(disconnected_id);                //remove disconnected player from the dictionary
     }
+
+    public static void PlayerHealth(Packet packet) 
+    {
+        int player_id = packet.ReadInt();                           //extract packet's info, sent from server
+        float current_health = packet.ReadFloat();
+        GameManager.players[player_id].setHealth(current_health);
+    }
+
+    public static void Regenerate(Packet packet) {
+        int player_id = packet.ReadInt();
+        GameManager.players[player_id].Regenerate();
+    }
 }

@@ -140,3 +140,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 0
   username: 
+  current_health: 0
+  maximum_health: 100
+  meshRenderer: {fileID: 1832063063546501080}

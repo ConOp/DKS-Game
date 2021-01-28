@@ -21,7 +21,14 @@ public class CameraController : MonoBehaviour                       //player's a
     //Update is called every frame
     private void Update()
     {
-        Look();
+        if (Input.GetKeyDown(KeyCode.Escape)) 
+        {
+            toggleCursorMode();
+        }
+        if (Cursor.lockState == CursorLockMode.Locked) 
+        {
+            Look();
+        }
         Debug.DrawRay(transform.position, transform.forward * 2, Color.blue);               //NEEDS TO BE REMOVED (useful only for testing player's sight of view)
     }
 
@@ -36,5 +43,16 @@ public class CameraController : MonoBehaviour                       //player's a
         vertical_rotation = Mathf.Clamp(vertical_rotation, -angle, angle);
         transform.localRotation = Quaternion.Euler(vertical_rotation, 0f, 0f);
         playerManager.transform.rotation = Quaternion.Euler(0f, horizontal_rotation, 0f);
+    }
+
+    private void toggleCursorMode() {
+        Cursor.visible = !(Cursor.visible);
+        if (Cursor.lockState == CursorLockMode.None)
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+        }
+        else {
+            Cursor.lockState = CursorLockMode.None;
+        }
     }
 }

@@ -43,6 +43,10 @@ ScriptsOnlyBuild:
       Script: {instanceID: 0}
     - Class: 48
       Script: {instanceID: 0}
+    - Class: 64
+      Script: {instanceID: 0}
+    - Class: 65
+      Script: {instanceID: 0}
     - Class: 81
       Script: {instanceID: 0}
     - Class: 104
@@ -442,13 +446,13 @@ ScriptsOnlyBuild:
     className: BeforeAfterTestCommandState
   - hash:
       serializedVersion: 2
-      Hash: 19ce4d990b36c942bc272650aa89dc85
+      Hash: 10b965303b2b53f42fe7d573e7a5c9a6
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: PlayerManager
   - hash:
       serializedVersion: 2
-      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+      Hash: f90ad63af0c027361e919cc9d230a22f
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: PlayerController

@@ -142,6 +142,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 0
   username: 
+  current_health: 0
+  maximum_health: 100
+  meshRenderer: {fileID: 1832063063546501080}
 --- !u!114 &1571439678514086011
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -182,7 +185,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3111716694487378455}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.722, z: -0.029}
+  m_LocalPosition: {x: 0, y: 0.7, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2956559147247432644}

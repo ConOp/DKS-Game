@@ -11,7 +11,9 @@ public enum ServerPackets
     generated_player,
     player_position,
     player_rotation,
-    disconnected_player
+    disconnected_player,
+    player_health,
+    regenerated_player
 }
 
 //sent from client to server
