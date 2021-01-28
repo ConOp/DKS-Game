@@ -33,11 +33,6 @@ public class Client : MonoBehaviour
         }
     }
     //Start is called before the first frame update
-    private void Start()
-    {
-        tcp = new TCP();
-        udp = new UDP();
-    }
 
     private void OnApplicationQuit()                                //handle case unity doesn't properly close open connections in play mode
     {
@@ -46,6 +41,8 @@ public class Client : MonoBehaviour
 
     public void ConnectToServer()                                   //client attempts to connect to the server
     {
+        tcp = new TCP();
+        udp = new UDP();
         InitializedClientData();
         connected = true;
         tcp.ConnectedPlayer();                                      //connect client(local player) via tcp, udp connection starts after successful tcp connection client-server
