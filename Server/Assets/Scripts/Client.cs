@@ -42,12 +42,12 @@ public class Client
             stream = socket.GetStream();                        //get the NetworkStream used to send and receive data from TcpClient
             received_packet = new Packet();                     //initialize packet instance
             received_buffer = new byte[dataBufferSize];
-            stream.BeginRead(received_buffer, 0, dataBufferSize, ReceivedCallback, null); //begin to read from NetworkStream asynchronously
+            stream.BeginRead(received_buffer, 0, dataBufferSize, TcpReceiveCallback, null); //begin to read from NetworkStream asynchronously
 
-            ServerSend.Welcome(id, "Welcome to the server!!");  //once client-server communication has been established, send a welcome packet from server to the client (handshake)
+            Send.Welcome(id, "Welcome to the server!!");        //once client-server communication has been established, send a welcome packet from server to the client (handshake)
         }
 
-        private void ReceivedCallback(IAsyncResult asyncResult) //read incoming packet-data from NetworkStream
+        private void TcpReceiveCallback(IAsyncResult asyncResult) //read incoming packet-data from NetworkStream
         {
             try
             {
@@ -60,7 +60,7 @@ public class Client
                 byte[] data = new byte[byte_length];                //if data has been received, create new buffer for the data
                 Array.Copy(received_buffer, data, byte_length);     //copy from one array to another
                 received_packet.Reset(HandleData(data));            //reset Packet instance so it can be reused, but first get data from the packet
-                stream.BeginRead(received_buffer, 0, dataBufferSize, ReceivedCallback, null);    //continue reading data from the NetworkStream
+                stream.BeginRead(received_buffer, 0, dataBufferSize, TcpReceiveCallback, null);    //continue reading data from the NetworkStream
             }
             catch (Exception e)
             {
@@ -190,7 +190,7 @@ public class Client
             {
                 if (client.client_id != client_id)                          //for every remote client except local player
                 {
-                    ServerSend.Generate(client_id, client.player);
+                    Send.Generate(client_id, client.player);
                 }
             }
         }
@@ -198,7 +198,7 @@ public class Client
         {
             if (client.player != null)
             {
-                ServerSend.Generate(client.client_id, player);
+                Send.Generate(client.client_id, player);
             }
         }
     }
@@ -212,6 +212,6 @@ public class Client
         });
         tcp.Disconnect();
         udp.Disconnect();
-        ServerSend.DisconnectPlayer(client_id);                 //when client (local player's disconnects, inform all other connected players) 
+        Send.DisconnectPlayer(client_id);                       //when client (local player's disconnects, inform all other connected players) 
     }
 }

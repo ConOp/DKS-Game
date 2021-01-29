@@ -15,7 +15,7 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Mouse0))   //mouse right click for shooting
         {
-            ClientSend.Shoot(view_direction.forward);   //which direction player is facing (for shooting)
+            Send.Shoot(view_direction.forward); //which direction player is facing (for shooting)
         
         }
     }
@@ -29,7 +29,7 @@ public class PlayerController : MonoBehaviour
             Input.GetKey(KeyCode.D),
             Input.GetKey(KeyCode.Space)
         };
-        ClientSend.PlayerMovement(inputs);
+        Send.PlayerMovement(inputs);
     }
 
 }

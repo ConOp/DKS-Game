@@ -81,8 +81,8 @@ public class Player : MonoBehaviour                                 //[server-si
         move_direction.y = vertical_speed_y;
         characterController.Move(move_direction);
 
-        ServerSend.PlayerPosition(this);
-        ServerSend.PlayerRotation(this);
+        Send.PlayerPosition(this);
+        Send.PlayerRotation(this);
     }
 
     public void Shoot(Vector3 facing_direction) 
@@ -108,10 +108,10 @@ public class Player : MonoBehaviour                                 //[server-si
             current_health = 0f;                                                                    //negative health points don't exist
             characterController.enabled = false;                                                    //start again from the beginning of the level
             transform.position = new Vector3(0f, 2f, 0f);                                           //[e.x. as a start position]
-            ServerSend.PlayerPosition(this);                                                        //inform all other connected players (so that the shooted player gets moved in all remote client's game field instances)
+            Send.PlayerPosition(this);                                                              //inform all other connected players (so that the shooted player gets moved in all remote client's game field instances)
             StartCoroutine(Regenerate());
         }
-        ServerSend.PlayerHealth(this);
+        Send.PlayerHealth(this);
     }
 
     private IEnumerator Regenerate()                                //regenerate player after his death
@@ -119,6 +119,6 @@ public class Player : MonoBehaviour                                 //[server-si
         yield return new WaitForSeconds(6f);                        //[add delay] wait for some seconds then regenerate player
         current_health = maximum_health;
         characterController.enabled = true;
-        ServerSend.RegeneratePlayer(this);
+        Send.RegeneratePlayer(this);
     }
 }

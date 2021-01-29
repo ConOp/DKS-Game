@@ -25,8 +25,8 @@ public class Server
 
         InitializedServerData();                                                                //initialize dictionary of clients (server's necessary data)
         tcpListener = new TcpListener(IPAddress.Any, port);
-        tcpListener.Start();                                                                   //start listening for client requests
-        tcpListener.BeginAcceptTcpClient(new AsyncCallback(AcceptTcpClientCallback), null);    //begin an asynchronous operation to accept an incoming connection attempt using tcp
+        tcpListener.Start();                                                                    //start listening for client requests
+        tcpListener.BeginAcceptTcpClient(new AsyncCallback(DoAcceptTcpClientCallback), null);   //begin an asynchronous operation to accept an incoming connection attempt using tcp
 
         udpListener = new UdpClient(port);
         udpListener.BeginReceive(UdpReceivedCallback, null);                                    //start asynchronous receive using udp
@@ -34,17 +34,17 @@ public class Server
         Console.WriteLine($"Server started successfully on {port}...");
     }
 
-    private static void AcceptTcpClientCallback(IAsyncResult asyncResult)                   //gets called after successful client-server tcp connection and handles the newly created tcp connection  
+    private static void DoAcceptTcpClientCallback(IAsyncResult asyncResult)                     //gets called after successful client-server tcp connection and handles the newly created tcp connection  
     {
-        TcpClient client = tcpListener.EndAcceptTcpClient(asyncResult);                     //accept incoming connection and return TcpClient instance for handling remote host communication
-        tcpListener.BeginAcceptTcpClient(new AsyncCallback(AcceptTcpClientCallback), null); //continue listening for connections (once a client connects)
+        TcpClient client = tcpListener.EndAcceptTcpClient(asyncResult);                         //accept incoming connection and return TcpClient instance for handling remote host communication
+        tcpListener.BeginAcceptTcpClient(new AsyncCallback(DoAcceptTcpClientCallback), null);   //continue listening for connections (once a client connects)
 
         Console.WriteLine($"Incoming connection from ... {client.Client.RemoteEndPoint}");
         for (int i = 1; i <= maximum_players; i++)
         {
             if (clients[i].tcp.socket == null)
             {
-                clients[i].tcp.Connect(client);                                             //connect client via tcp and initialize the connection with a handshake (send welcome packet)
+                clients[i].tcp.Connect(client);                                                 //connect client via tcp and initialize the connection with a handshake (send welcome packet)
                 return;
             }
         }
@@ -106,9 +106,9 @@ public class Server
         }
         packetHandlers = new Dictionary<int, PacketHandler>()
             {
-                { (int) ClientPackets.welcomeReceived, ServerHandle.Welcome_Received},
-                { (int) ClientPackets.player_movement, ServerHandle.PlayerMovement},
-                { (int) ClientPackets.shoot, ServerHandle.Shooted }
+                { (int) ClientPackets.welcomeReceived, Handle.Welcome_Received},
+                { (int) ClientPackets.player_movement, Handle.PlayerMovement},
+                { (int) ClientPackets.shoot, Handle.Shooted }
             };
         Console.WriteLine($"Server: initiliazation of packets have been completed");
     }

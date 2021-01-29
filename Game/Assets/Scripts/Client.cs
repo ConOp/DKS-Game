@@ -246,13 +246,13 @@ public class Client : MonoBehaviour
     {
         packetHandlers = new Dictionary<int, PacketHandler>()
         {
-            { (int) ServerPackets.welcome, ClientHandle.Welcome},
-            { (int) ServerPackets.generated_player, ClientHandle.Generate},
-            { (int) ServerPackets.player_position, ClientHandle.PlayerPosition},
-            { (int) ServerPackets.player_rotation, ClientHandle.PlayerRotation},
-            { (int) ServerPackets.disconnected_player, ClientHandle.DisconnectedPlayer},
-            { (int) ServerPackets.player_health, ClientHandle.PlayerHealth},
-            { (int) ServerPackets.regenerated_player, ClientHandle.Regenerate}
+            { (int) ServerPackets.welcome, Handle.Welcome},
+            { (int) ServerPackets.generated_player, Handle.Generate},
+            { (int) ServerPackets.player_position, Handle.PlayerPosition},
+            { (int) ServerPackets.player_rotation, Handle.PlayerRotation},
+            { (int) ServerPackets.disconnected_player, Handle.DisconnectedPlayer},
+            { (int) ServerPackets.player_health, Handle.PlayerHealth},
+            { (int) ServerPackets.regenerated_player, Handle.Regenerate}
         };
 
         Debug.Log("Initialization for packets done");
