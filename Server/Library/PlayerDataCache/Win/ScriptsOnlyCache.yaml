@@ -41,11 +41,11 @@ ScriptsOnlyBuild:
     - Class: 108
       Script: {instanceID: 0}
     - Class: 114
-      Script: {instanceID: 11318}
+      Script: {instanceID: 11342}
     - Class: 114
-      Script: {instanceID: 12118}
+      Script: {instanceID: 12142}
     - Class: 114
-      Script: {instanceID: 12828}
+      Script: {instanceID: 12848}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 143
@@ -496,4 +496,4 @@ ScriptsOnlyBuild:
   platform: 5
   scenePathNames:
   - Assets/Scenes/Main.unity
-  playerPath: C:/Users/dgaze/Documents/Ptyxiakh/DKS-Game/Server/Build/Server.exe
+  playerPath: D:/Github/DKS-Game/Server/Build/Server.exe

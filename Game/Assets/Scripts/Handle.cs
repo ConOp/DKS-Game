@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Net;
 using UnityEngine;
 
-public class Handle : MonoBehaviour                                 //[client-side] handle received data that has been sent from the server
+public class Handle                              //[client-side] handle received data that has been sent from the server
 {
     public static void Welcome(Packet packet)                       //read welcome packet that has been sent from the server
     {
@@ -12,10 +12,10 @@ public class Handle : MonoBehaviour                                 //[client-si
 
         Debug.Log($"Message from the server: {message}");           //display message from server
 
-        Client.client.local_client_id = player_id;                  //set current player's id (client's id) with the available one that has been given from server
+        ClientManager.GetInstance().local_client_id = player_id;                  //set current player's id (client's id) with the available one that has been given from server
         Send.Welcome_Received();
 
-        Client.client.udp.ConnectedPlayer(((IPEndPoint)Client.client.tcp.socket.Client.LocalEndPoint).Port);   //pass the local port that TCP connection is using (after tcp handshake start udp connection between client-server)
+        ClientManager.GetInstance().udp.ConnectedPlayer(((IPEndPoint)ClientManager.GetInstance().tcp.socket.Client.LocalEndPoint).Port);   //pass the local port that TCP connection is using (after tcp handshake start udp connection between client-server)
     }
 
     public static void Generate(Packet packet)                      //handle packet, extract info (then generate player in game field)
@@ -25,7 +25,7 @@ public class Handle : MonoBehaviour                                 //[client-si
         Vector3 position = packet.ReadVector3();
         Quaternion rotation = packet.ReadQuaternion();
 
-        GameManager.game.Generate(id, username, position, rotation);
+        GameManager.GetInstance().Generate(id, username, position, rotation);
     }
 
     public static void PlayerPosition(Packet packet)
@@ -44,7 +44,7 @@ public class Handle : MonoBehaviour                                 //[client-si
     public static void DisconnectedPlayer(Packet packet) 
     {
         int disconnected_id = packet.ReadInt();                     //read player's id that was disconnected
-        Destroy(GameManager.players[disconnected_id].gameObject);   //remove player that was disconnected (in order to prevent local player to keep seeing him after his disconnection)
+        Object.Destroy(GameManager.players[disconnected_id].gameObject);   //remove player that was disconnected (in order to prevent local player to keep seeing him after his disconnection)
         GameManager.players.Remove(disconnected_id);                //remove disconnected player from the dictionary
     }
 
