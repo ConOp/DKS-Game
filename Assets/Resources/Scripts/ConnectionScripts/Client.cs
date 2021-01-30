@@ -4,23 +4,9 @@ using UnityEngine;
 using System.Net;
 using System.Net.Sockets;
 using System;
-public class ClientManager
+public class Client : MonoBehaviour
 {
-    #region Singleton
-    public static ClientManager instance;
-    public static ClientManager GetInstance()
-    {
-        if (instance == null)
-        {
-            return new ClientManager();                     //set it equal to the instance of Client class
-        }
-        return instance;
-    }
-    ClientManager()
-    {
-        instance = this;
-    }
-    #endregion
+    public static Client client;                //client instance
     public static int dataBufferSize = 4096;    //bytes
 
     public string ip = "127.0.0.1";             //server ip for localhost
@@ -28,11 +14,24 @@ public class ClientManager
     public int local_client_id = 0;             //local client's id
     public TCP tcp;                             //reference to client's TCP class
     public UDP udp;                             //reference to client's UDP class
-    public bool connected = false;
+    private bool connected = false;
 
     private delegate void PacketHandler(Packet packet);             //type that represents references to methods
     private static Dictionary<int, PacketHandler> packetHandlers;   //packet's id, corresponding packet handler
 
+
+    private void Awake()
+    {
+        if (client == null)
+        {
+            client = this;                      //set it equal to the instance of Client class
+        }
+        else if (client != this)
+        {
+            Debug.Log("Incorrect instance needs to be destroyed...");
+            Destroy(this);                      //only one instance of Client class must exist (meaning only one local player)
+        }
+    }
     //Start is called before the first frame update
 
     private void OnApplicationQuit()                                //handle case unity doesn't properly close open connections in play mode
@@ -55,11 +54,12 @@ public class ClientManager
         private NetworkStream stream;
         private byte[] received_buffer;
         private Packet received_packet;            //packet (sent by server) and received from client
+
         public void ConnectedPlayer()               //try to connect local player to server using tcp
         {
             socket = new TcpClient { ReceiveBufferSize = dataBufferSize, SendBufferSize = dataBufferSize };
             received_buffer = new byte[dataBufferSize];
-            socket.BeginConnect(instance.ip,instance.port, ConnectionCallback, socket);
+            socket.BeginConnect(client.ip, client.port, ConnectionCallback, socket);
         }
 
         private void ConnectionCallback(IAsyncResult asyncResult)       //gets called after client's successful connection to server via tcp and initializes necessary components for the communication
@@ -81,7 +81,7 @@ public class ClientManager
                 int bytes_length = stream.EndRead(asyncResult);     //returns number of bytes read from the NetworkStream
                 if (bytes_length <= 0)
                 {
-                    instance.Disconnect();                            //will disconnect both tcp and udp connections
+                    client.Disconnect();                            //will disconnect both tcp and udp connections
                     return;                                         //get out of the method
                 }
                 byte[] data = new byte[bytes_length];               //if data has been received, create new buffer for the data
@@ -154,7 +154,7 @@ public class ClientManager
         }
 
         private void Disconnect() {                                 //disconnect client from server and clean necessary TCP instances
-            instance.Disconnect();
+            client.Disconnect();
             stream = null;
             received_packet = null;
             received_buffer = null;
@@ -169,7 +169,7 @@ public class ClientManager
 
         public UDP()                                                    //constructor of UDP class
         {
-            iPEndPoint = new IPEndPoint(IPAddress.Parse(instance.ip), instance.port);
+            iPEndPoint = new IPEndPoint(IPAddress.Parse(client.ip), client.port);
         }
 
         public void ConnectedPlayer(int local_port_number)              //try to connect local player to server using udp
@@ -192,7 +192,7 @@ public class ClientManager
 
                 if (data.Length < 4)                                               //check for existing packet in order to handle it (every packet has id at top)
                 {
-                    instance.Disconnect();
+                    client.Disconnect();
                     return;
                 }
                 HandleData(data);                                                   //packet exists
@@ -223,7 +223,7 @@ public class ClientManager
         {
             try
             {
-                packet.InsertInt(instance.local_client_id);               //insert client's id into packet (in order for server to understand who send it)
+                packet.InsertInt(client.local_client_id);               //insert client's id into packet (in order for server to understand who send it)
                 if (socket != null)
                 {
                     socket.BeginSend(packet.ToArray(), packet.Length(), null, null);    //start asynchronous send
@@ -236,7 +236,7 @@ public class ClientManager
         }
 
         private void Disconnect() {                                     //disconnect client from server and clean necessary UDP instances
-            instance.Disconnect();
+            client.Disconnect();
             iPEndPoint = null;
             socket = null;
         }

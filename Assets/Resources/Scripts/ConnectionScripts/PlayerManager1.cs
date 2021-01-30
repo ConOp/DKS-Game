@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerStatsToBeFixed : MonoBehaviour
+public class PlayerManager1 : MonoBehaviour
 {
     //player's info
     public int id;              //local player's client id

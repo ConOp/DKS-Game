@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Send                                      //logic for sending packets from client to server
+public class Send : MonoBehaviour                                       //logic for sending packets from client to server
 {
     public static void Welcome_Received()                               //creates an client's first packet, after receiving welcome packet from server (like handshake)
     {
         using (Packet packet = new Packet((int)ClientPackets.welcomeReceived))
         {
-            packet.Write(ClientManager.GetInstance().local_client_id);
-            packet.Write(ConnectionManager.GetInstance().username.text);
+            packet.Write(Client.client.local_client_id);
+            packet.Write(UIManager1.manager.username.text);
             SendTcpData(packet);                                        //send the created packet to the server
         }
     }
@@ -17,13 +17,13 @@ public class Send                                      //logic for sending packe
     private static void SendTcpData(Packet packet)
     {
         packet.WriteLength();
-        ClientManager.GetInstance().tcp.SendData(packet);                           //send given packet from client to server (using tcp)
+        Client.client.tcp.SendData(packet);                           //send given packet from client to server (using tcp)
     }
 
     private static void SendUdpData(Packet packet)
     {
         packet.WriteLength();
-        ClientManager.GetInstance().udp.SendData(packet);                         //send given packet from client to server (using udp)
+        Client.client.udp.SendData(packet);                         //send given packet from client to server (using udp)
     }
 
     public static void PlayerMovement(bool[] inputs)                //send player's inputs (about movement) to the server 
@@ -35,7 +35,7 @@ public class Send                                      //logic for sending packe
             {
                 packet.Write(input);
             }
-            packet.Write(GameManagers.players[ClientManager.GetInstance().local_client_id].transform.rotation);
+            packet.Write(GameManager.players[Client.client.local_client_id].transform.rotation);
 
             SendUdpData(packet);                                    //movement packet will be sent over and over again (can't afford losing some of them)
         }
