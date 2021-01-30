@@ -20,8 +20,9 @@ public class Attack_neuroticism
 
     float Normalizer()
     {
-        float dist = maxNeuro - neuro;
-        return dist / 10;
+        float dist = maxNeuro - Math.Abs(neuro);
+        dist = Math.Abs(dist / 10 + 0.01f);
+        return dist;
     }
 
     public void Attacked(bool success)

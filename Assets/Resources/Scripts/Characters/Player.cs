@@ -61,18 +61,26 @@ public class Player : MonoBehaviour,Character
 
     public GameObject Closest(List<GameObject> targets)
     {
-        float distance = Vector3.Distance(gameObject.transform.position, targets[0].transform.position);
-        GameObject closest = targets[0];
-        foreach (GameObject t in targets)
+        try
         {
-            float d = Vector3.Distance(gameObject.transform.position, t.transform.position);
-            if (d < distance)
+            float distance = Vector3.Distance(gameObject.transform.position, targets[0].transform.position);
+            GameObject closest = targets[0];
+            foreach (GameObject t in targets)
             {
-                distance = d;
-                closest = t;
+                float d = Vector3.Distance(gameObject.transform.position, t.transform.position);
+                if (d < distance)
+                {
+                    distance = d;
+                    closest = t;
+                }
             }
+            return closest;
         }
-        return closest;
+        catch
+        {
+            return null;
+        }
+        
     }
 
     public void InteractClicked()

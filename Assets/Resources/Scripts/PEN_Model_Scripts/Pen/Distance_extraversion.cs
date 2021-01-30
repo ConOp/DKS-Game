@@ -23,8 +23,9 @@ public class Distance_extraversion
 
     float Normalizer()
     {
-        float dist = maxExtra - extr;
-        return dist / 10;
+        float dist = maxExtra - Math.Abs(extr);
+        dist = Math.Abs(dist/10+0.01f);
+        return dist;
     }
 
     /// <summary>
@@ -33,7 +34,7 @@ public class Distance_extraversion
     /// <param name="dist"></param>
     void CheckDistance()
     {
-        if (Math.Abs(extr) <= maxExtra)
+        if (extr <= maxExtra && extr >=maxExtra-20)
         {
             float multiplier = Normalizer();
             float dist = Vector3.Distance(player.transform.position, enemy.transform.position);
@@ -44,12 +45,12 @@ public class Distance_extraversion
                 //if player is moving towards enemy
                 if (Vector3.Angle(player.transform.forward, enemy.transform.position - player.transform.position) < angle)
                 {
-                    extr += Math.Abs(oldpos - dist) / 2 * multiplier;
+                    extr += Math.Abs(oldpos - dist) / 3 * multiplier;
                 }
                 else if (Vector3.Angle(-player.transform.forward, enemy.transform.position - player.transform.position) < angle)
                 {
                     //If player is moving away from enemy
-                    extr -= Math.Abs(oldpos - dist) / 2 * multiplier;
+                    extr -= Math.Abs(oldpos - dist) / 3 * multiplier;
                 }
             }
             oldpos = dist;

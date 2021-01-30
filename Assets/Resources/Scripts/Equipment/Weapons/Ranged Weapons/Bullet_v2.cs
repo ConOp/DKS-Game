@@ -39,8 +39,8 @@ public class Bullet_v2 : MonoBehaviour
             //if target is a child of the collided object (aka the target is a modification)
             if(target.transform.parent == other.gameObject.transform)
             {
-                target.GetComponent<Modification>().TakeDamage(damage);
-                other.GetComponent<Basic_Enemy>().TakeDamage(damage/10);
+                target.GetComponent<Modification>().TakeDamage(damage*0.9f);
+                other.GetComponent<Basic_Enemy>().TakeDamage(damage*0.1f);
             }
             else
             {

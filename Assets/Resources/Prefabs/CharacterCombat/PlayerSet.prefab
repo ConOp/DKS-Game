@@ -402,11 +402,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8684117830143908587, guid: 2a743f76bd920ce44905542dd893b3b6,
+        type: 3}
+      propertyPath: hp
+      value: 100
+      objectReference: {fileID: 0}
     - target: {fileID: 8684117830143908588, guid: 2a743f76bd920ce44905542dd893b3b6,
         type: 3}
       propertyPath: joystick
       value: 
       objectReference: {fileID: 2995241331148854201}
+    - target: {fileID: 8684117830143908589, guid: 2a743f76bd920ce44905542dd893b3b6,
+        type: 3}
+      propertyPath: m_Drag
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 8684117830143908590, guid: 2a743f76bd920ce44905542dd893b3b6,
         type: 3}
       propertyPath: target
@@ -566,6 +576,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 846528984254881910, guid: 51bbd7e735458694eb0e697b1881b056,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 3154873856696618565}
+    - target: {fileID: 846528984254881910, guid: 51bbd7e735458694eb0e697b1881b056,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: UnLock
       objectReference: {fileID: 0}
     - target: {fileID: 846528984691761792, guid: 51bbd7e735458694eb0e697b1881b056,
         type: 3}
