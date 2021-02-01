@@ -16,6 +16,7 @@ public class Handle : MonoBehaviour                                 //[client-si
         Send.Welcome_Received();
 
         Client.client.udp.ConnectedPlayer(((IPEndPoint)Client.client.tcp.socket.Client.LocalEndPoint).Port);   //pass the local port that TCP connection is using (after tcp handshake start udp connection between client-server)
+        //todo get player's component after handshake (lobby)
     }
 
     public static void Generate(Packet packet)                      //handle packet, extract info (then generate player in game field)
@@ -25,7 +26,7 @@ public class Handle : MonoBehaviour                                 //[client-si
         Vector3 position = packet.ReadVector3();
         Quaternion rotation = packet.ReadQuaternion();
 
-        GameManager.game.Generate(id, username, position, rotation);
+        //GameManager.game.Generate(id, username, position, rotation);
     }
 
     public static void PlayerPosition(Packet packet)

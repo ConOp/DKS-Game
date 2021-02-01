@@ -27,5 +27,6 @@ public class UIManager1 : MonoBehaviour
         start_menu.SetActive(false);            //hide start menu once the player connects and starts playing
         username.interactable = false;          //property to enable or disable the ability to select a selectable UI element 
         Client.client.ConnectToServer();        //connect client to server
+        Send.JoinLobby();
     }
 }
