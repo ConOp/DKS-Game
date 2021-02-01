@@ -644,8 +644,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 994db50e707221e4a9089bc530f7c012, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  local_player_prefab: {fileID: 6002297924880095231, guid: a73ffdace16c2a1429e0087039ea3659,
-    type: 3}
+  local_player_prefab: {fileID: 1546424275}
   player_prefab: {fileID: 7153602950035684998, guid: ff36eab4c6078144ebde0f5aa4d567ce,
     type: 3}
 --- !u!1 &348919491
@@ -2863,6 +2862,12 @@ MonoBehaviour:
   minIntensity: 0.5
   maxIntensity: 1.5
   smoothing: 25
+--- !u!1 &1546424275 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6002297924880095231, guid: a73ffdace16c2a1429e0087039ea3659,
+    type: 3}
+  m_PrefabInstance: {fileID: 817368637}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1645045508
 GameObject:
   m_ObjectHideFlags: 0

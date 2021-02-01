@@ -247,7 +247,7 @@ public class Client : MonoBehaviour
         packetHandlers = new Dictionary<int, PacketHandler>()
         {
             { (int) ServerPackets.welcome, Handle.Welcome},
-            //{ (int) ServerPackets.generated_player, Handle.Generate},
+            { (int) ServerPackets.generated_player, Handle.Generate},
             { (int) ServerPackets.player_position, Handle.PlayerPosition},
             { (int) ServerPackets.player_rotation, Handle.PlayerRotation},
             { (int) ServerPackets.disconnected_player, Handle.DisconnectedPlayer},

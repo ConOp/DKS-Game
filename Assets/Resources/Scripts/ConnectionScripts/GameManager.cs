@@ -27,7 +27,10 @@ public class GameManager : MonoBehaviour
         GameObject player;
         if (id == Client.client.local_client_id)                                                //check if the generated player is the local player
         {
-            player = Instantiate(local_player_prefab, position, rotation);                      //instatiate local player in game field
+            //player = Instantiate(local_player_prefab, position, rotation);                      //instatiate local player in game field
+            player = local_player_prefab;
+            player.transform.position = position;
+            player.transform.rotation = rotation;
         }
         else
         {

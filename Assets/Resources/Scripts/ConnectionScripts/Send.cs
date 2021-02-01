@@ -41,16 +41,6 @@ public class Send : MonoBehaviour                                       //logic 
         }
     }
 
-    public static void JoinLobby()
-    {
-        using (Packet packet = new Packet((int)ClientPackets.join_lobby))
-        {
-            packet.Write(GameManager.players[Client.client.local_client_id].transform.position);
-            packet.Write(GameManager.players[Client.client.local_client_id].transform.rotation);
-
-            SendTcpData(packet);
-        }
-    }
 
     public static void Shoot(Vector3 facing_direction)              //specified direction that local player is shooting
     {
