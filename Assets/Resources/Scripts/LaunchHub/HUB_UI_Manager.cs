@@ -22,7 +22,7 @@ public class HUB_UI_Manager : MonoBehaviour
         mark = GameObject.Find("Exclamation");
         controls = GameObject.Find("JoystickCanvas");
         lobbyScreen = GameObject.Find("YesLobby");
-        lobbyButton = GameObject.Find("CreateLobbyButton");
+        lobbyButton = GameObject.Find("JoinLobbyButton");
         mark.SetActive(false);
         comp_canvas.SetActive(false);
         lobbyScreen.SetActive(false);
@@ -57,7 +57,7 @@ public class HUB_UI_Manager : MonoBehaviour
         }
         else
         {
-            lobbyButton.GetComponentInChildren<Text>().text = "Create Lobby";
+            lobbyButton.GetComponentInChildren<Text>().text = "Join Lobby";
         }
     }
 
