@@ -66,12 +66,25 @@ public class Handle : MonoBehaviour                                 //[client-si
         string tile_name = packet.ReadString();
         Vector3 tile_position = packet.ReadVector3();
         Quaternion tile_rotation = packet.ReadQuaternion();
-        
+        ClientConstructDungeon.GetInstance().ReadNConstructTile(tile_name, tile_position, tile_rotation);
     }
 
     public static void GenerateRoom(Packet packet) {
         string room_name = packet.ReadString();
         Vector3 room_position = packet.ReadVector3();
-        Quaternion room_rotation = packet.ReadQuaternion();
+        int tilesX = packet.ReadInt();
+        int tilesZ = packet.ReadInt();
+        string category = packet.ReadString();
+        string type = packet.ReadString();
+        ClientConstructDungeon.GetInstance().FinalizeRoom();
+        if (ClientConstructDungeon.GetInstance().isInitialized())
+        {
+            ClientConstructDungeon.GetInstance().ReadNInitializeRoom(room_name, room_position, tilesX, tilesZ, category, type);
+        }
+        else
+        {
+            ClientConstructDungeon.GetInstance().InitializeDungeon();
+            ClientConstructDungeon.GetInstance().ReadNInitializeRoom(room_name, room_position, tilesX, tilesZ, category, type);
+        }
     }
 }

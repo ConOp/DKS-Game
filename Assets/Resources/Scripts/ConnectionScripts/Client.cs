@@ -253,8 +253,8 @@ public class Client : MonoBehaviour
             { (int) ServerPackets.disconnected_player, Handle.DisconnectedPlayer},
             { (int) ServerPackets.player_health, Handle.PlayerHealth},
             { (int) ServerPackets.regenerated_player, Handle.Regenerate},
-            { (int) ServerPackets.generate_room, Handle.GenerateRoom},
-            { (int) ServerPackets.generate_tile, Handle.GenerateTile}
+            { (int) ServerPackets.generate_IRoom, Handle.GenerateRoom},
+            { (int) ServerPackets.generate_Tile, Handle.GenerateTile}
         };
 
         Debug.Log("Initialization for packets done");

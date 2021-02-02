@@ -8,10 +8,6 @@ public class DungeonGenerator
 {
     #region Singleton
     private static DungeonGenerator instance = null;
-    /// <summary>
-    /// Get access to the only instance of the Stage Manager.
-    /// </summary>
-    /// <returns></returns>
     public static DungeonGenerator GetInstance()
     {
         if (instance == null)
