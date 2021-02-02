@@ -10,6 +10,8 @@ public class Send : MonoBehaviour                                       //logic 
         {
             packet.Write(Client.client.local_client_id);
             packet.Write(UIManager1.manager.username.text);
+            packet.Write(GameManager.game.local_player_prefab.GetComponentInChildren<PlayerMovement>().forward);
+            packet.Write(GameManager.game.local_player_prefab.GetComponentInChildren<PlayerMovement>().right);
             SendTcpData(packet);                                        //send the created packet to the server
         }
     }

@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-
+    
     [SerializeField]
     float moveSpeed = 4f;
 
@@ -26,15 +26,17 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Math.Abs(joystick.Horizontal)>0.2f || Math.Abs(joystick.Vertical) > 0.2f)//sets sensitivity for movement.
-        {
-            Move();
+        if (Client.client.local_client_id == 0) 
+        { 
+            if (Math.Abs(joystick.Horizontal) > 0.2f || Math.Abs(joystick.Vertical) > 0.2f)//sets sensitivity for movement.
+            {
+                Move();
+            }
         }
     }
     
     void Move()
     {
-        Vector3 direction = new Vector3(joystick.Horizontal, 0, joystick.Vertical);
         Vector3 rightMovement = right * moveSpeed * Time.deltaTime * joystick.Horizontal;
         Vector3 upMovement = forward * moveSpeed * Time.deltaTime * joystick.Vertical;
 
