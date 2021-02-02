@@ -60,4 +60,18 @@ public class Handle : MonoBehaviour                                 //[client-si
         int player_id = packet.ReadInt();
         GameManager.players[player_id].Regenerate();
     }
+
+    public static void GenerateTile(Packet packet) 
+    {
+        string tile_name = packet.ReadString();
+        Vector3 tile_position = packet.ReadVector3();
+        Quaternion tile_rotation = packet.ReadQuaternion();
+        
+    }
+
+    public static void GenerateRoom(Packet packet) {
+        string room_name = packet.ReadString();
+        Vector3 room_position = packet.ReadVector3();
+        Quaternion room_rotation = packet.ReadQuaternion();
+    }
 }
