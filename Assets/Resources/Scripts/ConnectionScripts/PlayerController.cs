@@ -22,6 +22,12 @@ public class PlayerController : MonoBehaviour
 
     private void SendInputToServer() //send local player's input (about movement) to the server, then server calculates the player's new position and sends it to all other remote clients)
     {
+        float[] inputs = new float[]
+        {
+            gameObject.transform.Find("PlayerCharacter").GetComponent<PlayerMovement>().joystick.Horizontal,
+            gameObject.transform.Find("PlayerCharacter").GetComponent<PlayerMovement>().joystick.Vertical,
+        };
+        /*
         bool[] inputs = new bool[] {
             Input.GetKey(KeyCode.W),        //physical keys (keyboard) for moving a player
             Input.GetKey(KeyCode.S),
@@ -29,6 +35,7 @@ public class PlayerController : MonoBehaviour
             Input.GetKey(KeyCode.D),
             Input.GetKey(KeyCode.Space)
         };
+        */
         Send.PlayerMovement(inputs);
     }
 

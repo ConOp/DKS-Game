@@ -26,12 +26,12 @@ public class Send : MonoBehaviour                                       //logic 
         Client.client.udp.SendData(packet);                         //send given packet from client to server (using udp)
     }
 
-    public static void PlayerMovement(bool[] inputs)                //send player's inputs (about movement) to the server 
+    public static void PlayerMovement(float[] inputs)                //send player's inputs (about movement) to the server 
     {
         using (Packet packet = new Packet((int)ClientPackets.player_movement))
         {
             packet.Write(inputs.Length);
-            foreach (bool input in inputs)
+            foreach (float input in inputs)
             {
                 packet.Write(input);
             }
