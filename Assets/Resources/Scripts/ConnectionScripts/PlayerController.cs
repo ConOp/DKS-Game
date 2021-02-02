@@ -8,7 +8,7 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()      //has the frequency of the physics system, it is called every fixed frame-rate frame (50 calls per sec)
     {
-        SendInputToServer();
+        //SendInputToServer();
     }
 
     private void Update()

@@ -6,12 +6,16 @@ public class Send : MonoBehaviour                                       //logic 
 {
     public static void Welcome_Received()                               //creates an client's first packet, after receiving welcome packet from server (like handshake)
     {
+
+        /*Vector3 forward = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>().forward;
+        Vector3 right = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>().right;*/
+
         using (Packet packet = new Packet((int)ClientPackets.welcomeReceived))
         {
             packet.Write(Client.client.local_client_id);
             packet.Write(UIManager1.manager.username.text);
-            packet.Write(GameManager.game.local_player_prefab.GetComponentInChildren<PlayerMovement>().forward);
-            packet.Write(GameManager.game.local_player_prefab.GetComponentInChildren<PlayerMovement>().right);
+            packet.Write(GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>().forward);
+            packet.Write(GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>().right);
             SendTcpData(packet);                                        //send the created packet to the server
         }
     }

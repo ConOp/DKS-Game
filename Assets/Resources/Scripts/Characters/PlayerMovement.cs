@@ -9,7 +9,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField]
     float moveSpeed = 4f;
 
-    [HideInInspector]
+    //[HideInInspector]
     public Vector3 forward, right;
 
     public Joystick joystick;
@@ -21,6 +21,17 @@ public class PlayerMovement : MonoBehaviour
         forward = Vector3.Normalize(forward);
         right = Quaternion.Euler(new Vector3(0, 90, 0)) * forward; //sets right position to 90 degrees to the right of forward position.
 
+    }
+
+    private void FixedUpdate()      //has the frequency of the physics system, it is called every fixed frame-rate frame (50 calls per sec)
+    {
+        if (Client.client.local_client_id != 0) 
+        {
+            if (Math.Abs(joystick.Horizontal) > 0.2f || Math.Abs(joystick.Vertical) > 0.2f) 
+            {
+                SendInputToServer();
+            }
+        }
     }
 
     // Update is called once per frame
@@ -45,5 +56,25 @@ public class PlayerMovement : MonoBehaviour
         transform.forward = heading; //in order to move according to camera rotation and NOT global position.
         transform.position += rightMovement;
         transform.position += upMovement;
+    }
+
+    private void SendInputToServer() //send local player's input (about movement) to the server, then server calculates the player's new position and sends it to all other remote clients)
+    {
+        float[] inputs = new float[]
+        {
+            joystick.Horizontal,
+            joystick.Vertical
+        };
+        /*
+        bool[] inputs = new bool[] {
+            Input.GetKey(KeyCode.W),        //physical keys (keyboard) for moving a player
+            Input.GetKey(KeyCode.S),
+            Input.GetKey(KeyCode.A),
+            Input.GetKey(KeyCode.D),
+            Input.GetKey(KeyCode.Space)
+        };
+        */
+        Debug.Log("hi");
+        Send.PlayerMovement(inputs);
     }
 }
