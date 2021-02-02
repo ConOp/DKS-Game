@@ -9,7 +9,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField]
     float moveSpeed = 4f;
 
-    Vector3 forward, right;
+    [HideInInspector]
+    public Vector3 forward, right;
 
     public Joystick joystick;
 
