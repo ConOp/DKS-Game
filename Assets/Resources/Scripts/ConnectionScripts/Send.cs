@@ -50,4 +50,12 @@ public class Send : MonoBehaviour                                       //logic 
             SendTcpData(packet);                                    //send packet to server via tcp
         }
     }
+
+    public static void StartGame()
+    {
+        using (Packet packet = new Packet((int)ClientPackets.startgame))
+        {
+            SendTcpData(packet);                                    //send packet to server via tcp
+        }
+    }
 }

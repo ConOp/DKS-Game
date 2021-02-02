@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class HUB_UI_Manager : MonoBehaviour
@@ -64,5 +65,11 @@ public class HUB_UI_Manager : MonoBehaviour
     public void CloseComputer()
     {
         comp_canvas.SetActive(false);
+    }
+
+    public void StartGame()
+    {
+        Send.StartGame();
+        //SceneManager.LoadScene("Dungeon");
     }
 }

@@ -15,16 +15,17 @@ public class ClientConstructDungeon
         }
         return instance;
     }
-    GameObject dungeon;
-    IRoom currentConstructionRoom;
-    List<IRoom> allrooms;
-    List<GameObject> instantiated_tiles;
+    
     private ClientConstructDungeon()
     {
         instance = this;
     }
     #endregion
-
+    
+    GameObject dungeon;
+    IRoom currentConstructionRoom;
+    List<IRoom> allrooms;
+    List<GameObject> instantiated_tiles;
     bool initialized = false;
     public bool isInitialized()
     {
