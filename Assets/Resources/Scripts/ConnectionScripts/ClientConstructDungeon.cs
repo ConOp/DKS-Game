@@ -27,6 +27,7 @@ public class ClientConstructDungeon
     string category;
     List<IRoom> allrooms;
     List<GameObject> instantiated_tiles;
+    GameObject UnderConstructionRoom;
     bool initialized = false;
     public bool isInitialized()
     {
@@ -39,24 +40,17 @@ public class ClientConstructDungeon
         initialized = true;
     }
     public void ReadNInitializeRoom(string roomName,Vector3 roomLocation,int tilesX,int tilesZ,string category, string type)
-    {   
-       // currentConstructionRoom = RoomFactory.Build()
-        //currentConstructionRoom.RoomObject = new GameObject(roomName);
-        GameObject gr = new GameObject(roomName);
+    {
+        UnderConstructionRoom = new GameObject(roomName);
         this.category = category;
-        //currentConstructionRoom.Type = type;
-        // currentConstructionRoom.Category = category;
-        // currentConstructionRoom.RoomObject.transform.position = new Vector3(roomLocation.x + (Mathf.Abs((roomLocation.x + tilesX * Tile.X_length) - roomLocation.x) / 2), roomLocation.y + 2.5f, roomLocation.z - (Mathf.Abs((roomLocation.z + tilesZ * Tile.Z_length) - roomLocation.z) / 2));
-        gr.transform.position = new Vector3(roomLocation.x + (Mathf.Abs((roomLocation.x + tilesX * Tile.X_length) - roomLocation.x) / 2), roomLocation.y + 2.5f, roomLocation.z - (Mathf.Abs((roomLocation.z + tilesZ * Tile.Z_length) - roomLocation.z) / 2));
+        UnderConstructionRoom.transform.position = new Vector3(roomLocation.x + (Mathf.Abs((roomLocation.x + tilesX * Tile.X_length) - roomLocation.x) / 2), roomLocation.y + 2.5f, roomLocation.z - (Mathf.Abs((roomLocation.z + tilesZ * Tile.Z_length) - roomLocation.z) / 2));
         instantiated_tiles = new List<GameObject>();
-        //currentConstructionRoom.RoomObject.transform.parent = dungeon.transform;
-        //currentConstructionRoom.Position = roomLocation;
-        gr.transform.parent = dungeon.transform;
+        UnderConstructionRoom.transform.parent = dungeon.transform;
     }
     public void ReadNConstructTile(string tileName, Vector3 tileLocation,Quaternion tileRotation)
     {
         Tile tile;
-        if (category.Equals("Room"))//currentConstructionRoom.Category.Equals("Room"))
+        if (category.Equals("Room"))
         {
              tile = new Tile(tileName, PrefabManager.GetInstance().GetAllRoomTiles().Where(obj => obj.name == tileName).First(), tileLocation);
         }
@@ -65,15 +59,16 @@ public class ClientConstructDungeon
              tile = new Tile(tileName, PrefabManager.GetInstance().GetAllCorridorTiles().Where(obj => obj.name == tileName).First(), tileLocation);
         }
 
-        instantiated_tiles.Add(Object.Instantiate(tile.Objtile, tileLocation, tileRotation));// currentConstructionRoom.RoomObject.transform));
+        instantiated_tiles.Add(Object.Instantiate(tile.Objtile, tileLocation, tileRotation, UnderConstructionRoom.transform));
     }
     public void FinalizeRoom()
     {
-      /*  if (currentConstructionRoom != null)
-        {
-            currentConstructionRoom.Instantiated_Tiles = instantiated_tiles;
-            allrooms.Add(currentConstructionRoom);
-        }
-    */
+        /*  if (UnderConstructionRoom != null)
+          {
+              currentConstructionRoom.Instantiated_Tiles = instantiated_tiles;
+              allrooms.Add(currentConstructionRoom);
+          }
+
+      }*/
     }
 }
