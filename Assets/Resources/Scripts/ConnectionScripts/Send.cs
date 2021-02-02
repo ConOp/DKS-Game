@@ -41,7 +41,7 @@ public class Send : MonoBehaviour                                       //logic 
             {
                 packet.Write(input);
             }
-            packet.Write(GameManager.players[Client.client.local_client_id].transform.rotation);
+            //packet.Write(GameManager.players[Client.client.local_client_id].transform.Find("PlayerCharacter").transform.rotation);
 
             SendUdpData(packet);                                    //movement packet will be sent over and over again (can't afford losing some of them)
         }

@@ -7,7 +7,7 @@ public class PlayerMovement : MonoBehaviour
 {
     
     [SerializeField]
-    float moveSpeed = 4f;
+    float moveSpeed = 10f;
 
     //[HideInInspector]
     public Vector3 forward, right;
@@ -23,14 +23,12 @@ public class PlayerMovement : MonoBehaviour
 
     }
 
+
     private void FixedUpdate()      //has the frequency of the physics system, it is called every fixed frame-rate frame (50 calls per sec)
     {
         if (Client.client.local_client_id != 0) 
         {
-            if (Math.Abs(joystick.Horizontal) > 0.2f || Math.Abs(joystick.Vertical) > 0.2f) 
-            {
-                SendInputToServer();
-            }
+            SendInputToServer();
         }
     }
 
@@ -60,11 +58,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void SendInputToServer() //send local player's input (about movement) to the server, then server calculates the player's new position and sends it to all other remote clients)
     {
-        float[] inputs = new float[]
-        {
-            joystick.Horizontal,
-            joystick.Vertical
-        };
+        float[] inputs = FixMovement();
         /*
         bool[] inputs = new bool[] {
             Input.GetKey(KeyCode.W),        //physical keys (keyboard) for moving a player
@@ -74,7 +68,18 @@ public class PlayerMovement : MonoBehaviour
             Input.GetKey(KeyCode.Space)
         };
         */
-        Debug.Log("hi");
         Send.PlayerMovement(inputs);
+    }
+
+    float[] FixMovement()
+    {
+        float[] inputs = new float[]
+        {
+            joystick.Horizontal,
+            joystick.Vertical
+        };
+        inputs[0] = Math.Abs(inputs[0]) < 0.2f ? 0 : inputs[0];
+        inputs[1] = Math.Abs(inputs[1]) < 0.2f ? 0 : inputs[1];
+        return inputs;
     }
 }

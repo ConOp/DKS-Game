@@ -33,13 +33,13 @@ public class Handle : MonoBehaviour                                 //[client-si
     {
         int id = packet.ReadInt();                                  //read client's id (local player's) that is moving
         Vector3 position = packet.ReadVector3();
-        GameManager.players[id].transform.position = position;      //set player to the new position
+        GameManager.players[id].transform.Find("PlayerCharacter").transform.position = position;      //set player to the new position
     }
     public static void PlayerRotation(Packet packet)
     {
         int id = packet.ReadInt();                                  //read client's id (local player's) that is rotating
         Quaternion rotation = packet.ReadQuaternion();
-        GameManager.players[id].transform.rotation = rotation;      //rotate player (local)
+        GameManager.players[id].transform.Find("PlayerCharacter").transform.rotation = rotation;      //rotate player (local)
     }
 
     public static void DisconnectedPlayer(Packet packet) 
