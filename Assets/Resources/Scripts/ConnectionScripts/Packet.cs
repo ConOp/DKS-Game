@@ -16,7 +16,8 @@ public enum ServerPackets
     regenerated_player,
     generate_Tile,
     generate_IRoom,
-    askPen
+    askPen,
+    remoteDoor
 }
 
 //sent from client to server

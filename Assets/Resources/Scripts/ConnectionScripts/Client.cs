@@ -258,7 +258,8 @@ public class Client : MonoBehaviour
             { (int) ServerPackets.regenerated_player, Handle.Regenerate},
             { (int) ServerPackets.generate_IRoom, Handle.GenerateRoom},
             { (int) ServerPackets.generate_Tile, Handle.GenerateTile},
-            { (int) ServerPackets.askPen, Handle.AskPen}
+            { (int) ServerPackets.askPen, Handle.AskPen},
+            { (int) ServerPackets.remoteDoor, Handle.RemoteDoors}
         };
 
         Debug.Log("Initialization for packets done");

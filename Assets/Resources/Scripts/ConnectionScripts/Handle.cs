@@ -88,7 +88,10 @@ public class Handle : MonoBehaviour                                 //[client-si
             ClientConstructDungeon.GetInstance().ReadNInitializeRoom(room_name, room_position, tilesX, tilesZ, category, type);
         }
     }
-
+    public static void RemoteDoors(Packet packet)
+    {
+        ClientConstructDungeon.GetInstance().DoorRemoteControl(packet.ReadVector3(), packet.ReadBool());
+    }
     public static void AskPen(Packet packet)
     {
         GameObject player = GameObject.Find("CharacterSet").transform.Find("PlayerCharacter").gameObject;
