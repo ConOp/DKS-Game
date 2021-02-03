@@ -33,7 +33,7 @@ public class Handle : MonoBehaviour                                 //[client-si
     {
         int id = packet.ReadInt();                                  //read client's id (local player's) that is moving
         position = packet.ReadVector3();
-
+        GameManager.players[id].transform.Find("PlayerCharacter").transform.position = position;
         //GameManager.players[id].transform.Find("PlayerCharacter").transform.position = Vector3.MoveTowards(GameManager.players[id].transform.Find("PlayerCharacter").transform.position,position,5);      //set player to the new position
     }
     public static void PlayerRotation(Packet packet)
@@ -87,5 +87,11 @@ public class Handle : MonoBehaviour                                 //[client-si
             ClientConstructDungeon.GetInstance().InitializeDungeon();
             ClientConstructDungeon.GetInstance().ReadNInitializeRoom(room_name, room_position, tilesX, tilesZ, category, type);
         }
+    }
+
+    public static void AskPen(Packet packet)
+    {
+        GameObject player = GameObject.Find("CharacterSet").transform.Find("PlayerCharacter").gameObject;
+        Send.PenValues(player.GetComponent<CharacterBehaviour>().pen.GetNeurotism(), player.GetComponent<CharacterBehaviour>().pen.GetExtraversion(), player.GetComponent<CharacterBehaviour>().pen.GetCertainty());
     }
 }

@@ -15,7 +15,8 @@ public enum ServerPackets
     player_health,
     regenerated_player,
     generate_Tile,
-    generate_IRoom
+    generate_IRoom,
+    askPen
 }
 
 //sent from client to server
@@ -24,7 +25,8 @@ public enum ClientPackets
     welcomeReceived = 1,
     player_movement,
     shoot,
-    startgame
+    startgame,
+    pen_values
 }
 
 public class Packet : IDisposable                               //interface that provides a mechanism for releasing unmanaged resources

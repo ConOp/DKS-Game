@@ -257,7 +257,8 @@ public class Client : MonoBehaviour
             { (int) ServerPackets.player_health, Handle.PlayerHealth},
             { (int) ServerPackets.regenerated_player, Handle.Regenerate},
             { (int) ServerPackets.generate_IRoom, Handle.GenerateRoom},
-            { (int) ServerPackets.generate_Tile, Handle.GenerateTile}
+            { (int) ServerPackets.generate_Tile, Handle.GenerateTile},
+            { (int) ServerPackets.askPen, Handle.AskPen}
         };
 
         Debug.Log("Initialization for packets done");

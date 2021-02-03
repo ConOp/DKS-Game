@@ -61,4 +61,15 @@ public class Send : MonoBehaviour                                       //logic 
             SendTcpData(packet);                                    //send packet to server via tcp
         }
     }
+
+    public static void PenValues(float neuro, float extra, float certainty)
+    {
+        using (Packet packet = new Packet((int)ClientPackets.pen_values))
+        {
+            packet.Write(neuro);
+            packet.Write(extra);
+            packet.Write(certainty);
+            SendTcpData(packet);                                    //send packet to server via tcp
+        }
+    }
 }
