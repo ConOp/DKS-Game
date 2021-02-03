@@ -36,6 +36,7 @@ public class GameManager : MonoBehaviour
         {
             player = Instantiate(player_prefab, position, rotation);                            //instatiate another player (not local)
         }
+        DontDestroyOnLoad(player);
         UIManager1.ShowPlayerNames(id-1,username);
         player.GetComponent<PlayerManager1>().Initialize(id, username);                          //initialize player's attributes after generating in game field
         players.Add(id, player.GetComponent<PlayerManager1>());                                  //add corresponding player manager of the player that has been just generated to the dictionary [key = id, value = player manager]

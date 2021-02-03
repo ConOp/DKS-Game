@@ -70,6 +70,6 @@ public class HUB_UI_Manager : MonoBehaviour
     public void StartGame()
     {
         Send.StartGame();
-        //SceneManager.LoadScene("Dungeon");
+        SceneManager.LoadScene("DungeonScene");
     }
 }

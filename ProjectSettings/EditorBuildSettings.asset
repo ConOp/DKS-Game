@@ -9,6 +9,6 @@ EditorBuildSettings:
     path: Assets/Scenes/LaunchHub.unity
     guid: 82b45b9589e2e2c418b26b57c8f694dd
   - enabled: 1
-    path: Assets/Scenes/Dungeon.unity
+    path: Assets/Scenes/DungeonScene.unity
     guid: 437c000a93b98934a93c7925d5e5ee86
   m_configObjects: {}

@@ -7,9 +7,6 @@ public class Send : MonoBehaviour                                       //logic 
     public static void Welcome_Received()                               //creates an client's first packet, after receiving welcome packet from server (like handshake)
     {
 
-        /*Vector3 forward = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>().forward;
-        Vector3 right = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>().right;*/
-
         using (Packet packet = new Packet((int)ClientPackets.welcomeReceived))
         {
             packet.Write(Client.client.local_client_id);
