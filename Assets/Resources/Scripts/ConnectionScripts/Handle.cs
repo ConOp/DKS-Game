@@ -97,4 +97,9 @@ public class Handle : MonoBehaviour                                 //[client-si
         GameObject player = GameObject.Find("CharacterSet").transform.Find("PlayerCharacter").gameObject;
         Send.PenValues(player.GetComponent<CharacterBehaviour>().pen.GetNeurotism(), player.GetComponent<CharacterBehaviour>().pen.GetExtraversion(), player.GetComponent<CharacterBehaviour>().pen.GetCertainty());
     }
+
+    public static void WeaponLocation(Packet packet)
+    {
+        SpawnWeapon.Spawn(packet.ReadString(), packet.ReadVector3());
+    }
 }

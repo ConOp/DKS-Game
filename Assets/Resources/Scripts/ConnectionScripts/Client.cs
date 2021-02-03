@@ -259,7 +259,8 @@ public class Client : MonoBehaviour
             { (int) ServerPackets.generate_IRoom, Handle.GenerateRoom},
             { (int) ServerPackets.generate_Tile, Handle.GenerateTile},
             { (int) ServerPackets.askPen, Handle.AskPen},
-            { (int) ServerPackets.remoteDoor, Handle.RemoteDoors}
+            { (int) ServerPackets.remoteDoor, Handle.RemoteDoors},
+            { (int) ServerPackets.weaponLocation, Handle.WeaponLocation}
         };
 
         Debug.Log("Initialization for packets done");
