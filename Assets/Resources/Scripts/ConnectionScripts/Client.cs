@@ -33,7 +33,10 @@ public class Client : MonoBehaviour
         }
     }
     //Start is called before the first frame update
-
+    private void Start()
+    {
+        DontDestroyOnLoad(this.gameObject);
+    }
     private void OnApplicationQuit()                                //handle case unity doesn't properly close open connections in play mode
     {
         Disconnect();

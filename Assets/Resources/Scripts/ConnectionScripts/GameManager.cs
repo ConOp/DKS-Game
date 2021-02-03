@@ -22,6 +22,11 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        DontDestroyOnLoad(this.gameObject);
+    }
+
     public void Generate(int id, string username, Vector3 position, Quaternion rotation)        //generate player
     {
         GameObject player;

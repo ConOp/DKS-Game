@@ -42,6 +42,10 @@ public class PlayerMovement : MonoBehaviour
                 Move();
             }
         }
+        else
+        {
+
+        }
     }
     
     void Move()

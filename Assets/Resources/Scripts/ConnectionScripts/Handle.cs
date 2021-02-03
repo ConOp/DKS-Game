@@ -28,12 +28,13 @@ public class Handle : MonoBehaviour                                 //[client-si
 
         GameManager.game.Generate(id, username, position, rotation);
     }
-
+    public static Vector3 position;
     public static void PlayerPosition(Packet packet)
     {
         int id = packet.ReadInt();                                  //read client's id (local player's) that is moving
-        Vector3 position = packet.ReadVector3();
-        GameManager.players[id].transform.Find("PlayerCharacter").transform.position = position;      //set player to the new position
+        position = packet.ReadVector3();
+
+        //GameManager.players[id].transform.Find("PlayerCharacter").transform.position = Vector3.MoveTowards(GameManager.players[id].transform.Find("PlayerCharacter").transform.position,position,5);      //set player to the new position
     }
     public static void PlayerRotation(Packet packet)
     {
