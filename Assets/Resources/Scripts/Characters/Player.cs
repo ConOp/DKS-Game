@@ -101,6 +101,7 @@ public class Player : MonoBehaviour,Character
                 }
             }
             TakeWeapon();
+            Send.HoldWeapon(weapons[currentWeaponIndex].GetComponent<WeaponData>().GetID());
         }
         else
         {
@@ -149,7 +150,6 @@ public class Player : MonoBehaviour,Character
         {
             weapons[currentWeaponIndex].SetActive(true);
         }
-        Send.HoldWeapon(weapons[currentWeaponIndex].GetComponent<WeaponData>().GetID());
     }
 
     void DropWeapon()
