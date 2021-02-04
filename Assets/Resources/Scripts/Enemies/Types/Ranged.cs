@@ -16,14 +16,4 @@ public class Ranged : Basic_Enemy
         }
     }
 
-    protected override void MovementBehaviour()
-    {
-        if (target != null)
-        {
-            if (Vector3.Distance(gameObject.transform.position, target.transform.position) < current_range * 0.8)
-            {
-                transform.position = Vector3.MoveTowards(gameObject.transform.position, target.transform.position, -1 * current_speed * Time.deltaTime);
-            }
-        }
-    }
 }

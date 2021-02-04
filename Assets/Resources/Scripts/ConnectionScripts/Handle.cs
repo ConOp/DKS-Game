@@ -102,4 +102,24 @@ public class Handle : MonoBehaviour                                 //[client-si
     {
         SpawnWeapon.Spawn(packet.ReadString(), packet.ReadVector3(), packet.ReadFloat());
     }
+    public static void SpawnEnemy(Packet packet)
+    {
+        string name = packet.ReadString();
+        if (name.Contains("Ranged"))
+        {
+            GameObject enemy = Instantiate(Enemy_Prefab_Manager.GetInstance().GetRangedEnemies()[0], packet.ReadVector3(), new Quaternion());
+           ConnectionEnemyHandler.GetInstance().allExistingEnemies.Add(enemy);
+        }
+        else
+        {
+            GameObject enemy = Instantiate(Enemy_Prefab_Manager.GetInstance().GetMeleeEnemies()[0], packet.ReadVector3(), new Quaternion());
+            ConnectionEnemyHandler.GetInstance().allExistingEnemies.Add(enemy);
+        }
+    }
+    public static void SpawnMod(Packet packet)
+    {
+        string mod_name = packet.ReadString();
+        int enemyid = packet.ReadInt();
+        ConnectionEnemyHandler.GetInstance().allExistingEnemies[enemyid].GetComponent<Basic_Enemy>().Add_Modification(mod_name);
+    }
 }

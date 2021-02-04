@@ -16,28 +16,5 @@ public class Dummy:Basic_Enemy
         }
     }
 
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (activeAbility != null)
-        {
-            if (collision.transform.gameObject.tag.Equals("Player"))
-            {
-                collision.transform.gameObject.GetComponent<Player>().TakeDamage(activeAbility.DealDamage());
-            }
-            else if (collision.transform.gameObject.tag.Equals("Wall"))
-            {
-                if (activeAbility.abilityname.Equals("Bash_Attack"))
-                {
-                    Stun();
-                    activeAbility.EndAttack();
-                }
-            }
-        }
-    }
-
-    protected override void MovementBehaviour()
-    {
-        
-    }
 
 }

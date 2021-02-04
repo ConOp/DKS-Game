@@ -122,7 +122,7 @@ public class Battle
             if (melee_ranged == 0)
             {
                 GameObject enemy=UnityEngine.Object.Instantiate(Enemy_Prefab_Manager.GetInstance().GetMeleeEnemies()[0], center, new Quaternion());
-                enemy.GetComponent<Basic_Enemy>().battle = this;
+               // enemy.GetComponent<Basic_Enemy>().battle = this;
                 AddEnemy(enemy);
                 for(int i = 0; i < enemy.GetComponent<Basic_Enemy>().Modification_Bases.GetAllBases().Count; i++)
                 {
@@ -133,7 +133,7 @@ public class Battle
             else
             {
                 GameObject enemy=UnityEngine.Object.Instantiate(Enemy_Prefab_Manager.GetInstance().GetRangedEnemies()[0], center, new Quaternion());
-                enemy.GetComponent<Basic_Enemy>().battle = this;
+               // enemy.GetComponent<Basic_Enemy>().battle = this;
                 AddEnemy(enemy);
                 for (int i = 0; i < enemy.GetComponent<Basic_Enemy>().Modification_Bases.GetAllBases().Count; i++)
                 {
