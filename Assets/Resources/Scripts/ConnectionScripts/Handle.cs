@@ -100,6 +100,6 @@ public class Handle : MonoBehaviour                                 //[client-si
 
     public static void WeaponLocation(Packet packet)
     {
-        SpawnWeapon.Spawn(packet.ReadString(), packet.ReadVector3());
+        SpawnWeapon.Spawn(packet.ReadString(), packet.ReadVector3(), packet.ReadFloat());
     }
 }

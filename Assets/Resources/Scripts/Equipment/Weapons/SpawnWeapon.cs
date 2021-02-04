@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SpawnWeapon
 {
-    public static void Spawn(string weapon, Vector3 location)
+    public static void Spawn(string weapon, Vector3 location, float id)
     {
         List<GameObject> weaponsList = new List<GameObject>(Resources.LoadAll<GameObject>("Prefabs/Equipment/Weapons/Melee"));
         bool isRanged = true;
@@ -24,7 +24,8 @@ public class SpawnWeapon
         {
             if (prefab.name.Equals(weapon))
             {
-                GameObject.Instantiate(prefab, location, new Quaternion());
+                GameObject g = GameObject.Instantiate(prefab, location, new Quaternion());
+                g.GetComponent<WeaponData>().SetID(id);
                 break;
             }
         }
