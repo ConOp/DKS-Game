@@ -6,6 +6,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager game;
     public static Dictionary<int, PlayerManager1> players = new Dictionary<int, PlayerManager1>();    //[client-side] store player's info (game field logic)
+    public static Dictionary<int, SpawnedWeapons> spawned_weapons = new Dictionary<int, SpawnedWeapons>();
     public GameObject local_player_prefab;
     public GameObject player_prefab;
 

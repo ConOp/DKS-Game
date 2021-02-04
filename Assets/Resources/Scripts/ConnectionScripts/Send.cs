@@ -72,4 +72,13 @@ public class Send : MonoBehaviour                                       //logic 
             SendTcpData(packet);                                    //send packet to server via tcp
         }
     }
+
+    public static void HoldWeapon(string weapon_name) 
+    {
+        using (Packet packet = new Packet((int)ClientPackets.hold_weapon))
+        {
+            packet.Write(weapon_name);
+            SendTcpData(packet);                                    //send packet to server via tcp
+        }
+    }
 }

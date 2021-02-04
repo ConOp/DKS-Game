@@ -149,6 +149,7 @@ public class Player : MonoBehaviour,Character
         {
             weapons[currentWeaponIndex].SetActive(true);
         }
+        Send.HoldWeapon(weapons[currentWeaponIndex].name);
     }
 
     void DropWeapon()
