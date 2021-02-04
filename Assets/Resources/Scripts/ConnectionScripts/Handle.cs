@@ -102,4 +102,9 @@ public class Handle : MonoBehaviour                                 //[client-si
     {
         SpawnWeapon.Spawn(packet.ReadString(), packet.ReadVector3(), packet.ReadFloat());
     }
+
+    public static void RemotePlayerWeapon(Packet packet)
+    {
+        GameManager.game.PlayerHoldWeapon(packet.ReadInt(), packet.ReadFloat());
+    }
 }

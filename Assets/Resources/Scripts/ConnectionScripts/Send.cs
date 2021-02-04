@@ -73,11 +73,12 @@ public class Send : MonoBehaviour                                       //logic 
         }
     }
 
-    public static void HoldWeapon(string weapon_name) 
+    public static void HoldWeapon(float weapon_id) 
     {
         using (Packet packet = new Packet((int)ClientPackets.hold_weapon))
         {
-            packet.Write(weapon_name);
+            packet.Write(GameManager.players[Client.client.local_client_id].id);
+            packet.Write(weapon_id);
             SendTcpData(packet);                                    //send packet to server via tcp
         }
     }
