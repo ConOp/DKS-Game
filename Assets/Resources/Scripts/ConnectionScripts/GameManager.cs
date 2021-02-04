@@ -6,7 +6,6 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager game;
     public static Dictionary<int, PlayerManager1> players = new Dictionary<int, PlayerManager1>();    //[client-side] store player's info (game field logic)
-    public static Dictionary<int, SpawnedWeapons> spawned_weapons = new Dictionary<int, SpawnedWeapons>();
     public GameObject local_player_prefab;
     public GameObject player_prefab;
 
@@ -49,4 +48,17 @@ public class GameManager : MonoBehaviour
         Debug.Log("Player has been instatiated successfully...");
     }
 
+    public void PlayerHoldWeapon(int id, float weapon_id) {
+        if (id != Client.client.local_client_id) {
+            foreach (GameObject weapon in GameObject.FindGameObjectsWithTag("Equipment"))
+            {
+                if (weapon.GetComponent<WeaponData>().GetID() == weapon_id)
+                {
+                    players[id].GetComponent<Player>().ShowWeapon(weapon);
+                    break;
+                }
+            }
+        }
+        Debug.Log("Wrong player holding the weapon!");
+    }
 }

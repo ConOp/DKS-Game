@@ -101,6 +101,7 @@ public class Player : MonoBehaviour,Character
                 }
             }
             TakeWeapon();
+            Send.HoldWeapon(weapons[currentWeaponIndex].GetComponent<WeaponData>().GetID());
         }
         else
         {
@@ -125,7 +126,7 @@ public class Player : MonoBehaviour,Character
         return pos;
     }
     
-    void ShowWeapon(GameObject shown)
+    public void ShowWeapon(GameObject shown)
     {
         shown.SetActive(true);
         shown.transform.worldToLocalMatrix.MultiplyVector(hand.transform.forward);
@@ -149,7 +150,6 @@ public class Player : MonoBehaviour,Character
         {
             weapons[currentWeaponIndex].SetActive(true);
         }
-        Send.HoldWeapon(weapons[currentWeaponIndex].name);
     }
 
     void DropWeapon()

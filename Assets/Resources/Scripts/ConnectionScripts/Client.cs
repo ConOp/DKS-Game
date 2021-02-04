@@ -261,6 +261,7 @@ public class Client : MonoBehaviour
             { (int) ServerPackets.askPen, Handle.AskPen},
             { (int) ServerPackets.remoteDoor, Handle.RemoteDoors},
             { (int) ServerPackets.weaponLocation, Handle.WeaponLocation},
+            { (int) ServerPackets.remotePlayerWeapon, Handle.RemotePlayerWeapon}
             { (int) ServerPackets.spawnEnemy, Handle.SpawnEnemy},
             { (int) ServerPackets.spawnMod, Handle.SpawnMod}
         };
