@@ -9,8 +9,8 @@ public class Client : MonoBehaviour
     public static Client client;                //client instance
     public static int dataBufferSize = 4096;    //bytes
 
-    public string ip = "127.0.0.1";             //server ip for localhost
-    public int port = 26950;                    //port number
+    public string ip = "85.75.217.250";             //server ip for localhost
+    public int port = 25565;                    //port number
     public int local_client_id = 0;             //local client's id
     public TCP tcp;                             //reference to client's TCP class
     public UDP udp;                             //reference to client's UDP class

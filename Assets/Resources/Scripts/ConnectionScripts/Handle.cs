@@ -27,6 +27,7 @@ public class Handle : MonoBehaviour                                 //[client-si
         Quaternion rotation = packet.ReadQuaternion();
 
         GameManager.game.Generate(id, username, position, rotation);
+        GameManager.players[Client.client.local_client_id].transform.Find("PlayerCharacter").GetComponent<PlayerMovement>().inServer = true;
     }
     public static Vector3 position;
     public static void PlayerPosition(Packet packet)

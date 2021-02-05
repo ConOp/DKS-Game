@@ -8,7 +8,7 @@ public class PlayerMovement : MonoBehaviour
     
     [SerializeField]
     float moveSpeed = 10f;
-
+    public bool inServer = false;
     //[HideInInspector]
     public Vector3 forward, right;
 
@@ -26,7 +26,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()      //has the frequency of the physics system, it is called every fixed frame-rate frame (50 calls per sec)
     {
-        if (Client.client.local_client_id != 0) 
+        if (Client.client.local_client_id != 0&&inServer) 
         {
             SendInputToServer();
         }
