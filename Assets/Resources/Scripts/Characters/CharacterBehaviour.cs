@@ -10,6 +10,8 @@ public class CharacterBehaviour : MonoBehaviour
     bool entering = true;
     bool unlocked = true;
     bool updater = false;
+
+    public List<GameObject> enemies;
     // Start is called before the first frame update
     void Start()
     {
@@ -39,10 +41,9 @@ public class CharacterBehaviour : MonoBehaviour
             }
             else
             {
-                List<GameObject> temp = Battle_Manager.GetInstance().GetBattle(gameObject).GetEnemies();
-                if (temp.Any())
+                if (enemies.Any())
                 {
-                    pen.UpdateValues(gameObject, GetComponent<Player>().Closest(temp));
+                    pen.UpdateValues(gameObject, GetComponent<Player>().Closest(enemies));
                 }
             }            
         }

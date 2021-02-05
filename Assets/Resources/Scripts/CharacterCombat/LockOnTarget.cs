@@ -29,6 +29,7 @@ public class LockOnTarget : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        /*
         Battle currentBattle = Battle_Manager.GetInstance().GetBattle(gameObject);
         if (currentBattle!=null)
         {
@@ -63,6 +64,7 @@ public class LockOnTarget : MonoBehaviour
                 TargetClosest(GetComponent<Player>().Closest(currentBattle.GetEnemies()));
             }
         }
+        */
     }
 
     void TargetClosest(GameObject target)

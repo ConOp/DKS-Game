@@ -35,8 +35,18 @@ public class Player : MonoBehaviour,Character
 
     public void enterCombat()
     {
+        Send.AskCombatEnemies();
         this.combatant = true;
     }
+
+    public void SearchEnemies(int[] indexes)
+    {
+        foreach (int i in indexes)
+        {
+            gameObject.GetComponent<CharacterBehaviour>().enemies.Add(ConnectionEnemyHandler.GetInstance().allExistingEnemies[i]);
+        }
+    }
+
     public void exitCombat()
     {
         this.combatant = false;

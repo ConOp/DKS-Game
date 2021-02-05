@@ -58,7 +58,6 @@ public class ClientConstructDungeon
             currRoom.AddComponent<BoxCollider>();//Create new collider for the room.
             currRoom.GetComponent<BoxCollider>().size = new Vector3(tilesX * Tile.X_length - 2, 5, tilesZ * Tile.Z_length - 2);//Set the size of the collider to cover all the room.
             currRoom.GetComponent<BoxCollider>().isTrigger = true;//Set collider to trigger.
-            currRoom.AddComponent<RoomEventsHandler>();
         }
     }
     public void ReadNConstructTile(string tileName, Vector3 tileLocation,Quaternion tileRotation)

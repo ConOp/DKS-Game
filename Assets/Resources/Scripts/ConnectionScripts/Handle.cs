@@ -139,11 +139,22 @@ public class Handle : MonoBehaviour                                 //[client-si
     {
         if (packet.ReadBool())
         {
-            GameManager.game.local_player_prefab.GetComponent<Player>().InCombat();
+            GameManager.players[Client.client.local_client_id].transform.Find("PlayerCharacter").GetComponent<Player>().enterCombat();
         }
         else
         {
-            GameManager.game.local_player_prefab.GetComponent<Player>().exitCombat();
+            GameManager.players[Client.client.local_client_id].transform.Find("PlayerCharacter").GetComponent<Player>().exitCombat();
         }
+    }
+
+    public static void ReturnCombatEnemies(Packet packet)
+    {
+        int[] indexes = new int[packet.ReadInt()];
+        for (int i = 0; i < indexes.Length; i++)
+        {
+            indexes[i] = packet.ReadInt();
+        }
+        GameManager.players[Client.client.local_client_id].transform.Find("PlayerCharacter").GetComponent<Player>().SearchEnemies(indexes);
+
     }
 }

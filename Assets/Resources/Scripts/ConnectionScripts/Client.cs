@@ -265,7 +265,8 @@ public class Client : MonoBehaviour
             { (int) ServerPackets.spawnEnemy, Handle.SpawnEnemy},
             { (int) ServerPackets.spawnMod, Handle.SpawnMod},
             { (int) ServerPackets.moveEnemy, Handle.MoveEnemy},
-            { (int) ServerPackets.inCombat, Handle.in}
+            { (int) ServerPackets.inCombat, Handle.InCombat},
+            { (int) ServerPackets.returnEnemiesInCombat, Handle.ReturnCombatEnemies}
         };
 
         Debug.Log("Initialization for packets done");

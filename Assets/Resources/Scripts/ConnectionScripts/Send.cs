@@ -82,4 +82,13 @@ public class Send : MonoBehaviour                                       //logic 
             SendTcpData(packet);                                    //send packet to server via tcp
         }
     }
+
+    public static void AskCombatEnemies()
+    {
+        using (Packet packet = new Packet((int)ClientPackets.askEnemiesForCombat))
+        {
+            packet.Write(GameManager.players[Client.client.local_client_id].id);
+            SendTcpData(packet);                                    //send packet to server via tcp
+        }
+    }
 }

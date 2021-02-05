@@ -49,6 +49,7 @@ public abstract class Basic_Enemy:MonoBehaviour
                 if (mbase.mod.Equals(mod_to_remove))
                 {
                     mbase.DetachModification();
+                    /*
                     foreach (GameObject player in Battle_Manager.GetInstance().GetBattle(gameObject).GetPlayers())
                     {
                         if (player.GetComponent<LockOnTarget>().targetedCreature.Equals(gameObject))
@@ -56,6 +57,7 @@ public abstract class Basic_Enemy:MonoBehaviour
                             player.GetComponent<LockOnTarget>().RefreshTargets();
                         }
                     }
+                    */
                     return;
                 }
             }
