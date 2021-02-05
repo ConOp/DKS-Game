@@ -127,4 +127,13 @@ public class Handle : MonoBehaviour                                 //[client-si
         int enemyid = packet.ReadInt();
         ConnectionEnemyHandler.GetInstance().allExistingEnemies[enemyid].GetComponent<Basic_Enemy>().Add_Modification(mod_name);
     }
+    public static void MoveEnemy(Packet packet)
+    {
+
+        Vector3 location = packet.ReadVector3();
+        Quaternion rotation = packet.ReadQuaternion();
+        int enemyid = packet.ReadInt();
+        ConnectionEnemyHandler.GetInstance().allExistingEnemies[enemyid].transform.position = location;
+        ConnectionEnemyHandler.GetInstance().allExistingEnemies[enemyid].transform.rotation = rotation;
+    }
 }
