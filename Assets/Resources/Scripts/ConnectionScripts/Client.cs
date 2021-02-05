@@ -264,7 +264,8 @@ public class Client : MonoBehaviour
             { (int) ServerPackets.remotePlayerWeapon, Handle.RemotePlayerWeapon},
             { (int) ServerPackets.spawnEnemy, Handle.SpawnEnemy},
             { (int) ServerPackets.spawnMod, Handle.SpawnMod},
-            { (int) ServerPackets.moveEnemy, Handle.MoveEnemy}
+            { (int) ServerPackets.moveEnemy, Handle.MoveEnemy},
+            { (int) ServerPackets.inCombat, Handle.in}
         };
 
         Debug.Log("Initialization for packets done");

@@ -136,4 +136,15 @@ public class Handle : MonoBehaviour                                 //[client-si
         ConnectionEnemyHandler.GetInstance().allExistingEnemies[enemyid].transform.position = location;
         ConnectionEnemyHandler.GetInstance().allExistingEnemies[enemyid].transform.rotation = rotation;
     }
+    public static void InCombat(Packet packet)
+    {
+        if (packet.ReadBool())
+        {
+            GameManager.game.local_player_prefab.GetComponent<Player>().InCombat();
+        }
+        else
+        {
+            GameManager.game.local_player_prefab.GetComponent<Player>().exitCombat();
+        }
+    }
 }
