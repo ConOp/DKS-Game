@@ -42,10 +42,6 @@ public class PlayerMovement : MonoBehaviour
                 Move();
             }
         }
-        else
-        {
-            //todo
-        }
     }
     
     void Move()
@@ -63,15 +59,13 @@ public class PlayerMovement : MonoBehaviour
     private void SendInputToServer() //send local player's input (about movement) to the server, then server calculates the player's new position and sends it to all other remote clients)
     {
         float[] inputs = FixMovement();
-        /*
-        bool[] inputs = new bool[] {
-            Input.GetKey(KeyCode.W),        //physical keys (keyboard) for moving a player
-            Input.GetKey(KeyCode.S),
-            Input.GetKey(KeyCode.A),
-            Input.GetKey(KeyCode.D),
-            Input.GetKey(KeyCode.Space)
-        };
-        */
+
+        Vector3 rightMovement = right * moveSpeed * Time.deltaTime * joystick.Horizontal;
+        Vector3 upMovement = forward * moveSpeed * Time.deltaTime * joystick.Vertical;
+        if( inputs[0]+inputs[1]!=0 || inputs[0] * inputs[1] != 0)
+        {
+            transform.forward = Vector3.Normalize(rightMovement + upMovement);
+        }        
         Send.PlayerMovement(inputs);
     }
 
