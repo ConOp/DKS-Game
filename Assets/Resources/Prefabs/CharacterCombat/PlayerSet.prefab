@@ -404,6 +404,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6002297924880095228}
     m_Modifications:
+    - target: {fileID: 5796507428863095703, guid: 2a743f76bd920ce44905542dd893b3b6,
+        type: 3}
+      propertyPath: joystick
+      value: 
+      objectReference: {fileID: 2995241331148854201}
     - target: {fileID: 5987584956716447735, guid: 2a743f76bd920ce44905542dd893b3b6,
         type: 3}
       propertyPath: m_RootOrder

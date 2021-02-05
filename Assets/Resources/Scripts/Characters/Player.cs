@@ -29,7 +29,7 @@ public class Player : MonoBehaviour,Character
     private void Start()
     {
         weapons = new List<GameObject> { null, null };
-        hpbar = transform.parent.Find("HealthCanvas").GetComponentInChildren<HealthBar>();
+        hpbar = GameObject.Find("HealthCanvas").GetComponentInChildren<HealthBar>();
         hpbar.InitHealth(hp);
     }
 

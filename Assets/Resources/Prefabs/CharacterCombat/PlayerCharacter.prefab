@@ -120,11 +120,11 @@ GameObject:
   m_Component:
   - component: {fileID: 8684117830143908586}
   - component: {fileID: 8684117830143908599}
-  - component: {fileID: 8684117830143908588}
   - component: {fileID: 8684117830143908589}
   - component: {fileID: 8684117830143908587}
   - component: {fileID: 8684117830143908590}
   - component: {fileID: 7458227906195269861}
+  - component: {fileID: 5796507428863095703}
   m_Layer: 0
   m_Name: PlayerCharacter
   m_TagString: Player
@@ -161,20 +161,6 @@ CapsuleCollider:
   m_Height: 1.9927028
   m_Direction: 1
   m_Center: {x: 0.01401329, y: -0.0036485791, z: 0.022116661}
---- !u!114 &8684117830143908588
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8684117830143908598}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fbf783dd17218ff468e26f6077388f9e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moveSpeed: 10
-  joystick: {fileID: 0}
 --- !u!54 &8684117830143908589
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -235,3 +221,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f23f9dfe95dfa842934f9a8acedd55b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enemies: []
+--- !u!114 &5796507428863095703
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8684117830143908598}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fbf783dd17218ff468e26f6077388f9e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 10
+  inServer: 0
+  forward: {x: 0, y: 0, z: 0}
+  right: {x: 0, y: 0, z: 0}
+  joystick: {fileID: 0}

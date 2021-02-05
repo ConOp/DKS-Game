@@ -36,6 +36,7 @@ public class GameManager : MonoBehaviour
             player = local_player_prefab;
             player.transform.position = position;
             player.transform.rotation = rotation;
+            player.transform.Find("PlayerCharacter").GetComponent<PlayerMovement>().inServer = true;
         }
         else
         {
