@@ -160,6 +160,7 @@ public class Handle : MonoBehaviour                                 //[client-si
 
     }
     public static void LoadScene(Packet packet) {
+        GameObject.Find("PlayerSet").transform.Find("JoystickCanvas").gameObject.SetActive(true);
         SceneManager.LoadScene(packet.ReadString());
 
     }

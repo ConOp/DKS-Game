@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -46,6 +47,7 @@ public class GameManager : MonoBehaviour
         UIManager1.ShowPlayerNames(id-1,username);
         player.GetComponent<PlayerManager1>().Initialize(id, username);                          //initialize player's attributes after generating in game field
         players.Add(id, player.GetComponent<PlayerManager1>());                                  //add corresponding player manager of the player that has been just generated to the dictionary [key = id, value = player manager]
+        players[id].transform.Find("PlayerCharacter").transform.Find("NameCanvas").transform.Find("PlayerNameText").GetComponent<Text>().text = username;
         Debug.Log("Player has been instatiated successfully...");
     }
 

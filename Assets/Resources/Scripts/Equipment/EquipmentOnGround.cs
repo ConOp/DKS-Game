@@ -22,7 +22,7 @@ public class EquipmentOnGround : MonoBehaviour
             anim = GetComponent<Animator>();
             anim.enabled = false;
         }
-        canvas = GameObject.Find("JoystickCanvas/HitUI/Interact").GetComponent<Button>();
+        canvas = GameObject.Find("PlayerSet").transform.Find("JoystickCanvas/HitUI/Interact").GetComponent<Button>();
         colorVar = canvas.colors;
     }
 

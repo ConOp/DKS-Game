@@ -13,5 +13,6 @@ public class FollowCamera : MonoBehaviour
     void Update()
     {
         transform.LookAt(mainCamera);
+        transform.forward = -transform.forward;
     }
 }
