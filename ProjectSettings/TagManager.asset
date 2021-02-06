@@ -9,6 +9,7 @@ TagManager:
   - Equipment
   - Ground
   - Wall
+  - Manager
   layers:
   - Default
   - TransparentFX
@@ -21,7 +22,7 @@ TagManager:
   - Obstacles
   - Enemies
   - Ground
-  - 
+  - PostProcessing
   - 
   - 
   - 
