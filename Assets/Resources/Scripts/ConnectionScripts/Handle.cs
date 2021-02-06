@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Net;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Handle : MonoBehaviour                                 //[client-side] handle received data that has been sent from the server
 {
@@ -156,6 +157,10 @@ public class Handle : MonoBehaviour                                 //[client-si
             indexes[i] = packet.ReadInt();
         }
         GameManager.players[Client.client.local_client_id].transform.Find("PlayerCharacter").GetComponent<Player>().SearchEnemies(indexes);
+
+    }
+    public static void LoadScene(Packet packet) {
+        SceneManager.LoadScene(packet.ReadString());
 
     }
 }

@@ -9,8 +9,8 @@ public class Client : MonoBehaviour
     public static Client client;                //client instance
     public static int dataBufferSize = 4096;    //bytes
 
-    public string ip = "85.75.217.250";             //server ip for localhost
-    public int port = 25565;                    //port number
+    public string ip = "85.75.217.250";         //server ip for localhost "127.0.0.1";
+    public int port = 25565;                   //port number   26950; 
     public int local_client_id = 0;             //local client's id
     public TCP tcp;                             //reference to client's TCP class
     public UDP udp;                             //reference to client's UDP class
@@ -256,6 +256,7 @@ public class Client : MonoBehaviour
             { (int) ServerPackets.disconnected_player, Handle.DisconnectedPlayer},
             { (int) ServerPackets.player_health, Handle.PlayerHealth},
             { (int) ServerPackets.regenerated_player, Handle.Regenerate},
+            { (int) ServerPackets.load_scene, Handle.LoadScene},
             { (int) ServerPackets.generate_IRoom, Handle.GenerateRoom},
             { (int) ServerPackets.generate_Tile, Handle.GenerateTile},
             { (int) ServerPackets.askPen, Handle.AskPen},

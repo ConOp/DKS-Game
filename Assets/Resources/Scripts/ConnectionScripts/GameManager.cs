@@ -55,7 +55,8 @@ public class GameManager : MonoBehaviour
             {
                 if (weapon.GetComponent<WeaponData>().GetID() == weapon_id)
                 {
-                    players[id].GetComponent<Player>().ShowWeapon(weapon);
+                    players[id].GetComponentInChildren<Player>().ShowWeapon(weapon);
+                    weapon.GetComponent<EquipmentOnGround>().enabled = false;
                     break;
                 }
             }
