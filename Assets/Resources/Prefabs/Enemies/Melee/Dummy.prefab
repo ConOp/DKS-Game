@@ -564,7 +564,7 @@ MonoBehaviour:
   MOVEMENT_SPEED: 6
   ATTACK_SPEED: 1
   HEALTH: 100
-  DAMAGE: 50
+  DAMAGE: 20
   RANGE: 0
   current_speed: 0
   current_attack_speed: 1

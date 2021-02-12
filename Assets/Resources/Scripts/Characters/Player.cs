@@ -166,6 +166,9 @@ public class Player : MonoBehaviour,Character
             attacked = weapons[currentWeaponIndex].GetComponent<Weapon>().Attack(GetComponent<LockOnTarget>().targeted);
         }
         //depending on the result, alter neuroticism.
-        GetComponent<CharacterBehaviour>().pen.AttackNeuro(attacked);
+        if (InCombat())
+        {
+            GetComponent<CharacterBehaviour>().pen.AttackNeuro(attacked);
+        }        
     }
 }

@@ -15,7 +15,14 @@ public class Distance_extraversion
     GameObject enemy;
 
     public Joystick move_joystick = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>().joystick;
+
+    bool battleStarter = true;
  
+    public void ResetBattle()
+    {
+        battleStarter = true;
+    }
+
     public void SetMax(float max)
     {
         maxExtra = max;
@@ -23,9 +30,10 @@ public class Distance_extraversion
 
     float Normalizer()
     {
-        float dist = maxExtra - Math.Abs(extr);
-        dist = Math.Abs(dist/10+0.01f);
-        return dist;
+        float dist = Math.Abs(maxExtra - 10) - Math.Abs(extr);
+        float rad = 1+0.5f * dist / 10;
+        float multiplier = 1-(float)Math.Abs(Math.Sin(Math.PI * rad));
+        return multiplier;
     }
 
     /// <summary>
@@ -38,6 +46,11 @@ public class Distance_extraversion
         {
             float multiplier = Normalizer();
             float dist = Vector3.Distance(player.transform.position, enemy.transform.position);
+            if (battleStarter)
+            {
+                battleStarter = false;
+                oldpos = dist;
+            }
             float angle = 60;
             bool seen = enemy.GetComponentInChildren<Renderer>().isVisible;
             if ((Math.Abs(move_joystick.Horizontal) > 0.2f || Math.Abs(move_joystick.Vertical) > 0.2f) && dist <= THRESHOLD && seen)
@@ -57,7 +70,7 @@ public class Distance_extraversion
         }
         else
         {
-            extr = extr < 0 ? -maxExtra : maxExtra;
+            extr = extr < 0 ? maxExtra-20 : maxExtra;
         }
         
     }

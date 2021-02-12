@@ -15,11 +15,7 @@ public class pen_model
     static float INTERVAL = 1;
     float timePassed = 0;
 
-    //Debug, visualized valued. Will be removed from the product.
-    Text neuro_num = GameObject.Find("Neuro_Number").GetComponent<Text>();
-    Text extra_num = GameObject.Find("Extra_Number").GetComponent<Text>();
-    Text psycho_num = GameObject.Find("Psycho_Number").GetComponent<Text>();//psycho changed to certainty.
-    Text character_text = GameObject.Find("CharacteristicText").GetComponent<Text>();
+    public static float maxMovePart = 7;
 
     //for Neuroticism from movements.
     Move_neuroticism mover = new Move_neuroticism();
@@ -52,11 +48,17 @@ public class pen_model
     public void SetMaxPen()
     {
         float maxE = GetExtraversion() + 10;
-        float maxN = GetNeurotism() + 10;
+        float maxN_move = mover.getNeuro() + maxMovePart;
+        float maxN_atk = atk.GetNeuro() + 10-maxMovePart;
         dister.SetMax(maxE);
-        float largePart = maxN * 0.7f;
-        mover.SetMax(largePart);
-        atk.SetMax(maxN-largePart);
+        mover.SetMax(maxN_move);
+        atk.SetMax(maxN_atk);
+    }
+
+    public void ResetBattle()
+    {
+        dister.ResetBattle();
+        mover.ResetBattle();
     }
 
     /// <summary>
@@ -89,7 +91,13 @@ public class pen_model
     {
         atk.Attacked(success);
     }
-    
+
+    //Debug, visualized valued. Will be removed from the product.
+    Text neuro_num = GameObject.Find("Neuro_Number").GetComponent<Text>();
+    Text extra_num = GameObject.Find("Extra_Number").GetComponent<Text>();
+    Text psycho_num = GameObject.Find("Psycho_Number").GetComponent<Text>();//psycho changed to certainty.
+    Text character_text = GameObject.Find("CharacteristicText").GetComponent<Text>();
+
     void UpdateUI()
     {
         neuro_num.text = neuro.ToString();

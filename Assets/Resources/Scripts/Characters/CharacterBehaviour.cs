@@ -28,6 +28,7 @@ public class CharacterBehaviour : MonoBehaviour
                 updater = false;
                 pen.UpdateRate();
                 pen.SetMaxPen();
+                pen.ResetBattle();
             }            
         }
         else

@@ -16,7 +16,6 @@ public class Model_Certainty
     int Edirection = 0;//changes between two values (-1 and 1) depending on the direction of the change.
     //static float THRESHOLD = 2.5f;
 
-    int timepassed = 0;//time after last change to the value.
 
     public float getRate(float newNeuroticism, float newExtraversion)
     {

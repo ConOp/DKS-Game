@@ -20,14 +20,15 @@ public class Attack_neuroticism
 
     float Normalizer()
     {
-        float dist = maxNeuro - Math.Abs(neuro);
-        dist = Math.Abs(dist / 10 + 0.01f);
-        return dist;
+        float dist = Math.Abs(maxNeuro - 3) - Math.Abs(neuro);
+        float rad = 1 + 0.5f * dist / 10;
+        float multiplier = 1 - (float)Math.Abs(Math.Sin(Math.PI * rad));
+        return multiplier;
     }
 
     public void Attacked(bool success)
     {
-        if (Math.Abs(neuro) <= maxNeuro)
+        if (neuro <= maxNeuro && neuro>=maxNeuro-(10-pen_model.maxMovePart)*2)
         {
             float multiplier = Normalizer();
             if (success)
@@ -41,7 +42,7 @@ public class Attack_neuroticism
         }
         else
         {
-            neuro = neuro < 0 ? maxNeuro - maxNeuro : maxNeuro;
+            neuro = neuro < 0 ? maxNeuro - (10-pen_model.maxMovePart)*2 : maxNeuro;
         }        
     }
 }
