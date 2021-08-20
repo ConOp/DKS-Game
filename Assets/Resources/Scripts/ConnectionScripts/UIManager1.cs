@@ -33,6 +33,7 @@ public class UIManager1 : MonoBehaviour
         }
     }
 
+    //onClick joinLobby button
     public void ConnectToServer()               //gets called when player presses connect button (tries to connect client (local player) to the server)
     {  
         username.interactable = false;          //property to enable or disable the ability to select a selectable UI element 

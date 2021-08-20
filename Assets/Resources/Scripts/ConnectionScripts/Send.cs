@@ -1,12 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class Send : MonoBehaviour                                       //logic for sending packets from client to server
+public class Send                                                     //logic for sending packets from client to server
 {
     public static void Welcome_Received()                               //creates an client's first packet, after receiving welcome packet from server (like handshake)
     {
-
         using (Packet packet = new Packet((int)ClientPackets.welcomeReceived))
         {
             packet.Write(Client.client.local_client_id);
@@ -41,16 +38,6 @@ public class Send : MonoBehaviour                                       //logic 
             packet.Write(GameManager.players[Client.client.local_client_id].transform.Find("PlayerCharacter").transform.forward);
 
             SendUdpData(packet);                                    //movement packet will be sent over and over again (can't afford losing some of them)
-        }
-    }
-
-
-    public static void Shoot(Vector3 facing_direction)              //specified direction that local player is shooting
-    {
-        using (Packet packet = new Packet((int) ClientPackets.shoot)) 
-        {
-            packet.Write(facing_direction);
-            SendTcpData(packet);                                    //send packet to server via tcp
         }
     }
 

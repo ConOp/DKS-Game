@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using System;
 using System.Text;
@@ -12,8 +11,6 @@ public enum ServerPackets
     player_position,
     player_rotation,
     disconnected_player,
-    player_health,
-    regenerated_player,
     generate_Tile,
     generate_IRoom,
     askPen,
@@ -33,7 +30,7 @@ public enum ClientPackets
 {
     welcomeReceived = 1,
     player_movement,
-    shoot,
+    //shoot,
     startgame,
     pen_values,
     hold_weapon,
@@ -116,27 +113,12 @@ public class Packet : IDisposable                               //interface that
     }
     //------------------------------------------------------------------------------------------------------------------------------
 
-    public void Write(byte value)                              //add given byte to the packet (buffer)
-    {
-        buffer.Add(value);
-    }
-
     public void Write(byte[] value)                            //add given array of bytes to the packet
     {
         buffer.AddRange(value);
     }
 
-    public void Write(short value)                             //add given short integer to the packet
-    {
-        buffer.AddRange(BitConverter.GetBytes(value));
-    }
-
     public void Write(int value)                               //add given int to the packet
-    {
-        buffer.AddRange(BitConverter.GetBytes(value));
-    }
-
-    public void Write(long value)                              //add given long int to the packet
     {
         buffer.AddRange(BitConverter.GetBytes(value));
     }
@@ -146,10 +128,6 @@ public class Packet : IDisposable                               //interface that
         buffer.AddRange(BitConverter.GetBytes(value));
     }
 
-    public void Write(bool value)                              //add given boolean to the packet
-    {
-        buffer.AddRange(BitConverter.GetBytes(value));
-    }
 
     public void Write(string value)                            //add given string to the packet
     {
@@ -164,33 +142,7 @@ public class Packet : IDisposable                               //interface that
         Write(value.z);
     }
 
-    public void Write(Quaternion value)                       //add given Quaternion to the packet (rotation)
-    {
-        Write(value.x);
-        Write(value.y);
-        Write(value.z);
-        Write(value.w);
-    }
-
     //--------------------------------------------------------------------------------------------------------------------------
-
-    public byte ReadByte(bool moveReadPos = true)              //read a byte from the packet
-    {
-        if (buffer.Count > readPos)
-        {
-            //if unread bytes exist
-            byte value = readableBuffer[readPos];             //get the byte at the readPos position
-            if (moveReadPos)                                  //if true the move buffer's read position
-            {
-                readPos += 1;
-            }
-            return value;                                     //return the byte
-        }
-        else
-        {
-            throw new Exception("Could not read value of type 'byte'!");
-        }
-    }
 
     public byte[] ReadBytes(int length, bool moveReadPos = true)  //reads an array of bytes from the packet (length of the byte array
     {
@@ -207,24 +159,6 @@ public class Packet : IDisposable                               //interface that
         else
         {
             throw new Exception("Could not read value of type 'byte[]'...");
-        }
-    }
-
-    public short ReadShort(bool moveReadPos = true)                        //read a short integer from packet
-    {
-        if (buffer.Count > readPos)
-        {
-            //if unread bytes exist
-            short value = BitConverter.ToInt16(readableBuffer, readPos);   //convert the bytes to a short
-            if (moveReadPos)
-            {
-                readPos += 2;                                               //increase readPos by 2 (short int equals to 16 bits = 2 bytes)
-            }
-            return value;                                                   //return the short
-        }
-        else
-        {
-            throw new Exception("Could not read value of type 'short'...");
         }
     }
 
@@ -246,23 +180,6 @@ public class Packet : IDisposable                               //interface that
         }
     }
 
-    public long ReadLong(bool moveReadPos = true)                          //read a long from the packet
-    {
-        if (buffer.Count > readPos)
-        {
-            //if unread bytes exist
-            long value = BitConverter.ToInt64(readableBuffer, readPos);     //convert the bytes to a long
-            if (moveReadPos)
-            {
-                readPos += 8;                                               //increase readPos by 8 (a long int equals to 64 bits)
-            }
-            return value;                                                   //return the long
-        }
-        else
-        {
-            throw new Exception("Could not read value of type 'long'...");
-        }
-    }
 
     public float ReadFloat(bool moveReadPos = true)                        //read a float from the packet
     {

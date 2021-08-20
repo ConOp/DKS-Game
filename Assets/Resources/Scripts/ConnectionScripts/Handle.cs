@@ -1,10 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Net;
+﻿using System.Net;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class Handle : MonoBehaviour                                 //[client-side] handle received data that has been sent from the server
+public class Handle                                                 //[client-side] handle received data that has been sent from the server
 {
     public static void Welcome(Packet packet)                       //read welcome packet that has been sent from the server
     {
@@ -16,7 +14,7 @@ public class Handle : MonoBehaviour                                 //[client-si
         Client.client.local_client_id = player_id;                  //set current player's id (client's id) with the available one that has been given from server
         Send.Welcome_Received();
 
-        Client.client.udp.ConnectedPlayer(((IPEndPoint)Client.client.tcp.socket.Client.LocalEndPoint).Port);   //pass the local port that TCP connection is using (after tcp handshake start udp connection between client-server)
+        Client.client.udp.ConnectedPlayer(((IPEndPoint)Client.client.tcp.Socket.Client.LocalEndPoint).Port);   //pass the local port that TCP connection is using (after tcp handshake start udp connection between client-server)
         
     }
 
@@ -30,11 +28,11 @@ public class Handle : MonoBehaviour                                 //[client-si
         GameManager.game.Generate(id, username, position, rotation);
         
     }
-    public static Vector3 position;
+    //public static Vector3 position;
     public static void PlayerPosition(Packet packet)
     {
         int id = packet.ReadInt();                                  //read client's id (local player's) that is moving
-        position = packet.ReadVector3();
+        Vector3 position = packet.ReadVector3();
         GameManager.players[id].transform.Find("PlayerCharacter").transform.position = position;
     }
     public static void PlayerRotation(Packet packet)
@@ -47,20 +45,8 @@ public class Handle : MonoBehaviour                                 //[client-si
     public static void DisconnectedPlayer(Packet packet) 
     {
         int disconnected_id = packet.ReadInt();                     //read player's id that was disconnected
-        Destroy(GameManager.players[disconnected_id].gameObject);   //remove player that was disconnected (in order to prevent local player to keep seeing him after his disconnection)
+        Object.Destroy(GameManager.players[disconnected_id].gameObject);   //remove player that was disconnected (in order to prevent local player to keep seeing him after his disconnection)
         GameManager.players.Remove(disconnected_id);                //remove disconnected player from the dictionary
-    }
-
-    public static void PlayerHealth(Packet packet) 
-    {
-        int player_id = packet.ReadInt();                           //extract packet's info, sent from server
-        float current_health = packet.ReadFloat();
-        GameManager.players[player_id].setHealth(current_health);
-    }
-
-    public static void Regenerate(Packet packet) {
-        int player_id = packet.ReadInt();
-        GameManager.players[player_id].Regenerate();
     }
 
     public static void GenerateTile(Packet packet) 
@@ -78,7 +64,6 @@ public class Handle : MonoBehaviour                                 //[client-si
         int tilesZ = packet.ReadInt();
         string category = packet.ReadString();
         string type = packet.ReadString();
-        ClientConstructDungeon.GetInstance().FinalizeRoom();
         if (ClientConstructDungeon.GetInstance().isInitialized())
         {
             ClientConstructDungeon.GetInstance().ReadNInitializeRoom(room_name, room_position, tilesX, tilesZ, category, type);
@@ -113,12 +98,12 @@ public class Handle : MonoBehaviour                                 //[client-si
         string name = packet.ReadString();
         if (name.Contains("Ranged"))
         {
-            GameObject enemy = Instantiate(Enemy_Prefab_Manager.GetInstance().GetRangedEnemies()[0], packet.ReadVector3(), new Quaternion());
+            GameObject enemy = Object.Instantiate(Enemy_Prefab_Manager.GetInstance().GetRangedEnemies()[0], packet.ReadVector3(), new Quaternion());
            ConnectionEnemyHandler.GetInstance().allExistingEnemies.Add(enemy);
         }
         else
         {
-            GameObject enemy = Instantiate(Enemy_Prefab_Manager.GetInstance().GetMeleeEnemies()[0], packet.ReadVector3(), new Quaternion());
+            GameObject enemy = Object.Instantiate(Enemy_Prefab_Manager.GetInstance().GetMeleeEnemies()[0], packet.ReadVector3(), new Quaternion());
             ConnectionEnemyHandler.GetInstance().allExistingEnemies.Add(enemy);
         }
     }
