@@ -7,43 +7,43 @@ public class TCP
     private TcpClient socket;
     public TcpClient Socket => socket;
     private NetworkStream stream;
-    private byte[] received_buffer;
+    private byte[] read_buffer;
     private Packet received_packet;            //packet (sent by server) and received from client
 
     public void ConnectedPlayer()               //try to connect local player to server using tcp
     {
         socket = new TcpClient { ReceiveBufferSize = Client.dataBufferSize, SendBufferSize = Client.dataBufferSize };
-        received_buffer = new byte[Client.dataBufferSize];
-        socket.BeginConnect(Client.client.Ip, Client.client.Port, ConnectionCallback, socket);
+        read_buffer = new byte[Client.dataBufferSize];
+        socket.BeginConnect(Client.client.Ip, Client.client.PortNum, TCPConnectionCallback, socket);
     }
 
-    private void ConnectionCallback(IAsyncResult asyncResult)       //gets called after client's successful connection to server via tcp and initializes necessary components for the communication
+    private void TCPConnectionCallback(IAsyncResult asyncResult) //gets called after client's successful connection to server via tcp and initializes necessary components for the communication
     {
-        socket.EndConnect(asyncResult);                             //end asynchronous pending connection request
+        socket.EndConnect(asyncResult);                          //end asynchronous pending connection request
         if (!socket.Connected)
         {
             return;
         }
-        stream = socket.GetStream();                                //get NetworkStream that used to send and receive data
-        received_packet = new Packet();                             //initialize Packet instance
-        stream.BeginRead(received_buffer, 0, Client.dataBufferSize, ReceivedCallback, null);   //begin asynchronous reading from NetworkStream
+        stream = socket.GetStream();                            //get NetworkStream that used to send and receive data
+        received_packet = new Packet();                         //initialize Packet instance
+        stream.BeginRead(read_buffer, 0, Client.dataBufferSize, TcpNetworkStreamCallback, null);   //begin asynchronous reading from NetworkStream
     }
 
-    private void ReceivedCallback(IAsyncResult asyncResult)     //read received data-packet from the NetworkStream
+    private void TcpNetworkStreamCallback(IAsyncResult asyncResult)     //read received data-packet from the NetworkStream
     {
         try
         {
             int bytes_length = stream.EndRead(asyncResult);     //returns number of bytes read from the NetworkStream
             if (bytes_length <= 0)
             {
-                Client.client.Disconnect();              //will disconnect both tcp and udp connections
+                Client.client.Disconnect();                     //will disconnect both tcp and udp connections
                 return;                                         //get out of the method
             }
             byte[] data = new byte[bytes_length];               //if data has been received, create new buffer for the data
 
-            Array.Copy(received_buffer, data, bytes_length);    //copy from one array to another
-            received_packet.Reset(HandleData(data));            //reset Packet instance so it can be reused, but first get (handle) data from the packet
-            stream.BeginRead(received_buffer, 0, Client.dataBufferSize, ReceivedCallback, null);    //continue reading data from the NetworkStream
+            Array.Copy(read_buffer, data, bytes_length);        //copy from one array to another
+            received_packet.Clear(HandleData(data));            //clear Packet instance so it can be reused, but first get (handle) data from the packet
+            stream.BeginRead(read_buffer, 0, Client.dataBufferSize, TcpNetworkStreamCallback, null);    //continue reading data from the NetworkStream
         }
         catch
         {
@@ -51,13 +51,13 @@ public class TCP
         }
     }
 
-    public void SendData(Packet packet)                             //send given packet to server using tcp
+    public void SendData(Packet packet)                         //send given packet to server using tcp
     {
         try
         {
             if (socket != null)
             {
-                stream.BeginWrite(packet.ToArray(), 0, packet.Length(), null, null);    //begin asynchronous writing to the NetworkStream
+                stream.BeginWrite(packet.ToArray(), 0, packet.ContentLength(), null, null);    //begin asynchronous writing to the NetworkStream
             }
         }
         catch (Exception ex)
@@ -91,13 +91,13 @@ public class TCP
                 }
             });
 
-            packet_length = 0;                                      //reset packet's length
-            if (received_packet.UnreadLength() >= 4)                //this is the start of packet (first value placed in the packet is its content's length, which is an integer [int consists of 4 bytes])
+            packet_length = 0;                                   //reset packet's length
+            if (received_packet.UnreadLength() >= 4)             //this is the start of packet (first value placed in the packet is its content's length, which is an integer [int consists of 4 bytes])
             {
-                packet_length = received_packet.ReadInt();          //get packet's length of data that was sent from server and received from client (meaning local player)
-                if (packet_length <= 0)                             //no data stored inside the packet
+                packet_length = received_packet.ReadInt();      //get packet's length of data that was sent from server and received from client (meaning local player)
+                if (packet_length <= 0)                         //no data stored inside the packet
                 {
-                    return true;                                    //true --> reset packet in order to receive new data
+                    return true;                                //true --> reset packet in order to receive new data
                 }
             }
         }
@@ -114,7 +114,7 @@ public class TCP
         Client.client.Disconnect();
         stream = null;
         received_packet = null;
-        received_buffer = null;
+        read_buffer = null;
         socket = null;
     }
 }

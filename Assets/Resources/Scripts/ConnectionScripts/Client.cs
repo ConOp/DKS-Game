@@ -3,21 +3,21 @@ using UnityEngine;
 
 public class Client : MonoBehaviour
 {
-    public static Client client = null;         //client instance
-    public static int dataBufferSize = 4096;    //bytes
+    public static Client client = null;                             //client instance
+    public static int dataBufferSize = 4096;                        //bytes
 
-    public string ip = "127.0.0.1"; //server ip (for localhost "127.0.0.1"); 
+    public string ip = "127.0.0.1";                                 //server ip (for localhost "127.0.0.1"); 
     public string Ip => ip;
 
-    private readonly int port = 25565;          //port number   26950; 
-    public int Port => port;
+    private readonly int portNum = 25565;                           //port number   26950; 
+    public int PortNum => portNum;
 
-    public int local_client_id = 0;             //local client's id
-    public TCP tcp;                             //reference to client's TCP class
-    public UDP udp;                             //reference to client's UDP class
+    public int local_client_id = 0;                                 //local client's id
+    public TCP tcp;                                                 //reference to client's TCP class
+    public UDP udp;                                                 //reference to client's UDP class
     private bool connected = false;
 
-    public delegate void PacketHandler(Packet packet);             //type that represents references to methods
+    public delegate void PacketHandler(Packet packet);              //type that represents references to methods
     private static Dictionary<int, PacketHandler> packetHandlers;   //packet's id, corresponding packet handler
     public Dictionary<int, PacketHandler> Handlers { get => packetHandlers; }    //property for accessing private field
 
@@ -26,12 +26,12 @@ public class Client : MonoBehaviour
     {
         if (client == null)
         {
-            client = this;                      //set it equal to the instance of Client class
+            client = this;                                          //set it equal to the instance of Client class
         }
         else if (client != this)
         {
             Debug.Log("Incorrect instance needs to be destroyed...");
-            Destroy(this);                      //only one instance of Client class must exist (meaning only one local player)
+            Destroy(this);                                          //only one instance of Client class must exist (meaning only one local player)
         }
     }
     //Start is called before the first frame update
@@ -48,13 +48,8 @@ public class Client : MonoBehaviour
     {
         tcp = new TCP();
         udp = new UDP();
-        InitializedClientData();
-        connected = true;
-        tcp.ConnectedPlayer();                                      //connect client(local player) via tcp, udp connection starts after successful tcp connection client-server
-    }
 
-    private void InitializedClientData()                                //intialize dictionary of data - packets
-    {
+        //---------------initialize dictionary (necessary client data)-------
         packetHandlers = new Dictionary<int, PacketHandler>()
         {
             { (int) ServerPackets.welcome, Handle.Welcome},
@@ -77,9 +72,12 @@ public class Client : MonoBehaviour
         };
 
         Debug.Log("Initialization for packets done");
+
+        connected = true;
+        tcp.ConnectedPlayer();                                      //connect client(local player) via tcp, udp connection starts after successful tcp connection client-server
     }
 
-    public void Disconnect() {                                    //disconnect from server and stop all traffic in the network
+    public void Disconnect() {                                      //disconnect from server and stop all traffic in the network
         if (connected) {
             connected = false;
             tcp.Socket.Close();

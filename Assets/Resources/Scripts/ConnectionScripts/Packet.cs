@@ -41,18 +41,18 @@ public class Packet : IDisposable                               //interface that
 {
     private List<byte> buffer;                                  //packet's content
     private byte[] readableBuffer;                              //ready packet to be read
-    private int readPos;
+    private int positionToRead;
 
     public Packet()                                             //constructor for creating a new empty packet
     {
         buffer = new List<byte>();
-        readPos = 0;                                            //points to a position for reading packet info
+        positionToRead = 0;                                            //points to a position for reading packet info
     }
 
     public Packet(int id)                                      //overloaded constructor for creating a new empty packet with the given id (needs for sending data)
     {
         buffer = new List<byte>();
-        readPos = 0;
+        positionToRead = 0;
 
         Write(id);                                             //write packet id to the buffer
     }
@@ -60,7 +60,7 @@ public class Packet : IDisposable                               //interface that
     public Packet(byte[] data)                                 //overloaded constructor for creating a packet from which the given data can be read (used for receiving)
     {
         buffer = new List<byte>();
-        readPos = 0;
+        positionToRead = 0;
 
         SetBytes(data);                                        //write data (bytes to be added) to the buffer (meaning packet)
     }
@@ -88,27 +88,27 @@ public class Packet : IDisposable                               //interface that
         return readableBuffer;
     }
 
-    public int Length()                                         //get packet's content length
+    public int ContentLength()                                  //get packet's content length
     {
         return buffer.Count;
     }
 
     public int UnreadLength()                                   //get length of unread data contained in the packet
     {
-        return Length() - readPos;                              //return the remaining length of the unread data
+        return ContentLength() - positionToRead;               //return the remaining length of the unread data
     }
 
-    public void Reset(bool shouldReset = true)                 //clear packet so it can be reused
+    public void Clear(bool shouldReset = true)                 //clear packet so it can be reused
     {
         if (shouldReset)                                       //reset packet
         {
             buffer.Clear();                                     //clear buffer
             readableBuffer = null;
-            readPos = 0;                                        //reset position
+            positionToRead = 0;                                        //reset position
         }
         else
         {
-            readPos -= 4;                                       //"unread" the last read int (integer equals to 4 bytes)
+            positionToRead -= 4;                                       //"unread" the last read int (integer equals to 4 bytes)
         }
     }
     //------------------------------------------------------------------------------------------------------------------------------
@@ -144,15 +144,15 @@ public class Packet : IDisposable                               //interface that
 
     //--------------------------------------------------------------------------------------------------------------------------
 
-    public byte[] ReadBytes(int length, bool moveReadPos = true)  //reads an array of bytes from the packet (length of the byte array
+    public byte[] ReadBytes(int length, bool movePositionToRead = true)  //reads an array of bytes from the packet (length of the byte array
     {
-        if (buffer.Count > readPos)
+        if (buffer.Count > positionToRead)
         {
             //if unread bytes exist
-            byte[] value = buffer.GetRange(readPos, length).ToArray();    //get the bytes at the readPos position with a range of given length
-            if (moveReadPos)
+            byte[] value = buffer.GetRange(positionToRead, length).ToArray();    //get the bytes at the positionToRead position with a range of given length
+            if (movePositionToRead)
             {
-                readPos += length;                                         //increase readPos by given length
+                positionToRead += length;                                         //increase positionToRead by given length
             }
             return value;                                                  //return the bytes
         }
@@ -162,15 +162,15 @@ public class Packet : IDisposable                               //interface that
         }
     }
 
-    public int ReadInt(bool moveReadPos = true)                            //read an int from the packet
+    public int ReadInt(bool movePositionToRead = true)                            //read an int from the packet
     {
-        if (buffer.Count > readPos)
+        if (buffer.Count > positionToRead)
         {
             //if unread bytes exist
-            int value = BitConverter.ToInt32(readableBuffer, readPos);      //convert the bytes to an int
-            if (moveReadPos)
+            int value = BitConverter.ToInt32(readableBuffer, positionToRead);      //convert the bytes to an int
+            if (movePositionToRead)
             {
-                readPos += 4;                                               //an int equals to 4 bytes
+                positionToRead += 4;                                               //an int equals to 4 bytes
             }
             return value;                                                   //return the int
         }
@@ -181,15 +181,15 @@ public class Packet : IDisposable                               //interface that
     }
 
 
-    public float ReadFloat(bool moveReadPos = true)                        //read a float from the packet
+    public float ReadFloat(bool movePositionToRead = true)                        //read a float from the packet
     {
-        if (buffer.Count > readPos)
+        if (buffer.Count > positionToRead)
         {
             //unread bytes exist
-            float value = BitConverter.ToSingle(readableBuffer, readPos);  //convert the bytes to a float
-            if (moveReadPos)
+            float value = BitConverter.ToSingle(readableBuffer, positionToRead);  //convert the bytes to a float
+            if (movePositionToRead)
             {
-                readPos += 4;                                               //increase readPos by 4 (float equals to 32 bits)
+                positionToRead += 4;                                               //increase positionToRead by 4 (float equals to 32 bits)
             }
             return value;                                                   //return the float
         }
@@ -199,15 +199,15 @@ public class Packet : IDisposable                               //interface that
         }
     }
 
-    public bool ReadBool(bool moveReadPos = true)                          //read a bool from the packet
+    public bool ReadBool(bool movePositionToRead = true)                          //read a bool from the packet
     {
-        if (buffer.Count > readPos)
+        if (buffer.Count > positionToRead)
         {
             //if unread bytes exist
-            bool value = BitConverter.ToBoolean(readableBuffer, readPos);   //convert the bytes to a bool
-            if (moveReadPos)
+            bool value = BitConverter.ToBoolean(readableBuffer, positionToRead);   //convert the bytes to a bool
+            if (movePositionToRead)
             {
-                readPos += 1;                                               //increase readPos by 1
+                positionToRead += 1;                                               //increase positionToRead by 1
             }
             return value;                                                   //return the bool
         }
@@ -217,15 +217,15 @@ public class Packet : IDisposable                               //interface that
         }
     }
 
-    public string ReadString(bool moveReadPos = true)                      //read a string from the packet
+    public string ReadString(bool movePositionToRead = true)                      //read a string from the packet
     {
         try
         {
             int length = ReadInt();                                        //get string's length
-            string value = Encoding.ASCII.GetString(readableBuffer, readPos, length); //convert the bytes to a string
-            if (moveReadPos && value.Length > 0)
+            string value = Encoding.ASCII.GetString(readableBuffer, positionToRead, length); //convert the bytes to a string
+            if (movePositionToRead && value.Length > 0)
             {
-                readPos += length;                                         //increase readPos by the length of the string
+                positionToRead += length;                                         //increase positionToRead by the length of the string
             }
             return value;                                                  //return the string
         }
@@ -235,14 +235,14 @@ public class Packet : IDisposable                               //interface that
         }
     }
 
-    public Vector3 ReadVector3(bool moveReadPos = true)                    //read Vector3 from the packet
+    public Vector3 ReadVector3(bool movePositionToRead = true)                    //read Vector3 from the packet
     {
-        return new Vector3(ReadFloat(moveReadPos), ReadFloat(moveReadPos), ReadFloat(moveReadPos));     //return the created instance
+        return new Vector3(ReadFloat(movePositionToRead), ReadFloat(movePositionToRead), ReadFloat(movePositionToRead));     //return the created instance
     }
 
-    public Quaternion ReadQuaternion(bool moveReadPos = true)              //read Quaternion from the packet
+    public Quaternion ReadQuaternion(bool movePositionToRead = true)              //read Quaternion from the packet
     {
-        return new Quaternion(ReadFloat(moveReadPos), ReadFloat(moveReadPos), ReadFloat(moveReadPos), ReadFloat(moveReadPos));
+        return new Quaternion(ReadFloat(movePositionToRead), ReadFloat(movePositionToRead), ReadFloat(movePositionToRead), ReadFloat(movePositionToRead));
     }
 
     //------------------------------------------------------------------------------------------------------------------------------
@@ -257,7 +257,7 @@ public class Packet : IDisposable                               //interface that
             {
                 buffer = null;
                 readableBuffer = null;
-                readPos = 0;
+                positionToRead = 0;
             }
 
             disposed = true;

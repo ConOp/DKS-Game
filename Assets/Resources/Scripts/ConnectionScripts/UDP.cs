@@ -11,33 +11,33 @@ public class UDP
 
     public UDP()                                                    //constructor of UDP class
     {
-        iPEndPoint = new IPEndPoint(IPAddress.Parse(Client.client.Ip), Client.client.Port);
+        iPEndPoint = new IPEndPoint(IPAddress.Parse(Client.client.Ip), Client.client.PortNum);
     }
 
     public void ConnectedPlayer(int local_port_number)              //try to connect local player to server using udp
     {
         socket = new UdpClient(local_port_number);                  //pass the port in which the client (local player) communicates with server [bind UdpClient to local port]
         socket.Connect(iPEndPoint);                                 //create default remote host using the specified network endpoint
-        socket.BeginReceive(ReceivedCallback, null);                //start asynch receive
+        socket.BeginReceive(UDPReceivedCallback, null);             //start asynch receive
         using (Packet packet = new Packet())
         {                                                           //initiate UDP connection with the server by sending a packet (empty one)
             SendData(packet);
         }
     }
 
-    private void ReceivedCallback(IAsyncResult asyncResult)         //read received udp data-packet
+    private void UDPReceivedCallback(IAsyncResult asyncResult)         //read received udp data-packet
     {
         try
         {
-            byte[] data = socket.EndReceive(asyncResult, ref iPEndPoint);       //end pending asynchronous receive and return bytes of data
-            socket.BeginReceive(ReceivedCallback, null);            //start asynchronous receive (for new data)
+            byte[] data = socket.EndReceive(asyncResult, ref iPEndPoint); //end pending asynchronous receive and return bytes of data
+            socket.BeginReceive(UDPReceivedCallback, null);            //start asynchronous receive (for new data)
 
-            if (data.Length < 4)                                               //check for existing packet in order to handle it (every packet has id at top)
+            if (data.Length < 4)                                       //check for existing packet in order to handle it (every packet has id at top)
             {
                 Client.client.Disconnect();
                 return;
             }
-            HandleData(data);                                                   //packet exists
+            HandleData(data);                                          //packet exists
         }
         catch
         {
@@ -69,7 +69,7 @@ public class UDP
             packet.InsertInt(Client.client.local_client_id);        //insert client's id into packet (in order for server to understand who send it)
             if (socket != null)
             {
-                socket.BeginSend(packet.ToArray(), packet.Length(), null, null);    //start asynchronous send
+                socket.BeginSend(packet.ToArray(), packet.ContentLength(), null, null);    //start asynchronous send
             }
         }
         catch (Exception e)
